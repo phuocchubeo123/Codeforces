@@ -1,0 +1,11 @@
+{
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "charconv": "cpp",
+        "random": "cpp",
+        "ratio": "cpp",
+        "utility": "cpp"
+    }
+}
