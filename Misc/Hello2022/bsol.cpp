@@ -15,12 +15,47 @@ void prepare(){
 
 }
 
-void read(){
+int n, l[N], r[N], c[N];
 
+void read(){
+    cin >> n;
+    for0(i, n) cin >> l[i] >> r[i] >> c[i];
 }
 
+int cost(int x, int y){
+    if (x == y) return c[x];
+    else return c[x] + c[y];
+}
+
+int one[N], one_num[N], two[N], two_num[N];
+
 void solve(){
-    
+    int b = 0;
+    one[0] = c[0];
+    for1(i, n - 1){
+        if (r[i] - l[i] + 1 > r[b] - l[b] + 1 || (r[i] - l[i] + 1 == r[b] - l[b] + 1 && c[i] <= c[b])) b = i;
+        one[i] = c[b];
+        one_num[i] = r[b] - l[b] + 1;
+    }
+
+    int bl = 0, br = 0;
+    two[0] = c[0];
+    for1(i, n - 1){
+        if (l[i] < l[bl] || (l[i] == l[bl] && c[i] <= c[bl])) bl = i;
+        if (r[i] > r[br] || (r[i] == r[br] && c[i] <= c[br])) br = i;
+        two[i] = cost(bl, br);
+        two_num[i] = r[br] - l[bl] + 1;
+    }
+
+    for0(i, n){
+        if (one_num[i] == two_num[i]){
+            cout << min(one[i], two[i]) << "\n";
+        }
+
+        else{
+            cout << two[i] << "\n";
+        }
+    }
 }
 
 int main(){
@@ -29,7 +64,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         read();

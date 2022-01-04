@@ -15,12 +15,36 @@ void prepare(){
 
 }
 
-void read(){
+int n, k;
 
+void read(){
+    cin >> n >> k;
 }
 
 void solve(){
-    
+    if (k > (n + 1) / 2){
+        cout << -1 << "\n";
+        return;
+    }
+
+    for1(i, n){
+        for1(j, n){
+            if (i != j){
+                cout << '.';
+                continue;
+            }
+
+            if (i % 2 == 0){
+                cout << '.';
+                continue;
+            }
+
+            if (i + 1 <= 2 * k) cout << 'R';
+            else cout << '.';
+        }
+
+    cout << "\n";
+    }
 }
 
 int main(){
@@ -29,7 +53,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         read();
