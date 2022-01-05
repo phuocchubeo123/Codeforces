@@ -1,3 +1,3 @@
 [CONTEST]
-folder_name = ..//Misc//Hello2022
-prob_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
+folder_name = ..//CSES//Dynamic Programming
+prob_list = [str(i) for i in range(1, 20)]
