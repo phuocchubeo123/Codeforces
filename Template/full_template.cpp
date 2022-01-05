@@ -15,10 +15,6 @@ void prepare(){
 
 }
 
-void read(){
-
-}
-
 void solve(){
     
 }
@@ -32,7 +28,6 @@ int main(){
     T = 1;
 
     while (T--){
-        read();
         solve();
     }
 }
