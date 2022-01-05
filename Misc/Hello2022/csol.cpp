@@ -15,12 +15,42 @@ void prepare(){
 
 }
 
-void read(){
+int n;
 
+void read(){
+    cin >> n;
 }
 
+int query(int x){
+    int y;
+    cout << "? " << x << "\n";
+    cout.flush();
+    cin >> y;
+    return y;
+}
+
+int vis[N], p[N];
+
 void solve(){
-    
+    for1(i, n) vis[i] = 0;
+    for1(i, n){
+        if (vis[i]) continue;
+
+        int curr = i;
+        curr = query(curr);
+        while (true){
+            if (vis[curr]) break;
+            int next = query(i);
+            p[curr] = next;
+            vis[curr] = 1;
+            curr = next;
+        }
+    }
+
+    cout << "! ";
+    for1(i, n) cout << p[i] << " ";
+    cout << "\n";
+    cout.flush();
 }
 
 int main(){
@@ -29,7 +59,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         read();
