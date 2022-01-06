@@ -16,7 +16,19 @@ void prepare(){
 }
 
 void solve(){
-    
+    int n, x; 
+    cin >> n >> x;
+    vector<int> h(n), s(n);
+    for0(i, n) cin >> h[i];
+    for0(i, n) cin >> s[i];
+    vector<vector<int>> dp(n, vector<int> (x + 1, 0));
+    for0(i, x){
+        for0(j, n){
+            if (j + 1 < n) dp[j + 1][i] = max(dp[j][i], dp[j + 1][i]);
+            if (i + h[j + 1] <= x) dp[j + 1][i + h[j + 1]] = max(dp[j + 1][i + h[j + 1]], dp[j][i] + s[j]);
+        }
+    }
+    cout << dp[n - 1][x];
 }
 
 int main(){
