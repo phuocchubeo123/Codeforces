@@ -16,7 +16,17 @@ void prepare(){
 }
 
 void solve(){
-    
+    int n; cin >> n;
+    vector<int> dp(n + 1);
+    dp[0] = 0;
+    vector<int> digits = [](int x){
+        
+    }
+    for1(i, n){
+        vector<int> dg = digits(i);
+        dp[i] = 1e9;
+        for0(j, dg.size()) dp[i] = min(dp[i], dp[i - dg[j]] + 1);
+    }
 }
 
 int main(){
@@ -24,7 +34,7 @@ int main(){
     cin.tie(0);
     prepare();
 
-    cin >> T;
+    // cin >> T;
     T = 1;
 
     while (T--){
