@@ -19,14 +19,20 @@ void solve(){
     int n; cin >> n;
     vector<int> dp(n + 1);
     dp[0] = 0;
-    vector<int> digits = [](int x){
-        
-    }
+    auto digits = [](int x){
+        vector<int> dgs;
+        while (x > 0){
+            dgs.push_back(x % 10);
+            x /= 10;
+        }
+        return dgs;
+    };
     for1(i, n){
         vector<int> dg = digits(i);
         dp[i] = 1e9;
         for0(j, dg.size()) dp[i] = min(dp[i], dp[i - dg[j]] + 1);
     }
+    cout << dp[n];
 }
 
 int main(){
