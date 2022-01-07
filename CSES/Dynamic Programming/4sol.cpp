@@ -1,33 +1,28 @@
-#include<bits/stdc++.h>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-#define forlr(i, l, r, k) for (int i = l; i < r; i += k)
-#define for0(i, n) for (int i = 0; i < n; i++)
-#define for1(i, n) for (int i = 1; i <= n; i++)
-#define pb push_back
+const int N = 1e6 + 1;
+int x[100];
+int dp[N][101];
+int main() {
+  int mod = 1e9+7;
+  int n, target;
+  cin >> n >> target;
+  for (int i = 0; i < n; i++) cin >> x[i];
 
-const int N = 2e5 + 4;
-int T;
+  for (int i = 0; i <= n; i++){
+      for (int j = 0; j <= target; j++) dp[j][i] = 0;
+  }
 
-void prepare(){
-
-}
-
-void solve(){
-    
-}
-
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    prepare();
-
-    cin >> T;
-    T = 1;
-
-    while (T--){
-        solve();
+  dp[0][0] = 1;
+  for (int i = 1; i <= n; i++) {
+    for (int j = 0; j <= target; j++) {
+      dp[j][i] = dp[j][i - 1];
+      if (j - x[i - 1] >= 0) {
+	dp[j][i] += dp[j - x[i - 1]][i];
+    dp[j][i] %= mod;
+      }
     }
+  }
+  cout << dp[target][n] << endl;
 }

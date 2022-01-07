@@ -8,15 +8,24 @@ typedef long long ll;
 #define for1(i, n) for (int i = 1; i <= n; i++)
 #define pb push_back
 
-const int N = 2e5 + 4;
+const int N = 1e6 + 4, MOD = 1e9 + 7;
 int T;
 
-void prepare(){
+int dp[N + 10];
 
+void prepare(){
+    for1(i, N) dp[i] = 0;
+    for1(i, 6) dp[i] = 1;
+    for1(i, N){
+        for1(j, 6) dp[i + j] = (dp[i + j] + dp[i]) % MOD;
+        // cout << dp[i];
+    }
 }
 
+
 void solve(){
-    
+    int n; cin >> n;
+    cout << dp[n];
 }
 
 int main(){
@@ -24,10 +33,11 @@ int main(){
     cin.tie(0);
     prepare();
 
-    cin >> T;
+    // cin >> T;
     T = 1;
 
     while (T--){
         solve();
     }
+    return 0;
 }
