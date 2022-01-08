@@ -1,3 +1,3 @@
 [CONTEST]
-folder_name = ..//CSES//Dynamic Programming
-prob_list = [str(i) for i in range(1, 20)]
+folder_name = ..//ICPCTrain//27
+prob_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
