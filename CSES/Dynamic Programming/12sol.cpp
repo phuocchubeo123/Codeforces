@@ -16,7 +16,27 @@ void prepare(){
 }
 
 void solve(){
-    
+    int a, b;
+    cin >> a >> b;
+    vector<vector<int>> dp(a + 1, vector<int> (b + 1, 0));
+    for1(i, a){
+        dp[i][1] = i - 1;
+        forlr(j, 2, b + 1, 1){
+            if (i == j){
+                dp[i][j] = 0;
+                continue;
+            }
+            int minn = 1e9;
+            forlr(slc, 1, i / 2 + 1, 1) minn = min(minn, dp[slc][j] + dp[i - slc][j] + 1);
+            forlr(slc, 1, j / 2 + 1, 1) minn = min(minn, dp[i][slc] + dp[i][j - slc] + 1);
+            dp[i][j] = minn;
+        }
+    }
+    // for1(i, a){
+    //     for1(j, b) cout << dp[i][j] << " ";
+    //     cout << "\n";
+    // }
+    cout << dp[a][b];
 }
 
 int main(){
@@ -24,7 +44,7 @@ int main(){
     cin.tie(0);
     prepare();
 
-    cin >> T;
+    // cin >> T;
     T = 1;
 
     while (T--){
