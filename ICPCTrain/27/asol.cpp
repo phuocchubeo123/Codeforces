@@ -17,7 +17,9 @@ void prepare(){
 }
 
 void solve(){
-    
+    int n, s, t;
+    cin >> n >> s >> t;
+    cout << max(n - s, n - t) + 1 << "\n";
 }
 
 int main(){
@@ -26,7 +28,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         solve();

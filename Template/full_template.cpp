@@ -2,8 +2,8 @@
 
 using namespace std;
 
-#define ll long long;
-#define vt vector;
+#define ll long long
+#define vt vector
 #define forlr(i, l, r, k) for (int i = l; i < r; i += k)
 #define for0(i, n) for (int i = 0; i < n; i++)
 #define for1(i, n) for (int i = 1; i <= n; i++)
