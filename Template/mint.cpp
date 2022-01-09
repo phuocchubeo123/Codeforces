@@ -5,38 +5,38 @@ using namespace std;
 typedef long long ll;
 const int N = 2e5 + 4, MOD = 998244353;
 
-struct Mint{
+struct mint{
     int val;
 
-    Mint(){
+    mint(){
         val = 0;
     }
 
-    Mint(int x){
+    mint(int x){
         while (x >= MOD) x -= MOD;
         while (x < 0) x += MOD;
         val = x;
     }
 
-    bool operator==(const Mint& other){
+    bool operator==(const mint& other){
         return val == other.val;
     }
 
-    Mint operator+(const Mint& other){
-        return Mint(val + other.val);
+    mint operator+(const mint& other){
+        return mint(val + other.val);
     }
 
-    Mint operator-(const Mint& other){
-        return Mint(val - other.val);
+    mint operator-(const mint& other){
+        return mint(val - other.val);
     }
 
-    Mint operator*(const Mint& other){
-        return Mint((val * 1ll * other.val) % MOD);
+    mint operator*(const mint& other){
+        return mint((val * 1ll * other.val) % MOD);
     }
 
-    Mint pow(int y){
-        Mint z(1);
-        Mint x(val);
+    mint pow(int y){
+        mint z(1);
+        mint x(val);
         while (y > 0){
             if (y % 2 == 1) z = z * x;
             x = x * x;
@@ -45,34 +45,34 @@ struct Mint{
         return z;
     }
 
-    Mint operator/(const Mint& other){
-        return Mint(val) * Mint(other.val).pow(MOD - 2);
+    mint operator/(const mint& other){
+        return mint(val) * mint(other.val).pow(MOD - 2);
     }
 };
 
-Mint pow_mod[N];
+mint pow_mod[N];
 
 void calPowMod(){
-    pow_mod[0] = Mint(1);
-    for (int i = 1; i < N; i++) pow_mod[i] = pow_mod[i - 1] * Mint(2);
+    pow_mod[0] = mint(1);
+    for (int i = 1; i < N; i++) pow_mod[i] = pow_mod[i - 1] * mint(2);
 }
 
-Mint factor_mod[N];
+mint factor_mod[N];
 
 void calFactor(){
-    factor_mod[0] = Mint(1);
-    for (int i = 1; i < N; i++) factor_mod[i] = factor_mod[i - 1] * Mint(i);
+    factor_mod[0] = mint(1);
+    for (int i = 1; i < N; i++) factor_mod[i] = factor_mod[i - 1] * mint(i);
 }
 
-Mint inv_mod[N];
+mint inv_mod[N];
 
-Mint calInverse(){
-    for (int i = 1; i < N; i++) inv_mod[i] = Mint(i).pow(MOD - 2);
+mint calInverse(){
+    for (int i = 1; i < N; i++) inv_mod[i] = mint(i).pow(MOD - 2);
 }
 
 int main(){
     calPowMod();
     calFactor();
-    Mint x = factor_mod[5];
+    mint x = factor_mod[5];
     cout << x.val;
 }

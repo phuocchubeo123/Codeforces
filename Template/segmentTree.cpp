@@ -2,8 +2,12 @@
 
 using namespace std;
 
-typedef long long ll;
+#define ll long long
 #define vt vector
+#define forlr(i, l, r, k) for (int i = l; i < r; i += k)
+#define for0(i, n) for (int i = 0; i < n; i++)
+#define for1(i, n) for (int i = 1; i <= n; i++)
+#define pb push_back
 
 const int N = 1e5;
 int n;
@@ -12,46 +16,42 @@ ll a[2 * N];
 //segTree template
 int seg_sz, seg[4 * N];
 
+template<typename T>
 struct segTree{
-    vt<int> seg;
-    int sz;
+    vt<T> seg;
+    int sz = 1;
 
-    segTree(vt<int> v, int n){
-        sz = 1;
-        while (sz < n) sz = sz * 2;
-        seg = vt<int> (2 * sz);
-        build(v, n);
+    segTree(int n){
+        while (sz < n) sz *= 2;
+        seg.resize(2 * sz);
     }
 
-    void build(vt<int> v, int n){
-        for (int i = 0; i < sz; i++){
-            if (sz + i < n) seg[sz + i] = v[i];
-            else seg[sz + i] = 0;
-        }
-        for (int i = sz - 1; i > 0; i--) seg[i] = seg[i * 2] + seg[i * 2 + 1];
+    segTree(vt<T> v, int n){
+        while (sz < n) sz *= 2;
+        seg.resize(2 * sz);
+        for0(i, n) update(i, v[i]);
     }
 
-    void update(int pos, ll val){
+    void update(int pos, T val){
         int ps = sz + pos;
         while (ps > 0){
             seg[ps] += val;
-            ps = ps / 2;
+            ps /= 2;
         }
     }
 
-    ll query(int l, int r){
+    T query(int l, int r){
         if (r < l) return 0;
 
-        l = sz + l;
-        r = sz + r;
-        ll qr = 0;
+        l += sz;
+        r += sz;
+        T qr = 0;
 
-        while (l <= r){
-            // cout << l << " " << r << "\n";
+       while (l <= r){
             if (l & 1) qr += seg[l++];
             if (!(r & 1)) qr += seg[r--];
-            l = l / 2;
-            r = r / 2;
+            l /= 2;
+            r /= 2;
         }
         return qr;
     }
@@ -65,6 +65,6 @@ int main(){
     a[2] = 3;
     a[3] = 4;
 
-    segTree sega(a, 4);
+    segTree<int> sega(a, 4);
     return 0;
 }
