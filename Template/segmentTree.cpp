@@ -32,10 +32,12 @@ struct segTree{
         for0(i, n) update(i, v[i]);
     }
 
-    void update(int pos, T val){
+    void update(int pos, T x){
         int ps = sz + pos;
+        seg[ps] = x;
+        ps /= 2;
         while (ps > 0){
-            seg[ps] += val;
+            seg[ps] = seg[ps * 2] + seg[ps * 2 + 1];
             ps /= 2;
         }
     }
@@ -45,7 +47,7 @@ struct segTree{
 
         l += sz;
         r += sz;
-        T qr = 0;
+        T qr;
 
        while (l <= r){
             if (l & 1) qr += seg[l++];
