@@ -1,3 +1,4 @@
+import os
 import configparser
 
 def main():
@@ -19,5 +20,8 @@ if __name__ == "__main__":
     folder_name = contest["folder_name"]
     print(folder_name)
     prob_list = eval(contest["prob_list"])
+
+    if not os.path.isfile(folder_name):
+        os.makedirs(folder_name)
 
     main()
