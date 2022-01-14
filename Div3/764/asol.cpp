@@ -17,7 +17,17 @@ void prepare(){
 }
 
 void solve(){
-    
+    int n;
+    cin >> n;
+    int mx = 0, mn = 1e9 + 1;
+    for0(i, n){
+        int a;
+        cin >> a;
+        mx = max(mx, a);
+        mn = min(mn, a);
+    }
+
+    cout << mx - mn << "\n";
 }
 
 int main(){
@@ -26,7 +36,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         solve();
