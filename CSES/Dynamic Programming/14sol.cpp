@@ -15,8 +15,28 @@ void prepare(){
 
 }
 
+const ll LOW = -1e9 * 5000 - 5;
+vector<ll> x;
+vector<vector<vector<ll>>> dp(2, vector<vector<ll>> (5000, vector<ll> (5000, LOW)));
+
+void findAns(int s, int l, int r){
+    if (dp[l][r] > LOW) return;
+
+    if (l == r){
+        dp[l][r] = (s == 1) ? x[l] : 0;
+        return; 
+    }
+
+    findAns(1 ^ s, l + 1, r);
+    findAns(1 ^ s, l, r - 1);
+}
+
 void solve(){
-    
+    int n;
+    cin >> n;
+    x.resize(n);
+    for (int i = 0; i < n; i++) cin >> x[i];
+    findAns(1, 0, n - 1);
 }
 
 int main(){
