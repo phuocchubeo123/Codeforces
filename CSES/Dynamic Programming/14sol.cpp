@@ -17,25 +17,31 @@ void prepare(){
 
 const ll LOW = -1e9 * 5000 - 5;
 vector<ll> x;
-vector<vector<vector<ll>>> dp(2, vector<vector<ll>> (5000, vector<ll> (5000, LOW)));
+ll dp[2][5000][5000];
 
 void findAns(int s, int l, int r){
-    if (dp[l][r] > LOW) return;
+    if (dp[s][l][r] > LOW) return;
 
     if (l == r){
-        dp[l][r] = (s == 1) ? x[l] : 0;
+        dp[s][l][r] = (s == 1) ? x[l] : 0;
         return; 
     }
 
     findAns(1 ^ s, l + 1, r);
     findAns(1 ^ s, l, r - 1);
-    if (s == 1) dp[l][r] = max(x[l] + dp[1 ^ s][l + 1][r], x[r] + dp[1 ^ s][l][r - 1]);
-    else dp[l][r] = max(dp[1 ^ s][l + 1][r], dp[1 ^ s][l][r - 1]);
+    if (s == 1) dp[s][l][r] = max(x[l] + dp[1 ^ s][l + 1][r], x[r] + dp[1 ^ s][l][r - 1]);
+    else dp[s][l][r] = min(dp[1 ^ s][l + 1][r], dp[1 ^ s][l][r - 1]);
 
     return;
 }
 
 void solve(){
+    for (int i = 0; i < 5000; i++){
+        for (int j = 0; j < 5000; j++){
+            for (int k = 0; k < 2; k++) dp[k][i][j] = LOW;
+        }
+    }
+
     int n;
     cin >> n;
     x.resize(n);
