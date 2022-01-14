@@ -29,6 +29,10 @@ void findAns(int s, int l, int r){
 
     findAns(1 ^ s, l + 1, r);
     findAns(1 ^ s, l, r - 1);
+    if (s == 1) dp[l][r] = max(x[l] + dp[1 ^ s][l + 1][r], x[r] + dp[1 ^ s][l][r - 1]);
+    else dp[l][r] = max(dp[1 ^ s][l + 1][r], dp[1 ^ s][l][r - 1]);
+
+    return;
 }
 
 void solve(){
@@ -44,7 +48,7 @@ int main(){
     cin.tie(0);
     prepare();
 
-    cin >> T;
+    // cin >> T;
     T = 1;
 
     while (T--){
