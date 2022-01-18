@@ -35,11 +35,11 @@ void upBranchWithBlack(int x){
 }
 
 void noBlack(int x){
+    if (c[x]) nb[x] = 1;
     for (int y: ch[x]){
         if (nb[x]) nb[y] = 1;
         noBlack(y);
     }
-    if ()
 }
 
 void reRoot(int r){
@@ -82,12 +82,23 @@ void solve(){
     int root;
     for1(i, n) if (c[i]) root = i;
     reRoot(root);
-    noBlack(root);
+    nb[root] = 1;
+    for (int x: ch[root]){
+        noBlack(x);
+    }
 
     vt<int> ans(n + 1);
     for1(i, n) if (nb[i]) ans[i] = 1;
     for1(i, n){
-        if ()
+        if (nb[i]) ans[i] = 1;
+        else{
+            bool flag = false;
+            for (int x: ch[i]){
+                if (c[x]) flag = true;
+            }
+            if (flag) ans[i] = 1;
+            else ans[i] = 0;
+        }
     }
 }
 
