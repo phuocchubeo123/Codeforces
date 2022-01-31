@@ -21,45 +21,47 @@ void solve(){
     cin >> n;
     vt<int> a(n);
     for0(i, n) cin >> a[i];
+
     vt<int> first(n + 1, n + 1), last(n + 1, -1);
     for0(i, n){
         first[a[i]] = min(first[a[i]], i);
         last[a[i]] = max(last[a[i]], i);
     }
 
-    vt<pair<int, int>> p;
+    vt<pair<int, int>> segs;
     for1(i, n){
-        if (first[i] != n + 1 && last[i] != -1 && first[i] != last[i]) p.pb({first[i], last[i]});
+        if (first[i] != last[i] && first[i] != n + 1 && last[i] != -1) segs.pb({first[i], last[i]});
     }
 
-    sort(p.begin(), p.end());
+    sort(segs.begin(), segs.end());
 
+    vt<pair<int, int>> cont;
+    vt<vt<pair<int, int>>> cont_seg;
     int l = -1, r = -1;
-    int ans = 0;
-    for (auto x: p){
-        if (x.first > r){
-            if (r != -1){
-                ans += r - l - 1;
-                if (a[r] != a[l]) ans--;
-            }
-
-            // cout << l << " " << r << "\n";
-            l = x.first;
-            r = x.second;
+    int num = -1;
+    for (auto p: segs){
+        if (p.first > r){
+            cont.pb({l, r});
+            num++;
+            cont_seg.pb({{p.first, p.second}});
+            l = p.first;
+            r = p.second;
         }
 
         else{
-            r = max(r, x.second);
+            r = max(r, p.second);
+            cont_seg[num].pb(p);
         }
+        cout << p.first << " " << p.second << " " << num << "\n"; 
     }
 
-    if (r != -1){
-        ans += r - l - 1;
-        if (a[r] != a[l]) ans--;
-    }
+    cont.pb({l, r});
 
-    // cout << l << " " << r << "\n";
-    cout << ans;
+    for1(i, num + 1){
+        cout << cont[i].first << " " << cont[i].second << "\n";
+        for (auto x: cont_seg[i - 1]) cout << x.first << " " << x.second << "\n";
+        cout << "\n";
+    }
 }
 
 int main(){
