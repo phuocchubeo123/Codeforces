@@ -17,7 +17,14 @@ void prepare(){
 }
 
 void solve(){
-    
+    ll n, x, y;
+    cin >> n >> x >> y;
+    vt<ll> a(n);
+    for0(i, n) cin >> a[i];
+    bool tot = 0;
+    for0(i, n) tot = tot ^ (a[i] & 1);
+    if ((x & 1) ^ tot == (y & 1)) cout << "Alice\n";
+    else cout << "Bob\n";
 }
 
 int main(){
@@ -26,7 +33,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         solve();

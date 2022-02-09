@@ -17,7 +17,35 @@ void prepare(){
 }
 
 void solve(){
-    
+    int n, k;
+    cin >> n >> k;
+
+    if (k == 1){
+        cout << "YES\n";
+        for1(i, n){
+            cout << i << "\n";
+        }
+        return;
+    }
+
+    if (n % 2 == 1){
+        cout << "NO\n";
+        return;
+    }
+
+    cout << "YES\n";
+    for0(i, n / 2){
+        for1(j, 2 * k){
+            int num = 2 * i * k + j;
+            if (num % 2 == 1) cout << num << " ";
+        }
+        cout << "\n";
+        for1(j, 2 * k){
+            int num = 2 * i * k + j;
+            if (num % 2 == 0) cout << num << " ";
+        }
+        cout << "\n";
+    }
 }
 
 int main(){
@@ -26,7 +54,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         solve();

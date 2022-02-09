@@ -17,7 +17,20 @@ void prepare(){
 }
 
 void solve(){
-    
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    string rev_s = s;
+    reverse(rev_s.begin(), rev_s.end());
+
+    if (k == 0){
+        cout << 1 << "\n";
+        return;
+    }
+
+    if (s == rev_s) cout << 1 << "\n";
+    else cout << 2 << "\n";
 }
 
 int main(){
@@ -26,7 +39,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         solve();
