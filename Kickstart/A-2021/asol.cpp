@@ -10,14 +10,29 @@ using namespace std;
 #define pb push_back
 
 const int N = 2e5 + 4;
-int T;
+int T, tcase = 0;
 
 void prepare(){
 
 }
 
 void solve(){
-    
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    s.pb('a');
+    reverse(s.begin(), s.end());
+    int good = 0;
+    for1(i, n / 2){
+        if (s[i] != s[n - i + 1]){
+            // cout << i << " ";
+            good++;
+        }
+    }
+    // cout << "\n";
+    // cout << good << "\n";
+    cout << "Case #" << tcase << ": " << abs(good - k) << "\n";
 }
 
 int main(){
@@ -26,9 +41,10 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
+        tcase++;
         solve();
     }
 }
