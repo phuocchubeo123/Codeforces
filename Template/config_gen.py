@@ -1,3 +1,3 @@
 [CONTEST]
-folder_name = ..//Kickstart//A-2021
+folder_name = ..//Code Jam//2022//Quali
 prob_list = ['a', 'b', 'c', 'd']
