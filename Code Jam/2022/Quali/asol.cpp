@@ -16,8 +16,36 @@ void prepare(){
 
 }
 
+int tt = 0;
+
 void solve(){
-    
+    int r, c;
+    cin >> r >> c; 
+    tt++;
+    cout << "Case #" << tt << ":\n";
+    for0(i, 2 * r + 1){
+        if (i == 0){
+            cout << "..";
+            for0(j, c - 1) cout << "+-";
+            cout << "+\n";
+        }
+
+        else if (i == 1){
+            cout << "..";
+            for0(j, c - 1) cout << "|.";
+            cout << "|\n";
+        }
+
+        else if (i % 2 == 0){
+            for0(j, c) cout << "+-";
+            cout << "+\n";
+        }
+
+        else if (i % 2 == 1){
+            for0(j, c) cout << "|.";
+            cout << "|\n";
+        }
+    }
 }
 
 int main(){
@@ -26,7 +54,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         solve();

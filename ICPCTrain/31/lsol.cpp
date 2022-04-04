@@ -16,19 +16,8 @@ void prepare(){
 
 }
 
-int tt = 0;
 void solve(){
-    tt++;
-    cout << "Case #" << tt << ": ";
-    int n; cin >> n;
-    vt<int> s(n);
-    for0(i, n) cin >> s[i];
-    sort(s.begin(), s.end());
-    int curr = 0;
-    for0(i, n){
-        if (s[i] >= curr + 1) curr++;
-    }
-    cout << curr << "\n";
+    
 }
 
 int main(){
@@ -37,7 +26,7 @@ int main(){
     prepare();
 
     cin >> T;
-    // T = 1;
+    T = 1;
 
     while (T--){
         solve();
