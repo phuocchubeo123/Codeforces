@@ -16,8 +16,30 @@ void prepare(){
 
 }
 
+int tt = 1;
 void solve(){
-    
+    cout << "Case #" << tt++ << ": ";
+    string s;    
+    cin >> s;
+    char curr = '0';
+    string new_s = "";
+    for0(i, s.size()){
+        int j = i + 1;
+        while (j < s.size() && s[j] == s[i]) j++;
+        if (j == s.size()){
+            new_s.pb(s[i]);
+            continue;
+        }
+        if (s[j] > s[i]){
+            new_s.pb(s[i]);
+            new_s.pb(s[i]);
+            continue;
+        }
+
+        else new_s.pb(s[i]);
+    }
+
+    cout << new_s << "\n";
 }
 
 int main(){
@@ -26,7 +48,7 @@ int main(){
     prepare();
 
     cin >> T;
-    T = 1;
+    // T = 1;
 
     while (T--){
         solve();

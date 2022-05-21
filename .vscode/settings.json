@@ -5,6 +5,7 @@
         "deque": "cpp",
         "string": "cpp",
         "vector": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "*.tcc": "cpp"
     }
 }
