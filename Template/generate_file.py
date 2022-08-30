@@ -18,10 +18,10 @@ if __name__ == "__main__":
 
     contest = config["CONTEST"]
     folder_name = contest["folder_name"]
-    print(folder_name)
+    folder_name = os.path.abspath(folder_name)
     prob_list = eval(contest["prob_list"])
 
-    if not os.path.isfile(folder_name):
+    if not os.path.isdir(folder_name):
         os.makedirs(folder_name)
 
     main()
