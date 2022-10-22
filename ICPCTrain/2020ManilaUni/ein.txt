@@ -1,0 +1,4 @@
+6
+2
+Champion Dust:Might Multiplier x3;STA +2019;STR x5;[Skill] 5 Hit Sweeping Strikes;[Passive] Immunity
+Lordlight Crystal:[Elemental Damage] Holy;RES +1859;Might Multiplier x1.5;[Passive] Cura Personalis;[Color] Ultramarine
