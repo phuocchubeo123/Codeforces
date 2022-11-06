@@ -50,6 +50,7 @@ const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const char min_char = 'a';
 const double EPS = 1e-9;
+const double PI = 3.14159265358979323846;
 
 struct point {
     double x, y; 
@@ -58,7 +59,7 @@ struct point {
     bool operator <(const point& other) const {
         if(fabs(x - other.x) > EPS)
             return x < other.x;
-        return y < other.y
+        return y < other.y;
     }
     bool operator ==(const point& other) const {
         return ((fabs(x-other.x) < EPS) && (fabs(y-other.y) < EPS));
@@ -69,10 +70,15 @@ double dist(point p1, point p2){
     return hypot(p1.x - p2.x, p1.y - p2.y);
 }
 
-// Torate a point by angle \theta
+// Rotate a point by angle \theta
+
+double DEG_to_RAD(double theta){
+    return theta * PI / 180;
+}
+
 point rotate(point p, double theta){
-    double rad = DEG_to_RED(theta);
-    return point(p*x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
+    double rad = DEG_to_RAD(theta);
+    return point(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
 
 struct line { double a, b, c; };
@@ -81,13 +87,15 @@ void pointsToLine(point p1, point p2, line &l){
     if(fabs(p1.x - p2.x) < EPS) {
         l.a = 1.0; l.b = 0.0; l.c = -p1.x;
     } else {
-        l.a = -(double)(p1.y - p2.y) / (p1.x - p2.x);
+        l.a = -(p1.y - p2.y) / (p1.x - p2.x);
         l.b = 1.0;
-        l.c = -(double)(l.a * p1.x) - p1.y;
+        l.c = -(l.a * p1.x) - p1.y;
     }
 }
 
 bool areParallel(line l1, line l2){
+    if (fabs(l1.a) < EPS && fabs(l2.a) < EPS) return true;
+    if (fabs(l1.b) < EPS && fabs(l2.b) < EPS) return true;
     return (fabs(l1.a - l2.a) < EPS && (fabs(l1.b-l2.b) < EPS));
 }
 
@@ -99,7 +107,7 @@ bool areSame(line l1, line l2) {
 // returns true (+ intersection point) of two lines are intersect
 bool areIntersect(line l1, line l2, point &p){
     if(areParallel(l1, l2)) return false;
-    // solve system of 2 linear algebraic euqations with 2 unkowns
+    // solve system of 2 linear algebraic equations with 2 unkowns
     p.x = (l2.b * l1.c - l1.b * l2.c) / (l2.a * l1.b - l1.a * l2.b);
     // Special case: test for vertical line to avoid division by zero
     if (fabs(l1.b) > EPS){
@@ -121,11 +129,15 @@ struct vec {
     vec operator-(const vec& v) const {
         return vec(x - v.x, y - v.y);
     }
-
-    double cross(const vec& v){
-        return x * v.y - y * v.x;
-    }
 };
+
+double cross(vec u, vec v){
+    return u.x * v.y - u.y * v.x;
+}
+
+double dot(vec u, vec v){
+    return u.x * v.y * u.y * v.x;
+}
 
 vec toVec(const point& p){
     return vec(p.x, p.y);
@@ -145,6 +157,14 @@ bool ccw(point p, point q, point r){
 
 bool collinear(point p, point q, point r) {
     return fabs(cross(toVec(p, q), toVec(q, r))) < EPS;
+}
+double norm_sq(vec v){
+    return v.x * v.x + v.y * v.y;
+}
+
+double angle(const point& a, const point& o, const point& b){
+    vec oa = toVec(o, a), ob = toVec(o, b);
+    return acos(dot(oa, ob) / sqrt(norm_sq(oa) * norm_sq(ob)));
 }
 
 void solve(){

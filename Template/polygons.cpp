@@ -50,46 +50,123 @@ const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const char min_char = 'a';
 const double EPS = 1e-9;
+const double PI = 3.14159265358979323846;
 
-struct point{
-    double x, y;
-    point(double _x, double _y) : x(_x), y(_y) {};
+struct point {
+    double x, y; 
+    point() { x = y == 0.0;}
+    point(double _x, double _y) : x(_x), y(_y) {}
+    bool operator <(const point& other) const {
+        if(fabs(x - other.x) > EPS)
+            return x < other.x;
+        return y < other.y;
+    }
+    bool operator ==(const point& other) const {
+        return ((fabs(x-other.x) < EPS) && (fabs(y-other.y) < EPS));
+    }
+};
+
+double dist(point p1, point p2){
+    return hypot(p1.x - p2.x, p1.y - p2.y);
 }
 
-struct vec{
-    double x, y;
-    vec(double _x, double _y) : x(_x), y(_y) {};
+// Rotate a point by angle \theta
+
+double DEG_to_RAD(double theta){
+    return theta * PI / 180;
 }
 
-double cross(const vec& a, const vec& b){
-    return (a.x * b.y - a.y * b.x);
+point rotate(point p, double theta){
+    double rad = DEG_to_RAD(theta);
+    return point(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
 
-vec toVec(const point& p, const point& q){
-    return vec(q.x - p.x, q.y - p.y);
+struct line { double a, b, c; };
+
+void pointsToLine(point p1, point p2, line &l){
+    if(fabs(p1.x - p2.x) < EPS) {
+        l.a = 1.0; l.b = 0.0; l.c = -p1.x;
+    } else {
+        l.a = -(p1.y - p2.y) / (p1.x - p2.x);
+        l.b = 1.0;
+        l.c = -(l.a * p1.x) - p1.y;
+    }
 }
 
-double dist(const point& a, const point& b){
-    return hypot(b.x - a.x, b.y - a.y);
+bool areParallel(line l1, line l2){
+    if (fabs(l1.a) < EPS && fabs(l2.a) < EPS) return true;
+    if (fabs(l1.b) < EPS && fabs(l2.b) < EPS) return true;
+    return (fabs(l1.a - l2.a) < EPS && (fabs(l1.b-l2.b) < EPS));
 }
 
-// check if left cross > 0
-bool ccw(const point& p, const point& q, const point& r){
-    return cross(toVec(p, q),toVec(p, r)) > 0;
+bool areSame(line l1, line l2) {
+    return areParallel(l1, l2) && (fabs(l1.c - l2.c) < EPS);
 }
 
-double dot(vec a, vec b){
-    return (a.x * b.x + a.y * b.y);
+
+// returns true (+ intersection point) of two lines are intersect
+bool areIntersect(line l1, line l2, point &p){
+    if(areParallel(l1, l2)) return false;
+    // solve system of 2 linear algebraic equations with 2 unkowns
+    p.x = (l2.b * l1.c - l1.b * l2.c) / (l2.a * l1.b - l1.a * l2.b);
+    // Special case: test for vertical line to avoid division by zero
+    if (fabs(l1.b) > EPS){
+        p.y = -(l1.a * p.x + l1.c);
+    } else {
+        p.y = -(l2.a * p.x + l2.c);
+    }
+    return true;
 }
 
+struct vec {
+    double x, y; 
+    vec(double _x, double _y) : x(_x), y(_y) {}
+
+    vec operator+(const vec& v) const {
+        return vec(x + v.x, y + v.y);
+    }
+
+    vec operator-(const vec& v) const {
+        return vec(x - v.x, y - v.y);
+    }
+};
+
+double cross(vec u, vec v){
+    return u.x * v.y - u.y * v.x;
+}
+
+double dot(vec u, vec v){
+    return u.x * v.y * u.y * v.x;
+}
+
+vec toVec(const point& p){
+    return vec(p.x, p.y);
+}
+
+vec toVec(const point& a, const point& b){
+    return vec(b.x - a.x, b.y - a.y);
+}
+
+point translate(point p, vec v){
+    return point(p.x + v.x, p.y + v.y);
+}
+
+bool ccw(point p, point q, point r){
+    return cross(toVec(p, q), toVec(q, r)) > 0;
+}
+
+bool collinear(point p, point q, point r) {
+    return fabs(cross(toVec(p, q), toVec(q, r))) < EPS;
+}
 double norm_sq(vec v){
     return v.x * v.x + v.y * v.y;
 }
 
 double angle(const point& a, const point& o, const point& b){
     vec oa = toVec(o, a), ob = toVec(o, b);
-    return acos(dot(oa, ob)) / sqrt(norm_sq(oa) * norm_sq(ob));
+    return acos(dot(oa, ob) / sqrt(norm_sq(oa) * norm_sq(ob)));
 }
+
 
 // Premeter of a Polygon
 double perimeter(const vector<point> &P) {
@@ -100,7 +177,7 @@ double perimeter(const vector<point> &P) {
     return result;
 }
 
-double area(const vector<ponint> &P){
+double area(const vector<point> &P){
     double result = 0.0, x1, y1, x2, y2;
     for (int i = 0; i < (int)P.size() - 1; i++){
         x1 = P[i].x; x2 = P[i+1].x;
@@ -142,7 +219,7 @@ bool angleCmp(const point &a, const point &b){
         return dist(pivot, a) < dist(pivot, b);
     double d1x = a.x - pivot.x, d1y = a.y - pivot.y;
     double d2x = b.x - pivot.x, d2y = b.y - pivot.y;
-    return atan2(d1y, d1x) - atan(d2y, d2x) < 0;
+    return atan2(d1y, d1x) - atan2(d2y, d2x) < 0;
 }
 
 vector<point> CH(vector<point> &P){
@@ -182,13 +259,13 @@ vector<point> CH(vector<point> &P){
 
 void solve(){
     vector<point> Poly;
-    P.push_back(point(1, 1)); // P0
-    P.push_back(point(3, 3)); // P1
-    P.push_back(point(9, 1)); // P2 
-    P.push_back(point(12, 4)); // P3 
-    P.push_back(point(9, 7)); // P4 
-    P.push_back(point(1, 7)); // P5 
-    P.push_back(P[0]); // important: loop back
+    Poly.push_back(point(1, 1)); // P0
+    Poly.push_back(point(3, 3)); // P1
+    Poly.push_back(point(9, 1)); // P2 
+    Poly.push_back(point(12, 4)); // P3 
+    Poly.push_back(point(9, 7)); // P4 
+    Poly.push_back(point(1, 7)); // P5 
+    Poly.push_back(Poly[0]); // important: loop back
 
 }
 
