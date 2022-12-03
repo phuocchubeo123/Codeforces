@@ -53,29 +53,7 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-struct rec{
-    ll x, y, a;
-    rec(int _x, int _y, int _a){
-        x = _x; y = _y; a = _a;
-    }
-
-    bool operator< (const rec& other){
-        return (x < other.x);
-    }
-};
-
 void solve(){
-    int n;
-    cin >> n;
-    vector<rec> recs;
-    forn(i, n){
-        int x, y, a;
-        cin >> x >> y >> a;
-        recs.push_back(rec(x, y, a));
-    }
-
-    sort(all(recs));
-
 
 }
 
@@ -83,7 +61,7 @@ int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int c = 1;
-    // cin >> c;
+    cin >> c;
     while(c--){
         solve();
     }

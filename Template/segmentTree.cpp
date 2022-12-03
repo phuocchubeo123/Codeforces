@@ -19,20 +19,34 @@ int seg_sz, seg[4 * N];
 template<typename T>
 struct segTree{
     vt<T> seg;
+    vt<T> lazy;
     int sz = 1;
 
-    segTree(int n){
+    segTree(int n, bool lz){
         while (sz < n) sz *= 2;
         seg.resize(2 * sz);
+        if (lz) lazy.resize(2 * sz);
     }
 
-    segTree(vt<T> v, int n){
+    segTree(vt<T> v, int n, bool lazy){
         while (sz < n) sz *= 2;
         seg.resize(2 * sz);
         for0(i, n) update(i, v[i]);
+        if (lz) lazy.resize(2 * sz);
     }
 
     void update(int pos, T x){
+        int ps = sz + pos;
+        seg[ps] = x;
+        ps /= 2;
+        while (ps > 0){
+            seg[ps] = seg[ps * 2] + seg[ps * 2 + 1];
+            ps /= 2;
+        }
+    }
+    
+    void lazy_update(int pos, T x){
+
         int ps = sz + pos;
         seg[ps] = x;
         ps /= 2;

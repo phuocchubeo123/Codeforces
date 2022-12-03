@@ -1,4 +1,4 @@
-- Template for BigInt 
 - List of all primes from 1 to N
 - List of number of divisors of all numbers from 1 to N
 - Lazy segment tree
+- Fraction
