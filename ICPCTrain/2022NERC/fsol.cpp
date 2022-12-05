@@ -38,14 +38,38 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    double k; cin >> k;
+    vector<pair<double, pii>> chem;
+    forn(i, n){
+        double x, c, w; cin >> x >> c >> w;
+        chem.push_back({x / 100, {c, w}});
+    }
 
+    sort(all(chem));
+    vector<double> dp(n);
+
+    for (int i = n - 1; i >= 0; i--){
+        dp[i] = -chem[i].second.first;
+        for (int j = i + 1; j < n; j++){
+            double first_part = (chem[i].second.second + chem[j].second.second) * (chem[j].first - chem[i].first) / 2;
+            dp[i] = max(dp[i], -chem[i].second.first + k * first_part + dp[j]);
+        }
+        // cout << dp[i] << " ";
+    }
+
+    // cout << "\n";
+
+    double mx = 0;
+    forn(i, n) mx = max(mx, dp[i]);
+    cout << fixed << setprecision(9) << mx;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int c = 1;
-    cin >> c;
+    // cin >> c;
     while(c--){
         solve();
     }

@@ -38,14 +38,50 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    ll m; cin >> m;
+    vector<ll> a(n);
+    forn(i, n) cin >> a[i];
+    sort(all(a));
 
+    int pt1 = 0, pt2 = n-1;
+    ll ans = 0;
+    while (true){
+        int l = pt1, r = pt2;
+        while (l < r){
+            int mid = (l + r + 1) / 2;
+            if (a[mid] + a[pt1] > m) r = mid - 1;
+            else l = mid;
+        }
+
+        // cout << pt1 << " " << l << "\n";
+
+        if (pt1 == l){
+            ans++;
+            break;
+        }
+        else if (pt1 + 1 == l){
+            ans += 2;
+            break;
+        }
+        else{
+            ans += 2;
+            pt1++;
+            pt2 = l - 1;
+        }
+    }
+
+    // cout << ans << "\n";
+    ll tot = n - ans + 1;
+    forn(i, n) tot += a[i];
+    cout << tot;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int c = 1;
-    cin >> c;
+    // cin >> c;
     while(c--){
         solve();
     }

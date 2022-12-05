@@ -38,7 +38,25 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int sz; cin >> sz;
+    string s; cin >> s;
+    if (sz % 3 == 2){
+        cout << "NO\n";
+        return;
+    }
+    for (int i = 0; i < sz; i+= 3){
+        if (i == sz - 1){
+            cout << "YES\n";
+            return;
+        } 
 
+        if (s[i+1] != s[i+2]){
+            cout << "NO\n";
+            return;
+        }
+    }
+
+    cout << "YES\n";
 }
 
 int main(){
