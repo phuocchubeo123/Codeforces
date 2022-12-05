@@ -38,7 +38,6 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
 }
 
 int main(){

@@ -38,14 +38,26 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    vector<vi> a(n, vi(n));
+    ll tot = 0;
+    forn(i, n){
+        forn(j, n){
+            cin >> a[i][j];
+            tot += 1ll * a[i][j];
+        }
+    }
 
+    int mn = INF;
+    forn(i, n) mn = min(a[i][n - i - 1], mn);
+    cout << tot - 1ll * mn;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int c = 1;
-    cin >> c;
+    // cin >> c;
     while(c--){
         solve();
     }

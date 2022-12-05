@@ -38,7 +38,15 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    for (int i = 2; i * i <= n; i++){
+        if (n % i == 0){
+            int j = n / i;
+            cout << j << " " << n - j << "\n";
+            return;
+        }
+    }
+    cout << 1 << " " << n-1 << "\n";
 }
 
 int main(){

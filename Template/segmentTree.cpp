@@ -9,68 +9,89 @@ using namespace std;
 #define for1(i, n) for (int i = 1; i <= n; i++)
 #define pb push_back
 
-const int N = 1e5;
-int n;
-ll a[2 * N];
+struct Node{
+    int mx;
+    Node(int a){mx = a;}
+    Node(){mx = 0;}
+};
 
-//segTree template
-int seg_sz, seg[4 * N];
+Node operator+(const Node& left, const Node& right){
+    Node res;
+    res.mx = max(left.mx, right.mx);
+    return res;
+}
 
 template<typename T>
-struct segTree{
-    vt<T> seg;
-    vt<T> lazy;
-    int sz = 1;
+struct SegTree{
+  int sz;
+  T seg;
+  int lazy;
+  
+  SegTree(int s, int lz=0){
+    sz = s;
+    seg.resize(2 * s);
+    if (lz) lazy.resize(2 * s);
+  }
 
-    segTree(int n, bool lz){
-        while (sz < n) sz *= 2;
-        seg.resize(2 * sz);
-        if (lz) lazy.resize(2 * sz);
+  void update(int l, int r, int val){
+    update(1, 1, sz, l, r, val);
+  }
+
+  void update(int node, int st, int en, int l, int r, int val){
+    if (lazy[node]){
+      // seg[node].update(lazy[node]);
+      if (st != en){lazy[2*node] += lazy[node]; lazy[2*node+1] += lazy[node];}
+      lazy[node] = 0;
     }
-
-    segTree(vt<T> v, int n, bool lazy){
-        while (sz < n) sz *= 2;
-        seg.resize(2 * sz);
-        for0(i, n) update(i, v[i]);
-        if (lz) lazy.resize(2 * sz);
+    if ((st > r) || (en < l)) return;
+    if ((st >= l) && (en <= r)){
+      // seg[node].update(val);
+      if (st != en){lazy[2*node] += val, lazy[2*node+1] += val;}
+      return;
     }
+    int mid = (st + en) / 2;
+    update(2*node, st, mid, l, r, val);
+    update(2*node+1, mid+1, en, l, r, val);
+    seg[node] = seg[2*node] + seg[2*node+1];
+  }
 
-    void update(int pos, T x){
-        int ps = sz + pos;
-        seg[ps] = x;
-        ps /= 2;
-        while (ps > 0){
-            seg[ps] = seg[ps * 2] + seg[ps * 2 + 1];
-            ps /= 2;
-        }
+  T query(int l, int r){
+    return query(1, 1, sz, l, r);
+  }
+
+  T query(int node, int st, int en, int l, int r){
+    if (lazy[node]){
+      // seg[node].update(lazy[node]);
+      if (st < en){lazy[2*node] += lazy[node], lazy[2*node+1] += lazy[node];}
+      lazy[node] = 0;
     }
-    
-    void lazy_update(int pos, T x){
+    if ((st > r) || (en < l)) return T;
+    if ((l <= st) && (en <= r)) return seg[node];
+    int mid = (st + en) / 2;
+    T q1 = query(2*node, st, mid, l, r);
+    T q2 = query(2*node+1, mid+1, en, l, r);
+    return (q1+q2);
+  }
 
-        int ps = sz + pos;
-        seg[ps] = x;
-        ps /= 2;
-        while (ps > 0){
-            seg[ps] = seg[ps * 2] + seg[ps * 2 + 1];
-            ps /= 2;
-        }
+  int find(int val){
+    return find(1, 1, sz, val);
+  }
+
+  int find(int node, int st, int en, int val){
+    if (lazy[node]){
+      //seg[node].update(lazy[node])
+      if (st < en){
+        lazy[2*node] += lazy[node];
+        lazy[2*node+1] += lazy[node];
+        //dump lazy in 2*node and 2*node+1
+      }
+      lazy[node] = 0;
     }
-
-    T query(int l, int r){
-        if (r < l) return 0;
-
-        l += sz;
-        r += sz;
-        T qr;
-
-       while (l <= r){
-            if (l & 1) qr += seg[l++];
-            if (!(r & 1)) qr += seg[r--];
-            l /= 2;
-            r /= 2;
-        }
-        return qr;
-    }
+    if (st == en) return 1;
+    int mid = (st + en) / 2;
+    if (seg[2 * node] >= val) return find(2 * node, st, mid, val);
+    else return mid - st + 1 + find(2 * node + 1, mid+1, en, val - seg[2 * node]);
+  }
 };
 
 int main(){
