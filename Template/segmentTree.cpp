@@ -29,7 +29,7 @@ struct SegTree{
   
   SegTree(int s, int lz=0){
     sz = s;
-    seg.resize(2 * s);
+    seg.resize(4 * s);
     if (lz) lazy.resize(2 * s);
   }
 
