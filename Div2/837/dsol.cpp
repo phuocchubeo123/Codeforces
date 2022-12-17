@@ -30,68 +30,96 @@ inline T lcm(T x, T y ){return x*y/gcd(x,y);}
 template<typename T>
 inline T findLessPower(T base, T n){if(n==1){return 0;} T temp = log(n)/log(base); if(power(base, temp) == n){return temp-1;}else{return temp;}}
 
-const int maxn = 2005;
+const int maxn = 2e3 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
+vector<vector<int>> adj(maxn);
+vector<vector<int>> to(maxn, vector<int>(maxn)), ans(maxn, vi(maxn));
+vector<int> vis(maxn);
+vector<char> ch(maxn);
+
+void find_to(int u, int ori){
+    if (vis[u] == 1) return;
+    vis[u] = 1;
+    for (auto v: adj[u]){
+        if (vis[v] == 1) continue;
+        to[v][ori] = u;
+        find_to(v, ori);
+    }
+}
+
+int find_ans(int u, int v){
+    if (ans[u][v] != -1) return ans[u][v];
+    if (u == v){
+        ans[u][v] = 1;
+        return 1;
+    }
+
+    if (ch[u] != ch[v]){
+        ans[u][v] = max(find_ans(to[u][v], v), find_ans(to[v][u], u));
+        return ans[u][v];
+    }
+
+    if (to[u][v] == v){
+        ans[u][v] = 2;
+        return 2;
+    }
+
+    ans[u][v] = 2 + find_ans(to[u][v], to[v][u]);
+    return ans[u][v];
+}
+
 void solve(){
     int n; cin >> n;
-    vector<vector<ll>> f(n+1, vector<ll>(n+1));
+    for (int i = 1; i <= n; i++) adj[i].clear();
+    string s; cin >> s;
     for (int i = 1; i <= n; i++){
-        for (int j = 1; j <= i; j++){
-            cin >> f[i][j];
-            f[j][i] = f[i][j];
-        }
+        ch[i] = s[i-1];
     }
 
-    set<int> curr;
-    curr.insert(1);
-    vector<set<pair<ll, int>>> candidates(n+1);
-    vector<pii> edges;
-    vi vis(n+1, 0);
-    vis[1] = 1;
-    for (int i = 2; i <= n; i++) candidates[1].insert({-f[1][i], i});
-
-    for (int i = 2; i <= n; i++){
-        ll mn = 0;
+    forn(i, n-1){
         int u, v;
-        for (int j = 1; j <= n; j++){
-            if (vis[j] == 1){
-                pair<ll, int> p = *candidates[j].begin();
-                if (p.first <= mn){
-                    mn = p.first; u = j; v = p.second;
-                }
-            }
-        }
-        edges.push_back({u, v});
-        curr.insert(v);
-        vis[v] = 1;
-        for (int j = 1; j <= n; j++){
-            if (vis[j] == 0) candidates[v].insert({-f[v][j], j});
-        }
-        for (int j: curr){
-            candidates[j].erase({-f[j][v], v});
-        }
-
+        cin >> u >> v;
+        adj[u].push_back(v); adj[v].push_back(u);
     }
 
-    for (auto p: edges){
-        int u = p.first, v = p.second;
-        ll ac = f[u][u] - f[u][v];
-        ll bc = f[v][v] - f[v][u];
-        ll c = (ac + bc) / n;
-        cout << u << " " << v << " " << c << "\n";
+    for (int i = 1; i <= n; i++){
+        for (int j = 1; j <= n; j++) vis[j] = 0;
+        find_to(i, i);
     }
+
+    for (int i = 1; i <= n; i++){
+        for (int j = 1; j <= n; j++){
+            ans[i][j] = -1;
+        }
+    }
+
+    int res = 0;
+
+    for (int i = 1; i <= n; i++){
+        for (int j = 1; j <= n; j++){
+            res = max(res, find_ans(i, j));
+        }
+    }
+
+    // for (int i = 1; i <= n; i++){
+    //     for (int j = 1; j <= n; j++){
+    //         cout << ans[i][j] << " ";
+    //     }
+    //     cout << "\n";
+    // }
+    cout << res << "\n";
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while(T--){
         solve();
     }

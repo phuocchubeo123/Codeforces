@@ -30,43 +30,59 @@ inline T lcm(T x, T y ){return x*y/gcd(x,y);}
 template<typename T>
 inline T findLessPower(T base, T n){if(n==1){return 0;} T temp = log(n)/log(base); if(power(base, temp) == n){return temp-1;}else{return temp;}}
 
-const int maxn = 1e6 + 5;
+const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
+const int prm = sqrt(1e9) + 5;
 
-vi cnt(maxn);
+vi is_prime(prm);
+vi prime;
+
+void sieve(){
+    for (int i = 0; i < prm; i++) is_prime[i] = 1;
+    is_prime[0] = 0;
+    is_prime[1] = 0;
+    is_prime[2] = 1;
+    for (int i = 2; i < prm; i++){
+        if (is_prime[i]){
+            for (int j = 2; j * i < prm; j++) is_prime[i * j] = 0;
+        }
+    }
+
+    int cnt = 0;
+    for (int i = 0; i < prm; i++) if (is_prime[i] == 1) prime.push_back(i);
+}
 
 void solve(){
     int n; cin >> n;
     vi a(n);
-    forn(i, n){
-        cin >> a[i];
-        cnt[a[i]] = 0;
+    forn(i, n) cin >> a[i];
+
+    for (auto x: prime){
+        int cnt = 0;
+        forn(i, n){
+            if (a[i] % x == 0){
+                cnt++;
+                if (cnt == 2){
+                    cout << "YES\n";
+                    return;
+                }
+                while (a[i] % x == 0) a[i] /= x;
+            }
+        }
     }
 
-    forn(i, n) cnt[a[i]]++;
     sort(all(a));
-    a.erase(unique(all(a)), a.end());
-    // forn(i, a.size()) cout << a[i] << " ";
-    // cout << "\n";
-    // forn(i, a.size()) cout << cnt[a[i]] << " ";
-    // cout << "\n";
-    int l = 0, r = n;
-    ll ans = 0;
-    if (a.size() == 1) {
-        cout << cnt[a[0]] / 2 << "\n";
-        return;
+    forn(i, n-1){
+        if (a[i] == a[i+1] && a[i] > 1){
+            cout << "YES\n";
+            return;
+        }
     }
-    forn(i, a.size()){
-        l += cnt[a[i]];
-        r -= cnt[a[i]];
-        ans = max(ans, 1ll * l * r);
-        // cout << l << " " << r << " " << ans << "\n";
-    }
-    cout << ans << "\n";
+    cout << "NO\n";
 }
 
 int main(){
@@ -74,6 +90,7 @@ int main(){
     cin.tie(0);
     int T = 1;
     cin >> T;
+    sieve();
     while(T--){
         solve();
     }

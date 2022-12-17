@@ -37,8 +37,77 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+multiset<pair<ll, ll>> both;
+multiset<ll> bs, as;
 
+void solve(){
+    int n; cin >> n;
+    ll k; cin >> k;
+
+    vector<ll> a(n), b(n);
+    forn(i, n){
+        cin >> a[i] >> b[i];
+    }
+
+    if (a[0] >= k){
+        cout << "YES\n";
+        return;
+    }
+
+    if (a[0] + b[0] < k){
+        cout << "NO\n";
+        return;
+    }
+
+    both.clear(); as.clear(); bs.clear();
+    for (int i = 1; i < n; i++) both.insert({-a[i] - b[i], a[i]});
+    for (int i = 1; i < n; i++) bs.insert(-a[i]-b[i]);
+    for (int i = 1; i < n; i++) as.insert(-a[i]);
+    
+    int remain = n-1;
+    if (remain == 0){
+        cout << "NO\n";
+        return;
+    }
+
+    ll target = k - b[0];
+    while (remain > 0){
+        // cout << "target: " << target << "\n";
+        // for (int x: as) cout << x << " ";
+        // cout << "\n";
+        // for (int y: bs) cout << y << " ";
+        // cout << "\n";
+        ll x = *as.begin();
+        if (-x >= target){
+            cout << "YES\n";
+            return;
+        }
+
+        pair<ll, ll> curr = *both.begin();
+        ll u = curr.second, v = -curr.first;
+        if (v < target){
+            cout << "NO\n";
+            return;
+        }
+
+        if (remain == 1){
+            cout << "NO\n";
+            return;
+        }
+
+        auto it = bs.begin();
+        it++;
+        if (-(*it) >= target){
+            cout << "YES\n";
+            return;
+        }
+        target = target - v + u;
+        both.erase(both.begin());
+        as.erase(as.find(-u));
+        bs.erase(bs.find(-v));
+
+        remain--;
+    }
 }
 
 int main(){

@@ -30,43 +30,70 @@ inline T lcm(T x, T y ){return x*y/gcd(x,y);}
 template<typename T>
 inline T findLessPower(T base, T n){if(n==1){return 0;} T temp = log(n)/log(base); if(power(base, temp) == n){return temp-1;}else{return temp;}}
 
-const int maxn = 1e6 + 5;
+const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-vi cnt(maxn);
-
 void solve(){
-    int n; cin >> n;
-    vi a(n);
-    forn(i, n){
-        cin >> a[i];
-        cnt[a[i]] = 0;
+    int m; cin >> m;
+    vector<vi> gr(2, vi(m));
+    forn(i, 2){
+        string s; cin >> s;
+        forn(j, m){
+            if (s[j] == 'W') gr[i][j] = 0;
+            else gr[i][j] = 1;
+        }
     }
 
-    forn(i, n) cnt[a[i]]++;
-    sort(all(a));
-    a.erase(unique(all(a)), a.end());
-    // forn(i, a.size()) cout << a[i] << " ";
-    // cout << "\n";
-    // forn(i, a.size()) cout << cnt[a[i]] << " ";
-    // cout << "\n";
-    int l = 0, r = n;
-    ll ans = 0;
-    if (a.size() == 1) {
-        cout << cnt[a[0]] / 2 << "\n";
-        return;
+    int cnt = 0;
+    int pos = 0;
+    forn(i, m){
+        if (gr[0][i] == 0 && gr[1][i] == 0){
+            if (cnt == 0) continue;
+            for (int j = i; j < m; j++){
+                if (gr[0][j] == 1 && gr[1][j] == 1){
+                    cout << "NO\n";
+                    return;
+                }
+            }
+            cout << "YES\n";
+            return;
+        }
+
+        cnt++;
+        if (gr[0][i] == 1 && gr[1][i] == 1){
+            if (pos == 0) pos = 0;
+            else if (pos == 1) pos = 2;
+            else if (pos == 2) pos = 1;
+            continue;
+        }
+
+        if (gr[0][i] == 1){
+            if (pos == 0) pos = 1;
+            else if (pos == 1) pos = 1;
+            else{
+                cout << "NO\n";
+                return;
+            }
+            continue;
+        }
+
+        if (gr[1][i] == 1){
+            if (pos == 0) pos = 2;
+            else if (pos == 2) pos = 2;
+            else{
+                cout << "NO\n";
+                return;
+            }
+            continue;
+        }
     }
-    forn(i, a.size()){
-        l += cnt[a[i]];
-        r -= cnt[a[i]];
-        ans = max(ans, 1ll * l * r);
-        // cout << l << " " << r << " " << ans << "\n";
-    }
-    cout << ans << "\n";
+
+    cout << "YES\n";
+    return;
 }
 
 int main(){

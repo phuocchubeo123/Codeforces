@@ -38,7 +38,17 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    int mx = 0, d;
+    vi a(n);
+    forn(i, n) {
+        cin >> a[i];
+        if (i == 0) d = a[i];
+        else d = gcd(d, a[i]);
+        mx = max(a[i], mx);
+    }
 
+    cout << mx / d << "\n";
 }
 
 int main(){

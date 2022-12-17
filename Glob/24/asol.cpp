@@ -38,7 +38,10 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    vi a(n);
+    forn(i, n) cin >> a[i];
+    cout << 1 << " " << n << "\n";
 }
 
 int main(){

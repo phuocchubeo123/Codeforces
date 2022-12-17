@@ -30,43 +30,47 @@ inline T lcm(T x, T y ){return x*y/gcd(x,y);}
 template<typename T>
 inline T findLessPower(T base, T n){if(n==1){return 0;} T temp = log(n)/log(base); if(power(base, temp) == n){return temp-1;}else{return temp;}}
 
-const int maxn = 1e6 + 5;
+const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-vi cnt(maxn);
-
 void solve(){
     int n; cin >> n;
-    vi a(n);
-    forn(i, n){
-        cin >> a[i];
-        cnt[a[i]] = 0;
+    string s; cin >> s;
+    // cout << "\n";
+    vector<vector<vi>> cnt(26, vector<vi>(26));
+    for (int i = 0; i < n-1; i++){
+        cnt[s[i] - 'a'][s[i+1] - 'a'].push_back(i);
     }
 
-    forn(i, n) cnt[a[i]]++;
-    sort(all(a));
-    a.erase(unique(all(a)), a.end());
-    // forn(i, a.size()) cout << a[i] << " ";
-    // cout << "\n";
-    // forn(i, a.size()) cout << cnt[a[i]] << " ";
-    // cout << "\n";
-    int l = 0, r = n;
-    ll ans = 0;
-    if (a.size() == 1) {
-        cout << cnt[a[0]] / 2 << "\n";
-        return;
+    for (int i = 0; i < 26; i++){
+        for (int j = 0; j < 26; j++){
+            if (i != j){
+                if (cnt[i][j].size() > 1){
+                    cout << "YES\n";
+                    return;
+                }
+                else continue;
+            }
+
+            if (cnt[i][j].size() > 2){
+                cout << "YES\n";
+                return;
+            }
+            if (cnt[i][j].size() == 2){
+                if (cnt[i][j][0]+1 == cnt[i][j][1]){
+                    continue;
+                }
+                cout << "YES\n";
+                return;
+            }
+            continue;
+        }
     }
-    forn(i, a.size()){
-        l += cnt[a[i]];
-        r -= cnt[a[i]];
-        ans = max(ans, 1ll * l * r);
-        // cout << l << " " << r << " " << ans << "\n";
-    }
-    cout << ans << "\n";
+    cout << "NO\n";
 }
 
 int main(){
