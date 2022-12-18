@@ -38,7 +38,64 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n, m; cin >> n >> m;
+    vector<vi> a(n, vi(m));
+    vi w(n);
+    forn(i, n){
+        forn(j, m){
+            cin >> a[i][j];
+            w[i] += a[i][j];
+        }
+    }
 
+    int tot_w = 0;
+    forn(i, n) tot_w += w[i];
+
+    if (tot_w % n != 0){
+        cout << -1 << "\n";
+        return;
+    }
+
+    int tar = tot_w / n;
+    vector<set<int>> can_swap(m);
+    forn(i, n){
+        if (w[i] > tar){
+            forn(j, m){
+                if (a[i][j] == 1){
+                    can_swap[j].insert(i);
+                }
+            }
+        }
+    }
+
+    // forn(i, m){
+    //     for (int x: can_swap[i]) cout << x << " ";
+    //     cout << "\n";
+    // }
+    // return;
+
+    vi x, y, z;
+    forn(i, n){
+        forn(j, m){
+            if (w[i] >= tar) break;
+            if (a[i][j] == 1) continue;
+            if (can_swap[j].empty()) continue;
+            auto it = can_swap[j].begin();
+            int i2 = *it;
+            x.push_back(i+1); y.push_back(i2+1); z.push_back(j+1);
+            w[i2]--;
+            w[i]++;
+            can_swap[j].erase(it);
+            if (w[i2] == tar){
+                forn(k, m) can_swap[k].erase(i2);
+            }
+        }
+    }
+
+    cout << x.size() << "\n";
+    forn(i, x.size()){
+        cout << x[i] << " " << y[i] << " " << z[i] << "\n";
+    }
 }
 
 int main(){

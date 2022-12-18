@@ -38,7 +38,26 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    string a; cin >> a;
 
+    int tot = 0;
+    if (a[0] == '1') tot = 1;
+    for (int i = 1; i < n; i++){
+        if (a[i] == '0'){
+            cout << "+";
+            continue;
+        }
+        if (tot > 0){
+            cout << "-";
+            tot--;
+        }
+        else{
+            cout << "+";
+            tot++;
+        }
+    }
+    cout << "\n";
 }
 
 int main(){

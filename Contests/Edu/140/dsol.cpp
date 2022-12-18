@@ -38,56 +38,51 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n, m, k;
-    cin >> n >> m >> k;
-    vi a(m);
-    forn(i, m) cin >> a[i];
-    
-    if (m < k){
-        cout << "NO\n";
-        return;
-    }
+    int n; cin >> n;
+    string s; cin >> s;
+    vector<ll> l(n+1), r(n+1);
+    l[0] = 1; r[0] = 1;
+    for (ll i = 1; i <= n; i++){
+        ll nums = (1 << i);
+        l[i] = nums; r[i] = 1;
+        for (ll j = 1; j <= nums; j++){
+            // win one team in the first round
+            // rank from l[i-1] to r[i-1] in the second round
+            ll lowest, highest;
+            if (s[n-i] == '0'){
+                if (j == nums) continue;
+                lowest = (j+2)/2;
+                ll a = j-1, b = nums-j-1;
+                if (a <= b) highest = a+1;
+                else highest = b + (a-b) / 2 + 1;
+            }
 
-    sort(all(a));
-    reverse(all(a));
-
-    if (n % k == 0){
-        if (a[0] > n / k){
-            cout << "NO\n";
-            return;
+            else{
+                if (j == 1) continue;
+                highest = j / 2;
+                ll a = j-2, b = nums - j;
+                if (a <= b) lowest = 1;
+                else lowest = (a - b) / 2 + 1;
+            }
+            if (lowest <= r[i-1] && highest >= l[i-1]){
+                l[i] = min(l[i], j);
+                r[i] = max(r[i], j);
+            }
+            // cout << j << " " << lowest << " " << highest << "\n";
         }
-        cout << "YES\n";
-        return;
+        // cout << l[i] << " " << r[i] << "\n";
     }
 
-    if (a[0] > n / k + 1){
-        cout << "NO\n";
-        return;
+    for (ll j = 1; j <= (1 << n); j++){
+        if (l[n] <= j && r[n] >= j) cout << j << " ";
     }
-
-    int d = n % k;
-    int grps = k;
-    forn(i, m){
-        if (a[i] > n / k){
-            d--;
-            grps--;
-        }
-    }
-    
-    if (d < 0){
-        cout << "NO\n";
-        return;
-    }
-
-    cout << "YES\n";
-    return;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

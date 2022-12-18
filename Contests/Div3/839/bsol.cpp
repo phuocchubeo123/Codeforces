@@ -38,49 +38,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n, m, k;
-    cin >> n >> m >> k;
-    vi a(m);
-    forn(i, m) cin >> a[i];
-    
-    if (m < k){
-        cout << "NO\n";
-        return;
-    }
 
-    sort(all(a));
-    reverse(all(a));
-
-    if (n % k == 0){
-        if (a[0] > n / k){
-            cout << "NO\n";
-            return;
-        }
-        cout << "YES\n";
-        return;
-    }
-
-    if (a[0] > n / k + 1){
-        cout << "NO\n";
-        return;
-    }
-
-    int d = n % k;
-    int grps = k;
-    forn(i, m){
-        if (a[i] > n / k){
-            d--;
-            grps--;
-        }
-    }
-    
-    if (d < 0){
-        cout << "NO\n";
-        return;
-    }
-
-    cout << "YES\n";
-    return;
 }
 
 int main(){

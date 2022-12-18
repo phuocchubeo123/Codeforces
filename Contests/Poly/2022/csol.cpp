@@ -38,7 +38,27 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    string s; cin >> s;
+    vi u(n+1), v(n+1);
+    u[1] = 1;
+    v[1] = 1;
 
+    for (int x = 2; x <= n; x++){
+        if (s[x-2] == '0'){
+            u[x] = 1; 
+            v[x] = v[x-1];
+        }
+        else{
+            v[x] = x;
+            u[x] = u[x-1] + 1;
+        }
+    }
+
+    for (int x = 2; x <= n; x++){
+        cout << v[x] - u[x] + 1 << " ";
+    }
+    cout << "\n";
 }
 
 int main(){
