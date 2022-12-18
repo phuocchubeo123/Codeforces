@@ -3,20 +3,19 @@
 using namespace std;
 
 typedef long long ll;
-const int N = 2e5 + 4, MOD = 998244353;
+const ll N = 2e5 + 4, MOD = 998244353;
 
-template <typename T>
 struct mint{
-    T val;
+    ll val;
 
     mint(){
         val = 0;
     }
 
     mint(int x){
-        while (x >= MOD) x -= MOD;
-        while (x < 0) x += MOD;
-        val = x;
+        val = 1ll * x;
+        if (val < 0) val = MOD - (-val) % MOD;
+        if (val >= MOD) val %= MOD;
     }
 
     bool operator==(const mint& other){
@@ -35,6 +34,10 @@ struct mint{
         return mint((val * 1ll * other.val) % MOD);
     }
 
+    void operator+=(const mint& other){
+        val = (mint(val) + other).val;
+    }
+
     mint pow(int y){
         mint z(1);
         mint x(val);
@@ -51,29 +54,29 @@ struct mint{
     }
 };
 
-mint<int> pow_mod[N];
+mint pow_mod[N];
 
 void calPowMod(){
-    pow_mod[0] = mint<int>(1);
-    for (int i = 1; i < N; i++) pow_mod[i] = pow_mod[i - 1] * mint<int>(2);
+    pow_mod[0] = mint(1);
+    for (int i = 1; i < N; i++) pow_mod[i] = pow_mod[i - 1] * mint(2);
 }
 
-mint<int> factor_mod[N];
+mint factor_mod[N];
 
 void calFactor(){
-    factor_mod[0] = mint<int>(1);
-    for (int i = 1; i < N; i++) factor_mod[i] = factor_mod[i - 1] * mint<int>(i);
+    factor_mod[0] = mint(1);
+    for (int i = 1; i < N; i++) factor_mod[i] = factor_mod[i - 1] * mint(i);
 }
 
-mint<int> inv_mod[N];
+mint inv_mod[N];
 
-mint<int> calInverse(){
-    for (int i = 1; i < N; i++) inv_mod[i] = mint<int>(i).pow(MOD - 2);
+mint calInverse(){
+    for (int i = 1; i < N; i++) inv_mod[i] = mint(i).pow(MOD - 2);
 }
 
 int main(){
     calPowMod();
     calFactor();
-    mint<int> x = factor_mod[5];
+    mint x = factor_mod[5];
     cout << x.val;
 }
