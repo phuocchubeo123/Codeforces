@@ -37,7 +37,125 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
+struct Node{
+    ll mx;
+    Node(ll a){mx = a;}
+    Node(){mx = 0;}
+};
+
+Node operator+(const Node& left, const Node& right){
+    Node res;
+    res.mx = max(left.mx, right.mx);
+    return res;
+}
+
+struct SegTree{
+  int sz;
+  vector<Node> seg;
+  
+  SegTree(int s, int lz=0){
+    sz = s;
+    seg.resize(4 * s);
+  }
+
+  void update(int pos, int val){
+    update(1, 1, sz, pos, val);
+  }
+
+  void update(int node, int st, int en, int pos, int val){
+    if ((st > pos) || (en < pos)) return;
+    if ((st == pos) && (en == pos)){
+      seg[node].mx += val;
+      return;
+    }
+    int mid = (st + en) / 2;
+    update(2*node, st, mid, pos, val);
+    update(2*node+1, mid+1, en, pos, val);
+    seg[node] = seg[2*node] + seg[2*node+1];
+  }
+
+  Node query(int l, int r){
+    return query(1, 1, sz, l, r);
+  }
+
+  Node query(int node, int st, int en, int l, int r){
+    if ((st > r) || (en < l)) return Node();
+    if ((l <= st) && (en <= r)) return seg[node];
+    int mid = (st + en) / 2;
+    Node q1 = query(2*node, st, mid, l, r);
+    Node q2 = query(2*node+1, mid+1, en, l, r);
+    return (q1+q2);
+  }
+
+//   int find(int val){
+//     return find(1, 1, sz, val);
+//   }
+
+//   int find(int node, int st, int en, int val){
+//     if (st == en) return 1;
+//     int mid = (st + en) / 2;
+//     if (seg[2 * node] >= val) return find(2 * node, st, mid, val);
+//     else return mid - st + 1 + find(2 * node + 1, mid+1, en, val - seg[2 * node]);
+//   }
+};
+
 void solve(){
+    int n; cin >> n;
+    ll x, y; cin >> x >> y;
+    vector<ll> a(n+1); a[0] = 0; rep(i, 1, n) cin >> a[i]; sort(all(a));
+    SegTree st(n);
+    rep(i, 1, n) st.update(i, a[i]);
+    
+    vector<ll> need(n+1);
+    rep(i, 1, n){
+        st.update(i, 1-i);
+        need[i] = st.query(1, i).mx;
+    }
+
+    vector<ll> gain(n+1);
+    gain[0] = -n;
+    rep(i, 1, n){
+        gain[i] = gain[i-1] + 2;
+    }
+
+    rep(i, 1, n) cout << a[i] << " ";
+    cout << "\n";
+
+    if (x == y){
+        cout << 0 << "\n";
+        return;
+    }
+    
+    ll ans = 0;
+    rep(i, 2, n){
+        cout << x << " ";
+        if (x >= need[i]) continue;
+        if (x < need[i-1]){
+            cout << -1 << "\n";
+            return;
+        }
+        if (y <= need[i]){
+            ll rounds = (y - x) / gain[i-1];
+            ans += 1ll * rounds * n;
+            ll rem = (y - x) % gain[i-1];
+            ans += rem;
+            cout << ans << "\n";
+            return;
+        }
+
+        ll rounds = (need[i] - x + gain[i-1] - 1) / gain[i-1];
+        x += rounds * gain[i-1];
+        ll rem = (need[i] - x + gain[i-1] - 1) % gain[i-1];
+        ans += rounds * ans;
+    }
+    cout << "\n";
+
+    ll rounds = (y - x) / gain[n];
+    ans += 1ll * rounds * n;
+    ll rem = (y - x) % gain[n];
+    ans += rem;
+    cout << ans << "\n";
+    return;
 
 }
 

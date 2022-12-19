@@ -38,7 +38,27 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int k, n; cin >> k >> n;
+    vi a(k);
+    forn(i, k) a[i] = 1;
+    int tot = k;
+    for (int i = 1; i <= 100; i++){
+        for (int j = 0; j < i && j < k; j++){
+            if (tot == n){
+                reverse(all(a));
+                int curr = 0;
+                forn(l, k){
+                    curr += a[l];
+                    cout << curr << " ";
+                }
+                cout << "\n";
+                return;
+            }
 
+            a[j]++;
+            tot++;
+        }
+    }
 }
 
 int main(){

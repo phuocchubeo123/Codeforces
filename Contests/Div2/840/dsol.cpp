@@ -38,25 +38,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    vi a(n); forn(i, n) cin >> a[i];
-    int l = 0, r = 1e9;
-    forn(i, n-1){
-        if (a[i] < a[i+1]){
-            r = min(r, (a[i] + a[i+1]) / 2);
-        }
-        else if (a[i] == a[i+1]){
-            continue;
-        }
-        else{
-            l = max(l, (a[i] + a[i+1] + 1) / 2);
-        }
-    }
 
-    // cout << l << " " << r << "\n";
-
-    if (l <= r) cout << l << "\n";
-    else cout << -1 << "\n";
 }
 
 int main(){

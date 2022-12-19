@@ -38,7 +38,40 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    vi p(n+1);
+    rep(i, 1, n) cin >> p[i];
 
+    int a = 0, b = 0, c = 0;
+    rep(i, 1, n){
+        if (p[i] != i && p[i] != n+1-i){
+            c++;
+        }
+        else if (p[i] != i){
+            a++;
+        }
+        else if (p[i] != n+1-i){
+            b++;
+        }
+        else continue;
+    }
+
+    // cout << a << " " << b << " " << c << "\n";
+
+    if (a == b){
+        if (c == 0) cout << "First\n";
+        else cout << "Tie\n";
+    }
+    else if (a > b){
+        a -= b;
+        if (c < a) cout << "Second\n";
+        else cout << "Tie\n";
+    }
+    else if (a < b){
+        b -= a;
+        if (c <= b) cout << "First\n";
+        else cout << "Tie\n";
+    }
 }
 
 int main(){

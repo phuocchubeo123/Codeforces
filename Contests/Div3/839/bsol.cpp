@@ -37,8 +37,29 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+vector<vi> a(2, vi(2));
 
+void rotate(){
+    int tmp = a[1][0];
+    a[1][0] = a[1][1];
+    a[1][1] = a[0][1];
+    a[0][1] = a[0][0];
+    a[0][0] = tmp;
+}
+
+void solve(){
+    cin >> a[0][0] >> a[0][1] >> a[1][0] >> a[1][1];
+    forn(i, 4){
+        rotate();
+        // cout << a[0][0] << " " << a[0][1] << "\n" << a[1][0] << " " << a[1][1] << "\n";
+        if (a[0][0] <= a[0][1] && a[0][0] <= a[1][0] && a[0][1] <= a[1][1] && a[1][0] <= a[1][1]){
+            cout << "YES\n";
+            return;
+        }
+    }
+
+    cout << "NO\n";
+    return;
 }
 
 int main(){

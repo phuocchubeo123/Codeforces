@@ -38,14 +38,70 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n, m, k; cin >> n >> m >> k;
+    
+    vector<vector<vi>> tiles(k+2);
+    vector<pair<int, int>> weights;
+    rep(id, 1, k+1){
+        vector<vi> a(n+1, vi(m+1));
+        rep(i, 1, n){
+            string s; cin >> s;
+            rep(j, 1, m) a[i][j] = s[j-1] - '0';
+        }
+        tiles[id] = a;
 
+        int w = 0;
+        rep(i, 2, n-1){
+            rep(j, 2, m-1){
+                int curr = a[i][j];
+                if (a[i][j] == a[i][j+1]) continue;
+                if (a[i][j] == a[i][j-1]) continue;
+                if (a[i][j] == a[i+1][j]) continue;
+                if (a[i][j] == a[i-1][j]) continue;
+                w--;
+            }
+        }
+        weights.push_back({w, id});
+    }
+
+    sort(all(weights));
+
+    vector<vi> ans;
+    forn(l, k){
+        vector<vi> curr = tiles[weights[l].second];
+        vector<vi> next = tiles[weights[l+1].second];
+        forn(_, 1000){
+            bool flag = false;
+            rep(i, 2, n-1){
+                rep(j, 2, m-1){
+                    if (curr[i][j] == next[i][j]) continue;
+                    if (curr[i][j] == curr[i][j+1]) continue;
+                    if (curr[i][j] == curr[i][j-1]) continue;
+                    if (curr[i][j] == curr[i+1][j]) continue;
+                    if (curr[i][j] == curr[i-1][j]) continue;
+                    curr[i][j] = 1 - curr[i][j];
+                    ans.push_back({1, i, j});
+                    flag = true;
+                }
+            }
+            if (!flag) break;
+        }
+        ans.push_back({2, weights[l+1].second});
+    }
+
+    cout << weights[0].second << "\n";
+    cout << ans.size() << "\n";
+    for (vi v: ans){
+        for (int x: v) cout << x << " ";
+        cout << "\n";
+    }
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

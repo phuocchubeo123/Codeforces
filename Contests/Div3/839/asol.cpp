@@ -38,7 +38,11 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    char a; cin >> a;
+    char c; cin >> c;
+    char b; cin >> b;
 
+    cout << (a - '0') + (b - '0') << "\n";
 }
 
 int main(){
