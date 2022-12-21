@@ -15,20 +15,6 @@ typedef vector<string> vs;
 #define allr(a) (a).rbegin(), (a).rend()
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
-template<typename T>
-inline T cei(T x, T y){T t = (x+y-1)/y;return t;}
-
-template<typename T>
-inline T power(T base, T powerRaised){if (powerRaised != 0) return (base*power(base, powerRaised-1)); else return 1;}
-
-template<typename T>
-inline T gcd(T a, T b){while(b){b^=a^=b^=a%=b;} return a;}
-
-template<typename T>
-inline T lcm(T x, T y ){return x*y/gcd(x,y);}
-
-template<typename T>
-inline T findLessPower(T base, T n){if(n==1){return 0;} T temp = log(n)/log(base); if(power(base, temp) == n){return temp-1;}else{return temp;}}
 
 const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
