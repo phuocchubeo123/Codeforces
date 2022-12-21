@@ -38,7 +38,37 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n, k; cin >> n >> k;
+    vi h(n), p(n);
+    forn(i, n) cin >> h[i];
+    forn(i, n) cin >> p[i];
+    vector<pii> monsters;
+    forn(i, n) monsters.push_back({h[i], p[i]});
+    sort(all(monsters));
+    vi weakest(n);
+    int curr = 1e9;
+    for (int i = n-1; i >= 0; i--){
+        curr = min(curr, monsters[i].second);
+        weakest[i] = curr;
+    }
 
+    int pt = 0;
+    ll tot = 0;
+    while (k > 0){
+        tot += 1ll * k;
+        while (1ll * monsters[pt].first <= tot){
+            pt++;
+            if (pt == n){
+                cout << "YES\n";
+                return;
+            }
+        }
+
+        k -= weakest[pt];
+    }
+
+    cout << "NO\n";
+    return;
 }
 
 int main(){

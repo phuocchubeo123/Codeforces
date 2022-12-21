@@ -37,16 +37,59 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
 
+void solve(){
+    ll p; cin >> p;
+
+    vector<ll> first(p+1, 1e9);
+    set<pair<ll, ll>> st;
+    st.insert({0, 0});
+    while (!st.empty()){
+        // for (auto p: st) cout << p.first << ", " << p.second << "; ";
+        // cout << "\n";
+        auto it = st.begin();
+        ll n = (*it).first, q = (*it).second;
+        st.erase(it);
+        if (q == p){
+            cout << n << " " << (n * n - 2 * p - n) / 2;
+            // ans[p]
+            return;
+        }
+
+        if (n >= first[q]){
+            continue;
+        }
+
+        st.erase({first[q], q});
+        first[q] = n;
+        ll m = n+1, r;
+        for (ll i = 2; q + (i * i - i) / 2 <= p; i++){
+            m++;
+            r = q + (i * i - i) / 2;
+            // if (r == p){
+            //     cout << m << " " << (m * m - 2 * p - m) / 2;
+            //     return;
+            // }
+
+            if (m >= first[r]) continue;
+            st.erase({first[r], r});
+            first[r] = m+1;
+            st.insert({m, r});
+        }
+
+    }
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int T = 1;
-    cin >> T;
+    // cin >> T;
+    clock_t t_start = clock();
     while(T--){
         solve();
     }
+    clock_t t_end = clock();
+    // cout << "\n";
+    // cout << fixed << setprecision(10) << double(t_end - t_start) / double(CLOCKS_PER_SEC) << "\n";
 }
