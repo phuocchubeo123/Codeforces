@@ -100,63 +100,76 @@ struct SegTree{
 };
 
 void solve(){
-    int n; cin >> n;
+    ll n; cin >> n;
     ll x, y; cin >> x >> y;
     vector<ll> a(n+1); a[0] = 0; rep(i, 1, n) cin >> a[i]; sort(all(a));
-    SegTree st(n);
-    rep(i, 1, n) st.update(i, a[i]);
     
     vector<ll> need(n+1);
     rep(i, 1, n){
-        st.update(i, 1-i);
-        need[i] = st.query(1, i).mx;
+        need[i] = max(a[i] - i + 1, need[i-1]);
     }
+    need[0] = 0;
 
-    vector<ll> gain(n+1);
-    gain[0] = -n;
-    rep(i, 1, n){
-        gain[i] = gain[i-1] + 2;
-    }
-
-    rep(i, 1, n) cout << a[i] << " ";
-    cout << "\n";
-
-    if (x == y){
-        cout << 0 << "\n";
-        return;
-    }
+    // rep(i, 0, n) cout << need[i] << " ";
+    // return;
     
     ll ans = 0;
-    rep(i, 2, n){
-        cout << x << " ";
-        if (x >= need[i]) continue;
-        if (x < need[i-1]){
-            cout << -1 << "\n";
-            return;
+
+    while (true){
+        forn(_, 3){
+            // cout << x << " " << ans << "\n";
+            ll l = 0, r = n;
+            while (l < r){
+                ll m = (l+r+1) / 2;
+                if (x < need[m]) r = m-1;
+                else l = m;
+            }
+
+            if (x + l >= y){
+                ans += y - x;
+                cout << ans << "\n";
+                return;
+            }
+
+            if (x + 2 * l - n <= x){
+                cout << -1 << "\n";
+                return;
+            }
+
+            x += 2 * l - n;
+            ans += n;
         }
-        if (y <= need[i]){
-            ll rounds = (y - x) / gain[i-1];
-            ans += 1ll * rounds * n;
-            ll rem = (y - x) % gain[i-1];
-            ans += rem;
+
+        // cout << "one " << x << " " << ans << "\n";
+        ll l = 0, r = n;
+        while (l < r){
+            ll m = (l+r+1) / 2;
+            if (x < need[m]) r = m-1;
+            else l = m;
+        }
+        // cout << l << "\n";
+
+        if (l == n){
+            ans += ((y - x) / n) * n;
+            x += ((y - x) / n) * n;
+            continue;
+        }
+
+        if (x + l >= y){
+            ans += y - x;
             cout << ans << "\n";
             return;
         }
 
-        ll rounds = (need[i] - x + gain[i-1] - 1) / gain[i-1];
-        x += rounds * gain[i-1];
-        ll rem = (need[i] - x + gain[i-1] - 1) % gain[i-1];
-        ans += rounds * ans;
+        if (x + 2 * l - n <= x){
+            cout << -1 << "\n";
+            return;
+        }
+
+        ll rounds = min((y - x - l) / (2 * l - n), (need[l+1] - x) / (2 * l - n));
+        x += (2 * l - n) * rounds;
+        ans += n * rounds;
     }
-    cout << "\n";
-
-    ll rounds = (y - x) / gain[n];
-    ans += 1ll * rounds * n;
-    ll rem = (y - x) % gain[n];
-    ans += rem;
-    cout << ans << "\n";
-    return;
-
 }
 
 int main(){
