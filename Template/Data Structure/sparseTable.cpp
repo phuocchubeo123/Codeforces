@@ -24,16 +24,40 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+int lg[maxn];
 
+void calLog(){
+    lg[1] = 0;
+    rep(i, 2, maxn-1) lg[i] = lg[i/2] + 1;
 }
 
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    int T = 1;
-    cin >> T;
-    while(T--){
-        solve();
+template <typename T>
+struct sparseTable{
+    vector<vector<T>> st;
+    
+    sparseTable(){
     }
+    sparseTable(vector<T> a){
+        st.resize(LOG);
+        int sz = a.size();
+        forn(i, LOG) st[i].resize(sz);
+        forn(i, sz) st[0][i] = a[i];
+        rep(i, 1, LOG-1){
+            for(int j = 0; j + (1 << i) < sz; j++){
+                st[i][j] = min(st[i-1][j], st[i-1][j + (1 << (i-1))]);
+            }
+        }
+    }
+
+    T query(int l, int r){
+        int i = lg[r - l + 1];
+        return min(st[i][l], st[i][r - (1 << i) + 1]);
+    }
+};
+
+int main(){
+    calLog();
+    vi a{5, 7, 9, 3, 2};
+    sparseTable<int> st(a);
+    cout << st.query(1, 3);
 }

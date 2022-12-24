@@ -37,76 +37,135 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
+struct mint{
+    ll val;
+    mint(){
+        val = 0;
+    }
+    mint(ll x){
+        val = 1ll * x;
+        if (val < 0) val = MOD - (-val) % MOD;
+        if (val >= MOD) val %= MOD;
+    }
+    bool operator==(const mint& other){
+        return val == other.val;
+    }
+    mint operator+(const mint& other){
+        return mint(val + other.val);
+    }
+    mint operator-(const mint& other){
+        return mint(val - other.val);
+    }
+    mint operator*(const mint& other){
+        return mint((val * 1ll * other.val) % MOD);
+    }
+    void operator+=(const mint& other){
+        val = (mint(val) + other).val;
+    }
+    mint pow(int y){
+        if (y == 0) return mint(1);
+        if (y == 1) return mint(val);
+        mint x = mint(val).pow(y/2);
+        if (y % 2 == 0) return x * x;
+        else return x * x * mint(val);
+    }
+    mint operator/(const mint& other){
+        return mint(val) * mint(other.val).pow(MOD - 2);
+    }
+
+    friend ostream& operator<<(ostream& os, const mint& x);
+};
+
+ostream& operator<<(ostream& cout, const mint& x){
+    cout << x.val;
+    return cout;
+}
+
+
 void solve(){
     int n; cin >> n;
-    vi a(n);
-    forn(i, n){
-        cin >> a[i];
-    }
-
-    vi l1(n), l2(n);
-    int last2=n, last1=n, last3=n;
-
-    forn(i, n){
-        l1[i] = last1;
-        l2[i] = last2;
-        if (a[i] == 0) continue;
-        else if (a[i] = 3){
-            
-        }
-        else if (a[i] == 2){
-            last2 = i;
-        }
-        else{
-            last1 = i;
-        }
-    }
-
-    // forn(i, n) cout << l1[i] << " ";
-    // cout << "\n";
-
-    // if 2 is cut from 2 then not +1
-    // 2 3 1 2
-
-    ll ans = 0;
+    vi a(n); forn(i, n) cin >> a[i];
 
     vector<ll> dp(n);
-    dp[0] = 1;
-    for (int i = 1; i < n; i++){
-        // cout << i << " ";
+    ll n1 = 0;
+    ll n2 = 0;
+    ll n3 = 0;
+    ll n11 = 0;
+    ll n12 = 0;
+    ll n13 = 0;
+    ll n21 = 0;
+    ll n22 = 0;
+    ll n23 = 0;
+    ll n31 = 0;
+    ll n32 = 0;
+    ll n33 = 0;
+    ll n0 = 0;
+
+    ll tot = 0;
+    forn(i, n){
         if (a[i] == 0){
-            dp[i] = dp[i-1] + 1ll * (i + 1);
+            n0 += 1;
+            // tot += ll (i + 1);
+            // continue;
         }
-        
+        else if (a[i] == 3){
+            n3 = n1 + n2 + n3 + 1 + n0;
+            n1 = 0;
+            n2 = 0;
+            n0 = 0;
+            n31 = n11 + n21 + n31;
+            n11 = 0;
+            n21 = ll (0);
+            n32 = n12 + n22 + n32;
+            n12 = ll (0);
+            n22 = ll (0);
+            n33 = n13 + n23 + n33;
+            n13 = ll (0);
+            n23 = ll (0);
+        }
         else if (a[i] == 2){
-            if (l2[i] == n){
-                // cout << "one"; 
-                dp[i] = dp[i-1] + 1ll * (i + 1);
-            }
-            else{
-                // cout << "two";
-                dp[i] = dp[i-1] + 1ll * (i - l2[i]);
-            }
+            n2 = n3 + n2 + n0 + ll (1);
+            n3 = ll (0);
+            n0 = ll (0);
+            n21 = n31 + n21;
+            n31 = ll (0);
+            n22 = n32 + n22;
+            n32 = ll (0);
+            n23 = n33 + n23;
+            n33 = ll (0);
+            n12 = n1 + n12;
+            n1 = ll (0);
+            n13 = n11 + n13;
+            n11 = ll (0);
         }
-
         else{
-            if (l1[i] == n){
-                // cout << "three";
-                dp[i] = dp[i-1] + 1ll * (i + 1);
-            }
-            else{
-                // cout << "four " << l1[i]; 
-                dp[i] = dp[i-1] + 1ll * (i - l1[i]);
-            }
+            n1 = n3 + n1 + n0 + ll (1);
+            n3 = ll (0);
+            n0 = ll (0);
+            n11 = n31 + n11;
+            n31 = ll (0);
+            n12 = n32 + n12;
+            n32 = ll (0);
+            n13 = n33 + n13;
+            n33 = ll (0);
+            n21 = n2 + n21;
+            n2 = ll (0);
+            n23 = n22 + n23;
+            n22 = ll (0);
         }
 
-        // cout << "\n";
+        // cout << n1 << " " << n2 << " " << n3 << " " << n11 << " " << n22 << " " << n33 << " ";
+        // cout << n21 << " " << n22 << " " << n23 << " " << n31 << " " << n32 << " " << n33 << "\n";
+        // cout << n1 + n2 + n3 + ll (2) * (n11 + n12 + n21 + n22 + n31 + n32) + mint(3) * (n13 + n23 + n33) << "\n";
+        tot += n1 + n2 + n3 + ll (2) * (n11 + n12 + n21 + n22 + n31 + n32) + ll (3) * (n13 + n23 + n33);
     }
 
-    forn(i, n) cout << dp[i] << " ";
-    cout << "\n";
-    forn(i, n) ans += dp[i];
-    cout << ans;
+    ll zero(0);
+    forn(i, n){
+        if (a[i] == 0) tot += ll (i+1) * ll (n-i);
+    }
+
+    cout << tot;
 }
 
 int main(){
