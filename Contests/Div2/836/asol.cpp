@@ -25,7 +25,11 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    string s;
+    cin >> s;
+    cout << s;
+    reverse(all(s));
+    cout << s << "\n";
 }
 
 int main(){

@@ -25,7 +25,24 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    ll n; cin >> n;
+    ll x = 3 * n + 5;
+    vi a(n+1);
+    if (n == 2){
+        cout << 1 << " " << 3 << "\n";
+        return;
+    }
+    rep(i, 1, n-1) a[i] = i;
+    a[n] = x+1;
+    ll tot = 0;
+    rep(i, 1, n) tot += a[i];
+    ll rem = x * x - tot;
+    a[n-1] = a[n-1] + rem % n;
+    rem = rem - rem % n;
+    rep(i, 1, n) a[i] = a[i] + rem / n;
+    rep(i, 1, n) cout << a[i] << " ";
+    cout << "\n";
+    // cout << a[n] - a[1] << " " << x << "\n";
 }
 
 int main(){

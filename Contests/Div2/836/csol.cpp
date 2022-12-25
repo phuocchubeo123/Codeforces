@@ -24,8 +24,34 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
+// n 2 3 ... 1
 void solve(){
+    int n, x; cin >> n >> x;
+    if (n % x == 0){
+        vi a(n+1);
+        rep(i, 1, n) a[i] = i;
 
+        if (x == n){
+            a[1] = n; a[n] = 1;
+            rep(i, 1, n) cout << a[i] << " ";
+            cout << "\n";
+            return;
+        }
+        a[1] = x;
+        a[x] = n;
+        a[n] = 1;
+        int curr = x;
+        rep(i, x+1, n){
+            if (a[i] % curr == 0 && n % i == 0){
+                a[curr] = a[i];
+                a[i] = n;
+                curr = i;
+            }
+        }
+        rep(i, 1, n) cout << a[i] << " ";
+        cout << "\n";
+    }
+    else cout << "-1\n";
 }
 
 int main(){
