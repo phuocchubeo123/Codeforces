@@ -25,7 +25,21 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n, a, b; cin >> n >> a >> b;
+    if (a == n){
+        if (b == n) cout << "Yes\n";
+        else cout << "No\n";
+        return;
+    }
+    if (b == n){
+        if (a == n) cout << "Yes\n";
+        else cout << "No\n";
+        return;
+    }
 
+    if (a + b >= n-1) cout << "No\n";
+    else cout << "Yes\n";
+    // return;
 }
 
 int main(){

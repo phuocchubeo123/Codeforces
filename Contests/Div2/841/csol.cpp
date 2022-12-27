@@ -25,16 +25,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    // c b a c b c b 
-    // 1 2 1 2 -> 1 2 
-    int n; cin >> n;
-    vi a(n); forn(i, n) cin >> a[i];
-    if (n & 1){ cout << n << "\n"; return;}
-    int mx = 0, mn = n;
-    forn(i, n){ mx = max(mx, a[i]); mn = min(mn, a[i]);}
-    vi cnt(n+1); forn(i, n) cnt[a[i]]++;
-    if (cnt[mx] == n / 2 && cnt[mn] == n/2){ cout << n / 2 + 1 << "\n"; return;}
-    cout << n << "\n";
+
 }
 
 int main(){
