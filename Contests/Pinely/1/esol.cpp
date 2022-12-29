@@ -25,7 +25,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 vector<vi> adj(maxn), chi(maxn);
-vi vis(maxn), par(maxn), co(maxn);
+vi vis(maxn), par(maxn), co(maxn), co_size(maxn);
 int color;
 
 void connectedComponents(int u){
@@ -50,7 +50,44 @@ void solve(){
         connectedComponents(i);
     }
 
-    forn(i, n) cout << co[i] << " ";
+    if (color == 1){
+        cout << 0 << "\n";
+        return;
+    }
+
+    rep(i, 1, n) co_size[i] = 0;
+    forn(i, n) co_size[co[i]]++;
+
+    rep(i, 1, n) if (co_size[i] == 1){
+        cout << 1 << "\n";
+        forn(j, n) if (co[j] == i){ cout << j+1 << "\n"; break;}
+        return;
+    }
+
+    forn(i, n) if (adj[i].size() + 1 < co_size[co[i]]){
+        cout << 1 << "\n";
+        int mn = n+1;
+        forn(j, n) if (co[j] == co[i]) mn = min((int) adj[j].size(), mn);
+        forn(j, n) if (co[j] == co[i] && adj[j].size() == mn){ cout << j+1 << "\n"; break;}
+        return;
+    }
+
+    if (color >= 3){
+        cout << 2 << "\n";
+        forn(i, n) if (co[i] == 1){ cout << i+1 << " "; break;}
+        forn(i, n) if (co[i] == 2){ cout << i+1 << " "; break;}
+        cout << "\n";
+        return;
+    }
+
+    if (co_size[1] <= co_size[2]){
+        cout << co_size[1] << "\n";
+        forn(i, n) if (co[i] == 1) cout << i+1 << " ";
+    }
+    else{
+        cout << co_size[2] << "\n";
+        forn(i, n) if (co[i] == 2) cout << i+1 << " ";
+    }
     cout << "\n";
 }
 
