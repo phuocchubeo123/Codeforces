@@ -25,7 +25,10 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    ll prod = 1;
+    vector<ll> a(n); forn(i, n){ cin >> a[i]; prod *= a[i];}
+    cout << (prod + n - 1) * 2022 << "\n";
 }
 
 int main(){

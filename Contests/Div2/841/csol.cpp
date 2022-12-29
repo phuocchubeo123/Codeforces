@@ -25,7 +25,27 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    int mx = 4 * n + 5;
+    vector<int> a(n); forn(i, n) cin >> a[i];
+    vi pre(n); pre[0] = a[0]; rep(i, 1, n-1) pre[i] = pre[i-1] ^ a[i];
+    pre.push_back(0);
 
+    // forn(i, n + 1) cout << pre[i] << " ";
+    // cout << "\n";
+    vi cnt(2 * mx);
+    forn(i, n + 1) cnt[pre[i]]++;
+    
+    ll ans = 0;
+    for (int x = 0; x * x < mx; x++){
+        forn(i, n + 1){
+            ans += 1ll * cnt[(x * x) ^ pre[i]];
+            // cout << x * x << " " << pre[i] << " " << ((x * x) ^ pre[i]) << " " << ans << "\n";
+        }
+    }
+
+    // cout << ans << "\n";
+    cout << (1ll * (n + 1) * (n + 1) - ans) / 2  << "\n";
 }
 
 int main(){

@@ -24,8 +24,55 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+struct mint{
+    ll val;
+    mint(){
+        val = 0;
+    }
+    mint(ll x){
+        val = 1ll * x;
+        if (val < 0) val = MOD - (-val) % MOD;
+        if (val >= MOD) val %= MOD;
+    }
+    bool operator==(const mint& other){
+        return val == other.val;
+    }
+    mint operator+(const mint& other){
+        return mint(val + other.val);
+    }
+    mint operator-(const mint& other){
+        return mint(val - other.val);
+    }
+    mint operator*(const mint& other){
+        return mint((val * 1ll * other.val) % MOD);
+    }
+    void operator+=(const mint& other){
+        val = (mint(val) + other).val;
+    }
+    mint pow(int y){
+        if (y == 0) return mint(1);
+        if (y == 1) return mint(val);
+        mint x = mint(val).pow(y/2);
+        if (y % 2 == 0) return x * x;
+        else return x * x * mint(val);
+    }
+    mint operator/(const mint& other){
+        return mint(val) * mint(other.val).pow(MOD - 2);
+    }
 
+    friend ostream& operator<<(ostream& os, const mint& x);
+};
+
+ostream& operator<<(ostream& cout, const mint& x){
+    cout << x.val;
+    return cout;
+}
+
+
+void solve(){
+    ll n; cin >> n;
+    mint ans = (mint(n) * mint(n+1) * mint(2 * n + 1) / mint(6)) + (mint(n-1) * mint(n) * mint(n+1) / mint(3));
+    cout << ans * mint(2022) << "\n";
 }
 
 int main(){

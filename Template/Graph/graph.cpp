@@ -27,6 +27,9 @@ vector<vi> adj(maxn), chi(maxn);
 vi vis(maxn), par(maxn);
 
 void reRoot(int u){
+    // Re root the tree
+    // O(n)
+
     forn(i, maxn) par[i] = -1;
     stack<int> st;
     st.push(u);   
@@ -40,7 +43,17 @@ void reRoot(int u){
     }
 }
 
+vi co(maxn);
+int color;
+
+void connectedComponents(int u){
+    // find connected Components
+    if (co[u] != -1) return;
+    co[u] = color;
+    for (int v: adj[u]) connectedComponents(v);
+}
+
+
 int main(){
     // read graph
-    
 }
