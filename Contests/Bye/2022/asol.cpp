@@ -25,7 +25,21 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n, m; cin >> n >> m;
+    vector<ll> a(n), b(m);
+    forn(i, n) cin >> a[i]; 
+    forn(i, m) cin >> b[i];
+    forn(j, m){
+        ll mn = 1e9;
+        forn(i, n) mn = min(mn, a[i]);
+        forn(i, n){
+            if (a[i] == mn){ a[i] = b[j]; break;}
+        }
+    }
 
+    ll tot = 0;
+    forn(i, n) tot += a[i];
+    cout << tot << "\n";
 }
 
 int main(){

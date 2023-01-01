@@ -25,7 +25,16 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    int k; cin >> k;
+    if (n & 1){
+        forn(i, n/2) cout << n-i << " " << i+1 << " ";
+        cout << n / 2 + 1;
+    }
+    else{
+        forn(i, n/2) cout << n-i << " " << i+1 << " ";
+    }
+    cout << "\n";
 }
 
 int main(){

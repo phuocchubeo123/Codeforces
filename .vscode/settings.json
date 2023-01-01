@@ -6,6 +6,8 @@
         "string": "cpp",
         "vector": "cpp",
         "typeinfo": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "list": "cpp",
+        "string_view": "cpp"
     }
 }
