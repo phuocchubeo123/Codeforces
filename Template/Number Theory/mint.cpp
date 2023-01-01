@@ -17,48 +17,48 @@ typedef vector<string> vs;
 #define mem(a,b) memset(a, (b), sizeof(a))
 
 const int maxn = 1e5 + 5;
-const ll MOD = 5; // 998244353
+const ll MOD = 11;
 const ll INF = 1e9;
 const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
+ll gcd(ll a, ll b, ll& x, ll& y) {
+    x = 1, y = 0;
+    ll x1 = 0, y1 = 1, a1 = a, b1 = b;
+    while (b1) {
+        ll q = a1 / b1;
+        tie(x, x1) = make_tuple(x1, x - q * x1);
+        tie(y, y1) = make_tuple(y1, y - q * y1);
+        tie(a1, b1) = make_tuple(b1, a1 - q * b1);
+    }
+    return a1;
+}
+
+ll inverse(ll a, ll b){
+    ll x, y;
+    ll g = gcd(a, b, x, y);
+    if (g != 1) return -1;
+    else{ x = (x % b + b) % b; return x;}
+}
 
 struct mint{
     ll val;
-    mint(){
-        val = 0;
-    }
-    mint(ll x){
-        val = 1ll * x;
+    void normalize(){
         if (val < 0) val = MOD - (-val) % MOD;
         if (val >= MOD) val %= MOD;
     }
-    bool operator==(const mint& other){
-        return val == other.val;
-    }
-    mint operator+(const mint& other){
-        return mint(val + other.val);
-    }
-    mint operator-(const mint& other){
-        return mint(val - other.val);
-    }
-    mint operator*(const mint& other){
-        return mint((val * 1ll * other.val) % MOD);
-    }
-    void operator+=(const mint& other){
-        val = (mint(val) + other).val;
-    }
-    mint pow(int y){
-        if (y == 0) return mint(1);
-        if (y == 1) return mint(val);
-        mint x = mint(val).pow(y/2);
-        if (y % 2 == 0) return x * x;
-        else return x * x * mint(val);
-    }
-    mint operator/(const mint& other){
-        return mint(val) * mint(other.val).pow(MOD - 2);
-    }
+    mint(){ val = 0;}
+    mint(ll x){ val = 1ll * x; normalize();}
+    bool operator==(const mint& other){ return val == other.val;}
+    mint operator+=(const mint& other){ (val += other.val) %= MOD; return *this;}
+    mint operator+=(const ll& x){ return *this += mint(x);}
+    mint operator-=(const mint& other){ ((val -= other.val) += MOD) %= MOD; return *this;}
+    mint operator-=(const ll& x){ return *this -= mint(x);}
+    mint operator*=(const mint& other){ val *= other.val; normalize(); return *this;}
+    mint operator*=(const ll& x){ val *= x; normalize(); return *this;}
+    mint operator/=(const mint& other){ val *= inverse(other.val, MOD); normalize(); return *this;}
+    mint operator/=(const ll& x){ val *= inverse(x, MOD); normalize(); return *this;}
 
     friend ostream& operator<<(ostream& os, const mint& x);
 };
@@ -66,6 +66,24 @@ struct mint{
 ostream& operator<<(ostream& cout, const mint& x){
     cout << x.val;
     return cout;
+}
+mint operator+(const mint& x, const mint& y){ return mint(x) += y;}
+mint operator+(const mint& x, const ll& y){ return mint(x) += y;}
+mint operator+(const ll& x, const mint& y){ return mint(x) += y;}
+mint operator-(const mint& x, const mint& y){ return mint(x) -= y;}
+mint operator-(const mint& x, const ll& y){ return mint(x) -= y;}
+mint operator-(const ll& x, const mint& y){ return mint(x) -= y;}
+mint operator*(const mint& x, const mint& y){ return mint(x) *= y;}
+mint operator*(const mint& x, const ll& y){ return mint(x) *= y;}
+mint operator*(const ll& x, const mint& y){ return mint(x) *= y;}
+mint operator/(const mint& x, const mint& y){ return mint(x) /= y;}
+mint operator/(const mint& x, const ll& y){ return mint(x) /= y;}
+mint operator/(const ll& x, const mint& y){ return mint(x) /= y;}
+mint inverse(const mint& x){ return mint(inverse(x.val, MOD));}
+mint pow(const mint& x, const int& y){
+    if (y == 0) return mint(0);
+    mint tmp = pow(x, (y >> 1));
+    return (y & 1) ? tmp * tmp *x : tmp * tmp;
 }
 
 mint pow_mod[maxn];
@@ -82,22 +100,17 @@ void calFactor(){
 
 mint inv_mod[maxn];
 void calInverse(){
-    for (int i = 1; i < maxn; i++) inv_mod[i] = mint(i).pow(MOD - 2);
+    for (int i = 1; i < maxn; i++) inv_mod[i] = inverse(mint(i));
 }
 
 int main(){
-    calPowMod();
-    calFactor();
-    calInverse();
-    mint x;
-    x = factor_mod[5];
+    mint x(5);
+    x += mint(7);
     cout << x << "\n";
-    x = pow_mod[6];
+    x += 3;
     cout << x << "\n";
-    x = mint(2).pow(3);
-    cout << x << "\n";
-    cout << inv_mod[3] << "\n";
-    for (int i = 1; i < 5; i++){
-        cout << mint(i) << " " << mint(i).pow(3) << "\n";
-    }
+    mint y = x + 3;
+    cout << x << " " << y << "\n";
+    mint z = inverse(mint(5));
+    cout << z << "\n";
 }

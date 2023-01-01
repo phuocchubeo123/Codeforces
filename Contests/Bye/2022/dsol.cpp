@@ -24,114 +24,111 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-vi a(maxn), b(maxn); 
-vector<set<int>> co(maxn);
-vi vis(maxn), taken(maxn);
-bool flag;
-vi cnt(maxn, 0);
-
-void dfs(int u, int i){
-    taken[i] = u;
-    vis[u] = 1;
-
-    cnt[a[u]]--; cnt[b[u]]--;
-    co[i].erase(u);
-    if (a[u] == i && b[u] == i){
+ll gcd(ll a, ll b, ll& x, ll& y) {
+    x = 1, y = 0;
+    ll x1 = 0, y1 = 1, a1 = a, b1 = b;
+    while (b1) {
+        ll q = a1 / b1;
+        tie(x, x1) = make_tuple(x1, x - q * x1);
+        tie(y, y1) = make_tuple(y1, y - q * y1);
+        tie(a1, b1) = make_tuple(b1, a1 - q * b1);
     }
-
-    else if (a[u] == i){
-        co[b[u]].erase(u);
-        if (cnt[b[u]] == 1){
-            int w = *co[b[u]].begin();
-            if (a[w] == b[u]) dfs(w, b[w]);
-            else dfs(w, a[w]);
-        }
-    }
-
-    else if (b[u] == i){
-        co[a[u]].erase(u);
-        if (cnt[a[u]] == 1){
-            int w = *co[a[u]].begin();
-            if (a[w] == a[u]) dfs(w, b[w]);
-            else dfs(w, a[w]);
-        }
-    }
-
-    for (int v: co[i]){
-        if (a[v] == b[v]){ flag = false; continue;}
-        if (a[v] == i) dfs(v, b[v]);
-        if (b[v] == i) dfs(v, a[v]);
-    }
+    return a1;
 }
 
-vector<vi> vertices(maxn);
-vi col(maxn);
-int color;
-
-void dfs2(int u){
-    if (vis[u] == 1) return;
-    vis[u] = 1;
-    vertices[color].push_back(u);
-    col[u] = color;
-    co[a[u]].erase(u); co[b[u]].erase(u);
-    for (int v: co[a[u]]){
-
-        dfs2(v);
-    }
-    for (int v: co[b[u]]){
-        dfs2(v);
-    }
+ll inverse(ll a, ll b){
+    ll x, y;
+    ll g = gcd(a, b, x, y);
+    if (g != 1) return -1;
+    else{ x = (x % b + b) % b; return x;}
 }
+
+struct mint{
+    ll val;
+    void normalize(){
+        if (val < 0) val = MOD - (-val) % MOD;
+        if (val >= MOD) val %= MOD;
+    }
+    mint(){ val = 0;}
+    mint(ll x){ val = 1ll * x; normalize();}
+    bool operator==(const mint& other){ return val == other.val;}
+    mint operator+=(const mint& other){ (val += other.val) %= MOD; return *this;}
+    mint operator+=(const ll& x){ return *this += mint(x);}
+    mint operator-=(const mint& other){ ((val -= other.val) += MOD) %= MOD; return *this;}
+    mint operator-=(const ll& x){ return *this -= mint(x);}
+    mint operator*=(const mint& other){ val *= other.val; normalize(); return *this;}
+    mint operator*=(const ll& x){ val *= x; normalize(); return *this;}
+    mint operator/=(const mint& other){ val *= inverse(other.val, MOD); normalize(); return *this;}
+    mint operator/=(const ll& x){ val *= inverse(x, MOD); normalize(); return *this;}
+
+    friend ostream& operator<<(ostream& os, const mint& x);
+};
+
+ostream& operator<<(ostream& cout, const mint& x){
+    cout << x.val;
+    return cout;
+}
+mint operator+(const mint& x, const mint& y){ return mint(x) += y;}
+mint operator+(const mint& x, const ll& y){ return mint(x) += y;}
+mint operator+(const ll& x, const mint& y){ return mint(x) += y;}
+mint operator-(const mint& x, const mint& y){ return mint(x) -= y;}
+mint operator-(const mint& x, const ll& y){ return mint(x) -= y;}
+mint operator-(const ll& x, const mint& y){ return mint(x) -= y;}
+mint operator*(const mint& x, const mint& y){ return mint(x) *= y;}
+mint operator*(const mint& x, const ll& y){ return mint(x) *= y;}
+mint operator*(const ll& x, const mint& y){ return mint(x) *= y;}
+mint operator/(const mint& x, const mint& y){ return mint(x) /= y;}
+mint operator/(const mint& x, const ll& y){ return mint(x) /= y;}
+mint operator/(const ll& x, const mint& y){ return mint(x) /= y;}
+mint inverse(const mint& x){ return mint(inverse(x.val, MOD));}
+mint pow(const mint& x, const int& y){
+    if (y == 0) return mint(0);
+    mint tmp = pow(x, (y >> 1));
+    return (y & 1) ? tmp * tmp *x : tmp * tmp;
+}
+
+struct dsu{
+    vi p;
+
+    dsu(){}
+    dsu(int n){p.resize(n); forn(i, n) p[i] = i;}
+
+    int get(int u){
+        return (u == p[u]) ? u : (p[u] = get(p[u]));
+    }
+    bool unite(int u, int v){
+        u = get(u); v = get(v);
+        if (u != v){ p[u] = v; return true;}
+        return false;
+    }
+};
 
 void solve(){
-    int n; cin >> n;
-    rep(i, 1, n){ co[i].clear(); vertices[i].clear();}
-    rep(i, 1, n) cnt[i] = 0;
-    forn(i, n){ cin >> a[i]; co[a[i]].insert(i); cnt[a[i]]++;}
-    forn(i, n){ cin >> b[i]; co[b[i]].insert(i); cnt[b[i]]++;}
+    ll n; cin >> n;
+    vi u(n), v(n);
+    forn(i, n){ cin >> u[i]; u[i]--;}
+    forn(i, n){ cin >> v[i]; v[i]--;}
 
-    forn(i, n) vis[i] = 0;
-    rep(i, 1, n) taken[i] = -1;
-    flag = true;
-    ll ans = 1;
+    mint ans(1);
+    dsu d(n);
+    vi cnt(n, 0);
     forn(i, n){
-        if (vis[i] == 1) continue;
-        if (a[i] == b[i]){
-            dfs(i, a[i]);
-            if (flag){ ans = (ans * n) % MOD; continue;}
-            else{ cout << 0 << "\n"; return;}
-        }
-        
-        if (cnt[a[i]] == 1 && cnt[b[i]] == 1){ cout << 0 << "\n"; return;}
-        if (cnt[a[i]] == 1){
-            dfs(i, a[i]);
-            if (flag) continue;
-            else{ cout << 0 << "\n"; return;}
-        }
-        if (cnt[b[i]] == 1){
-            dfs(i, b[i]);
-            if (flag) continue;
-            else{ cout << 0 << "\n"; return;}
-        }
+        if (u[i] == v[i]) ans *= n;
+        cnt[u[i]]++; cnt[v[i]]++;
+        d.unite(u[i], v[i]);
     }
 
-    // rep(i, 1, n) cout << cnt[i] << " ";
-    // cout << "\n";
-    // rep(i, 1, n) cout << taken[i] << " ";
-    // cout << "\n";
+    vector<ll> t(n, 1);
+    forn(i, n) t[d.get(i)] = 2;
+    // forn(i, n) if (cnt[i] == 1) t[d.get(i)] = 1;
+    forn(i, n) if (u[i] == v[i]) t[d.get(u[i])] = 1;
+    forn(i, n) ans *= t[i];
 
-    rep(i, 1, n) if (cnt[i] == 0 && taken[i] == -1){ cout << 0 << "\n"; return;}
-
-    color = 0;
-    forn(i, n) col[i] = -1;
-    forn(i, n){
-        if (vis[i] == 1) continue;
-        color++;
-        dfs2(i);
-    }
-
-    rep(i, 1, color){
-        ans = (ans * 2) % MOD;
+    vi sz(n, 0), at(n, 0);
+    forn(i, n) sz[d.get(i)]++;
+    forn(i, n) at[d.get(u[i])]++;
+    forn(i, n) if (sz[d.get(u[i])] != at[d.get(u[i])]){
+        cout << 0 << "\n"; return;
     }
     cout << ans << "\n";
 }
