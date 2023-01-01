@@ -25,7 +25,19 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    ll n, m; cin >> n >> m;
+    ll n2 = n;
+    int two = 0, five = 0;
+    while (n % 2 == 0){ two++; n /= 2;}
+    while (n % 5 == 0){ five++; n /= 5;}
+    ll k = 1;
+    ll ans;
+    forn(i, 19){
+        if (i > two) k *= 2;
+        if (i > five) k *= 5;
+        if (k <= m) ans = n2 * k * (m / k);
+    }
+    cout << ans << "\n";
 }
 
 int main(){

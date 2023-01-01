@@ -25,7 +25,22 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    ll l, r, x; cin >> l >> r >> x;
+    ll a, b; cin >> a >> b;
+    if (a == b){ cout << 0 << "\n"; return;}
+    if (abs(b - a) >= x){ cout << 1 << "\n"; return;}
+    if (a+x > r && a-x < l){ cout << -1 << "\n"; return;}
+    if (b+x > r && b-x < l){ cout << -1 << "\n"; return;}
+    if (l + x > r){ cout << -1 << "\n"; return;}
+    if (a+x > r){
+        if (b-x < l){ cout << 3 << "\n"; return;}
+        cout << 2 << "\n"; return;
+    }
+    if (a-x < l){
+        if (b+x > r){ cout << 3 << "\n"; return;}
+        cout << 2 << "\n"; return;
+    }
+    cout << 2 << "\n";
 }
 
 int main(){
@@ -33,7 +48,9 @@ int main(){
     cin.tie(0);
     int T = 1;
     cin >> T;
+    // cout << T << "\n";
     while(T--){
+        // cout << T << "\n";
         solve();
     }
 }

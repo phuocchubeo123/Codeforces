@@ -25,7 +25,22 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    string s; cin >> s;
+    string yes;
+    forn(i, 30){
+        yes.push_back('Y');
+        yes.push_back('e');
+        yes.push_back('s');
+    }
 
+    int sz = s.size();
+    forn(i, 3){
+        if (s == yes.substr(i, sz)){
+            cout << "YES\n";
+            return;
+        }
+    }
+    cout << "NO\n";
 }
 
 int main(){
