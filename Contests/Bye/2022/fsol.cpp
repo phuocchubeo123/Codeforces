@@ -25,14 +25,27 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    ll n, x, y; cin >> n >> x >> y;
+    if ((n & 1) == 0){ cout << 0; return;}
+    ll ans = 0;
+    forn(bit, 21){
+        forn(mask, y+1){
+            if ((mask | y) > y) continue;
+            if ((mask & (1 << bit)) == 0) continue;
+            ll z = n * mask - (1 << bit);
+            ll x2 = x - (1 << bit);
+            if (x2 < 0) continue;
+            if ((x2 | z) == z) ans ^= (1 << bit);
+        }
+    }
+    cout << ans;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
