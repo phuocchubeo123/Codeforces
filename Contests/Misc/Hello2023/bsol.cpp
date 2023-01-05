@@ -26,21 +26,35 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    // s_1 = s_3 = s_5, s_2 = s_4 
+    // a b a b a
+    // a+b+a = 0
+    // b = -2, a = 1
+    // 1 -2 1 -2 1
+    // a b a b a b a
+    // 3a+2b = 0
+    // b = -3, a = 2
+    // 2 -3 2 -3 2 -3 2
+    if (n & 1){
+        if (n == 3 || n == 1){ cout << "NO\n"; return;}
+        cout << "YES\n";
+        int a = -(n/2), b = -a-1;
+        forn(i, n/2) cout << b << " " << a << " ";
+        cout << b << "\n";
+        return;
+    }
+    cout << "YES\n";
+    forn(i, n/2) cout << -1 << " " << 1 << " ";
+    cout << "\n";
 }
-
-using namespace std::chrono;
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
-    auto start = high_resolution_clock::now();
     int T = 1;
     cin >> T;
     while(T--){
         solve();
     }
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    cerr << "time: " << duration.count() << "ms\n";
 }

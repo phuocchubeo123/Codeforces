@@ -29,18 +29,12 @@ void solve(){
 
 }
 
-using namespace std::chrono;
-
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
-    auto start = high_resolution_clock::now();
     int T = 1;
     cin >> T;
     while(T--){
         solve();
     }
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    cerr << "time: " << duration.count() << "ms\n";
 }

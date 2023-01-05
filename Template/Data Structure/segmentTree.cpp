@@ -52,7 +52,7 @@ struct SegTree{
   }
 
   int query(int node, int st, int en, int l, int r){
-    if ((st > r) || (en < l)) return 0;
+    if ((st > r) || (en < l)) return Node();
     if ((l <= st) && (en <= r)) return seg[node];
     int mid = (st + en) / 2;
     int q1 = query(2*node, st, mid, l, r);

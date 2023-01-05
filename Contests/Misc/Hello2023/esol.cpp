@@ -26,21 +26,47 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    vi deg(n+1);
+    rep(i, 1, n){
+        cout << "? " << i << " ";
+        rep(j, 1, n) cout << ((j == i) ? 0 : 1);
+        cout << "\n";
+        cout.flush();
+        cin >> deg[i];
+    }
 
+    vi players;
+    rep(i, 1, n) players.push_back(i);
+    sort(all(players), [&](int x, int y){
+        return (deg[x] > deg[y]);
+    });
+
+    vi cm(n+1, 0);
+    int mn = deg[players[0]];
+    cm[players[0]] = 1;
+    rep(i, 1, n-1){
+        cout << "? " << players[i] << " ";
+        rep(j, 1, n) cout << ((players[i] != j) ? cm[j] : 0);
+        cout << "\n";
+        cout.flush();
+        int q; cin >> q;
+        if (q > 0){ rep(j, 1, n) cm[j] = (deg[j] >= deg[players[i]]) ? 1 : 0;}
+   }
+    cout << "! ";
+    rep(i, 1, n) cout << cm[i];
+    cout << "\n";
+    cout.flush();
+
+    // 1 -> 2 -> 3 -> 4
 }
-
-using namespace std::chrono;
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
-    auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    cerr << "time: " << duration.count() << "ms\n";
 }

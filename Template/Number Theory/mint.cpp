@@ -63,10 +63,7 @@ struct mint{
     friend ostream& operator<<(ostream& os, const mint& x);
 };
 
-ostream& operator<<(ostream& cout, const mint& x){
-    cout << x.val;
-    return cout;
-}
+ostream& operator<<(ostream& cout, const mint& x){ cout << x.val; return cout;}
 mint operator+(const mint& x, const mint& y){ return mint(x) += y;}
 mint operator+(const mint& x, const ll& y){ return mint(x) += y;}
 mint operator+(const ll& x, const mint& y){ return mint(x) += y;}
@@ -81,7 +78,7 @@ mint operator/(const mint& x, const ll& y){ return mint(x) /= y;}
 mint operator/(const ll& x, const mint& y){ return mint(x) /= y;}
 mint inverse(const mint& x){ return mint(inverse(x.val, MOD));}
 mint pow(const mint& x, const int& y){
-    if (y == 0) return mint(0);
+    if (y == 0) return mint(1);
     mint tmp = pow(x, (y >> 1));
     return (y & 1) ? tmp * tmp *x : tmp * tmp;
 }
@@ -102,6 +99,11 @@ mint inv_mod[maxn];
 void calInverse(){
     for (int i = 1; i < maxn; i++) inv_mod[i] = inverse(mint(i));
 }
+
+// mint binom[maxn][maxn];
+// void calBinom(){
+//     binom[0][0] 
+// }
 
 int main(){
     mint x(5);

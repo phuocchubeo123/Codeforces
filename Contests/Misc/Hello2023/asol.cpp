@@ -26,21 +26,37 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    string s; cin >> s;
+    int l = 0, r = 0;
+    forn(i, n){
+        if (s[i] == 'L') l++;
+        else r++;
+    }
 
+    // need rightmost L to be righter than leftmost R
+    int left_most_R = -1;
+    forn(i, n){
+        if (s[i] == 'R'){ left_most_R = i; break;}
+    }
+    int right_most_L = -1; 
+    forn(i, n){
+        if (s[i] == 'L'){ right_most_L = i;}
+    }
+
+    if (left_most_R == -1 || right_most_L == -1){ cout << -1 << "\n"; return;}
+    if (left_most_R < right_most_L){ cout << 0 << "\n"; return;}
+    forn(i, n-1){
+        if (s[i] == 'L' && s[i+1] == 'R'){ cout << i+1 << "\n"; return;}
+    }
 }
-
-using namespace std::chrono;
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
-    auto start = high_resolution_clock::now();
     int T = 1;
     cin >> T;
     while(T--){
         solve();
     }
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    cerr << "time: " << duration.count() << "ms\n";
 }
