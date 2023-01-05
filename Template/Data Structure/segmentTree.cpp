@@ -22,11 +22,12 @@ Node operator+(const Node& left, const Node& right){
     return res;
 }
 
+template <typename T>
 struct SegTree{
   int sz;
-  vi seg;
+  vector<T> seg;
   
-  SegTree(int s, int lz=0){
+  SegTree(int s){
     sz = s;
     seg.resize(4 * s);
   }
@@ -47,16 +48,16 @@ struct SegTree{
     seg[node] = seg[2*node] + seg[2*node+1];
   }
 
-  int query(int l, int r){
+  T query(int l, int r){
     return query(1, 1, sz, l, r);
   }
 
-  int query(int node, int st, int en, int l, int r){
-    if ((st > r) || (en < l)) return Node();
+  T query(int node, int st, int en, int l, int r){
+    if ((st > r) || (en < l)) return T();
     if ((l <= st) && (en <= r)) return seg[node];
     int mid = (st + en) / 2;
-    int q1 = query(2*node, st, mid, l, r);
-    int q2 = query(2*node+1, mid+1, en, l, r);
+    T q1 = query(2*node, st, mid, l, r);
+    T q2 = query(2*node+1, mid+1, en, l, r);
     return (q1+q2);
   }
 
@@ -152,6 +153,6 @@ int main(){
     a[2] = 3;
     a[3] = 4;
 
-    SegTree sega(n);
+    SegTree<int> sega(n);
     return 0;
 }
