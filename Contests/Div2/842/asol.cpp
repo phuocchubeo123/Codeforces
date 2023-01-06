@@ -25,8 +25,37 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+bool isp[maxn];
 
+void eratosthenesSieve(){
+    forn(i, maxn) isp[i] = true;
+    isp[0] = false;
+    rep(i, 1, maxn-1){
+        if (i == 1){
+            isp[i] = false;
+            continue;
+        }
+
+        for (int j = 2; i * j < maxn; j++) isp[i * j] = false;
+    }
+}
+
+vi primes;
+
+void findPrimes(){
+    forn(i, maxn) if (isp[i]) primes.push_back(i);
+}
+
+bool checkPrime(int x){
+    for (int i = 0; i < primes.size() && primes[i] * primes[i] <= x; i++){
+        if (x % primes[i] == 0) return false; 
+    }
+    return true;
+}
+
+void solve(){
+    int k; cin >> k;
+    cout << k-1 << "\n";
 }
 
 using namespace std::chrono;
@@ -37,6 +66,8 @@ int main(){
     auto start = high_resolution_clock::now();
     int T = 1;
     cin >> T;
+    eratosthenesSieve();
+    findPrimes();
     while(T--){
         solve();
     }

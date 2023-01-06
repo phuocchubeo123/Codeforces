@@ -26,7 +26,20 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    // 4 3 2 1
+    // 4 3 1 2
+    // 1 2 3 4
+    // maximum n/k times 
+    // binary search?
 
+    int n, k; cin >> n >> k;
+    vi p(n+1); rep(i, 1, n) cin >> p[i];
+    int pt = 1;
+    rep(i, 1, n){
+        if (p[i] == pt) pt++;
+    }
+    // cout << pt << " ";
+    cout << (n - pt + 1 + k - 1) / k << "\n";
 }
 
 using namespace std::chrono;

@@ -26,7 +26,29 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    vi p(n+1); rep(i, 1, n) cin >> p[i];
+    
+    vector<bool> vis(n+1, false);
+    int ans = 0;
+    bool flag = false;
+    rep(i, 1, n){
+        if (vis[i]) continue;
+        int curr = i;
+        vi cc;
+        while (!vis[curr]){
+            cc.push_back(curr);
+            vis[curr] = true;
+            curr = p[curr];
+        }
+        sort(all(cc));
+        forn(j, cc.size() - 1){
+            ans++;
+            if (cc[j] + 1 == cc[j+1]) flag = true;
+        }
+    }
+    if (flag) cout << ans - 1 << "\n";
+    else cout << ans+1 << "\n";
 }
 
 using namespace std::chrono;
