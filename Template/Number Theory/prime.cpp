@@ -10,7 +10,7 @@ typedef vector<string> vs;
 #define rep(i,l,r) for(int i=l;i<=r;++i)
 #define per(i,r,l) for(int i=r;i>=l;--i)
 #define rep0(i,l,r) for(int i=l;i<r;++i)
-#define for0(i,n) for(int i=0;i<n;++i)
+#define forn(i,n) for(int i=0;i<n;++i)
 #define for1(i,n) for(int i=1;i<=n;i++)
 #define all(a) (a).begin(), (a).end()
 #define allr(a) (a).rbegin(), (a).rend()
@@ -28,9 +28,9 @@ const double PI = 3.14159265358979323846;
 bool isp[maxn];
 
 void eratosthenesSieve(){
-    for0(i, maxn) isp[i] = true;
+    forn(i, maxn) isp[i] = true;
     isp[0] = false;
-    for1(i, maxn){
+    rep(i, 1, maxn-1){
         if (i == 1){
             isp[i] = false;
             continue;
@@ -43,7 +43,7 @@ void eratosthenesSieve(){
 vi primes;
 
 void findPrimes(){
-    for0(i, maxn) if (isp[i]) primes.push_back(i);
+    forn(i, maxn) if (isp[i]) primes.push_back(i);
 }
 
 bool checkPrime(int x){
@@ -56,7 +56,7 @@ bool checkPrime(int x){
 int main(){
     eratosthenesSieve();
     findPrimes();
-    for0(i, 10) cout << primes[i] << " ";
+    forn(i, 10) cout << primes[i] << " ";
     cout << "\n";
     cout << checkPrime(125) << "\n";
     cout << checkPrime(7) << "\n";
