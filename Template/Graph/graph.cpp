@@ -53,22 +53,6 @@ void connectedComponents(int u){
     for (int v: adj[u]) connectedComponents(v);
 }
 
-struct dsu{
-    vi p;
-
-    dsu(){}
-    dsu(int n){p.resize(n); forn(i, n) p[i] = i;}
-
-    int get(int u){
-        return (u == p[u]) ? u : (p[u] = get(p[u]));
-    }
-    bool unite(int u, int v){
-        u = get(u); v = get(v);
-        if (u != v){ p[u] = v; return true;}
-        return false;
-    }
-};
-
 int main(){
     // read graph
 }

@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-using namespace std::chrono;
 
 typedef long long ll;
 typedef vector<int> vi;
@@ -26,16 +25,35 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
+struct dsu{
+    vi p;
+
+    dsu(){}
+    dsu(int n){p.resize(n); forn(i, n) p[i] = i;}
+
+    int get(int u){
+        return (u == p[u]) ? u : (p[u] = get(p[u]));
+    }
+    bool unite(int u, int v){
+        u = get(u); v = get(v);
+        if (u != v){ p[u] = v; return true;}
+        return false;
+    }
+};
+
+
 void solve(){
 
 }
+
+using namespace std::chrono;
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
