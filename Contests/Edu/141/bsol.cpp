@@ -26,7 +26,34 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    // n = 1: 1
+    // n = 2: 
+    // 1 7 4
+    // 9 3 6
+    // 2 8 5
 
+    int n; cin >> n;
+    vi a;
+    a.push_back(1);
+    int curr = 1;
+    int sign = -1;
+    per(i, n * n - 1, 1){
+        sign = -sign;
+        curr = curr + sign * i;
+        a.push_back(curr);
+    }
+    // forn(i, n * n) cout << a[i] << " ";
+    // cout << "\n";
+    forn(i, n / 2){
+        forn(j, n) cout << a[n * (2 * i) + j] << " ";
+        cout << "\n";
+        forn(j, n) cout << a[n * (2 * i + 2) - j - 1] << " ";
+        cout << "\n";
+    }
+    if (n & 1){
+        forn(i, n) cout << a[n * (n-1) + i] << " ";
+        cout << "\n";
+    }
 }
 
 using namespace std::chrono;

@@ -26,7 +26,55 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    // a / k and b / k
+    // we need to check if a / k > b / k
+    int n; cin >> n;
+    vi a(n), b(n);
+    forn(i, n) cin >> a[i];
+    forn(i, n) cin >> b[i];
+    vector<pii> prs;
+    forn(i, n) if (a[i] > b[i]) prs.push_back({b[i] - 1, a[i] - 1});
+    sort(all(prs));
 
+    vector<pii> st;
+    for (pii p: prs){
+        if (st.empty()){ st.push_back(p); continue;}
+        pii q = st.back();
+        if (q.second > p.second) continue;
+        st.push_back(p);
+    }
+
+    vi x, y;
+    for (pii p: st){ x.push_back(p.first); y.push_back(p.second);}
+
+    if (x.empty()){
+        cout << n << "\n";
+        rep(i, 1, n) cout << i << " ";
+        cout << "\n";
+        return;
+    }
+
+    vi lbx(n + 1, 1e6), lby(n+1, 1e6);
+    per(i, x.size() - 1, 0){
+        lbx[x[i]] = i;
+        lby[y[i]] = i;
+    }
+    per(i, n-1, 0){
+        if (lbx[i] == 1e6) lbx[i] = lbx[i+1];
+        if (lby[i] == 1e6) lby[i] = lby[i+1];
+    }
+
+    vi ans;
+    rep(k, 1, n){
+        bool flag = true;
+        for (int q = k; q <= n; q += k){
+            if (lbx[q] != lby[q]) flag = false;
+        }
+        if (flag) ans.push_back(k);
+    }
+    cout << ans.size() << "\n";
+    for (int k: ans) cout << k << " ";
+    cout << "\n";
 }
 
 using namespace std::chrono;

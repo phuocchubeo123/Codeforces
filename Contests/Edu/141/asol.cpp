@@ -26,7 +26,17 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    vi a(n); forn(i, n) cin >> a[i];
+    sort(all(a));
+    reverse(all(a));
+    if (a[0] == a[n-1]){ cout << "NO\n"; return;}
+    int tmp = a[1];
+    a[1] = a[n-1];
+    a[n-1] = tmp;
+    cout << "YES\n";
+    forn(i, n) cout << a[i] << " ";
+    cout << "\n";
 }
 
 using namespace std::chrono;

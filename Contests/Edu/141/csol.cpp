@@ -26,7 +26,58 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    int m; cin >> m;
+    vi a(n); forn(i, n) cin >> a[i];
+    vi b = a;
+    sort(all(b));
+    vi pre(n);
+    pre[0] = b[0];
+    rep(i, 1, n-1) pre[i] = pre[i-1] + b[i];
+    vector<pii> nums;
+    forn(i, n) nums.push_back({a[i], i});
+    sort(all(nums));
+    int best = -1;
 
+    // cout << "pre: \n"; 
+    // forn(i, n) cout << pre[i] << " ";
+    // cout << "\n";
+
+    for (pii p: nums){
+        int x = p.first, i = p.second;
+        // cout << "best: " << best << "\n";
+        // cout << x << " " << i << "\n";
+
+        if (i == 0){
+            if (m >= b[0]) best = max(best, i);
+            continue;
+        }
+
+        if (i == 1){
+            if (m >= a[1]) best = max(best, i);
+            if (m >= pre[1]) best = max(best, i);
+            continue;
+        }
+
+        // if win against i+1 th player
+        int m2 = m - a[i];
+        // need another i - 1 wins
+        int need;
+        if (b[i-2] > a[i]) need = pre[i-1] - a[i];
+        else if (b[i-2] < a[i]) need = pre[i-2];
+        else{
+            if (b[i-1] > a[i]) need = pre[i-1] - a[i];
+            else need = pre[i-2];
+        }
+        // cout << "need if win: " << need << " " << m2 << "\n";
+        if (need <= m2) best = max(best, i);
+
+        // if not win against i+1 th player
+        // need i + 1 wins
+        // cout << "need if not win: " << pre[i] << "\n";
+        if (pre[i] <= m) best = max(best, i);
+    }
+    cout << n - best << "\n";
 }
 
 using namespace std::chrono;
