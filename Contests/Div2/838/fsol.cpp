@@ -40,7 +40,7 @@ const double PI = 3.14159265358979323846;
 struct Node{
     int mn;
     Node(int a){mn = a;}
-    Node(){mn = maxn;}
+    Node(){mn = 5 * maxn;}
 };
 
 Node operator+(const Node& left, const Node& right){
@@ -112,7 +112,7 @@ ll solve(vi a, int n, int k){
         r_best[i] = r.query(a[i] + 1, min(a[i] + k, maxn)).mn;
         r.update(a[i], i);
     }
-    rep(i, 1, n) r.update(a[i], maxn);
+    rep(i, 1, n) r.update(a[i], 5 * maxn);
 
     rep(i, 1, n) pos[a[i]].clear();
     rep(i, 1, n) pos[a[i]].push_back(i);
