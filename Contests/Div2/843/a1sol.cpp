@@ -26,44 +26,8 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-/////////////////////////////////////////
-// Start of implementation
-const int K = 26; // alphabet size
-
-struct Vertex {
-    int next[K]; // store edges from the vertex
-    bool leaf = false;
-
-    Vertex() {
-        fill(begin(next), end(next), -1);
-    }
-};
-
-// we store the trie as an array of vertices
-struct Trie{
-    vector<Vertex> trie;
-    
-    Trie(){ trie.emplace_back();}
-
-    void add_string(string const& s){
-        int v = 0; // current vertex
-        for (char ch: s){
-            int c = ch - 'a';
-            if (trie[v].next[c] == -1){
-                trie[v].next[c] = trie.size();
-                trie.emplace_back();
-            }
-            v = trie[v].next[c];
-        }
-        trie[v].leaf = true;
-    }
-};
-
-
 void solve(){
-    Trie tr;
-    tr.add_string("ab");
-    tr.add_string("ac");
+
 }
 
 int main(){

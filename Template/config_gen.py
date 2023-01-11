@@ -1,3 +1,3 @@
 [CONTEST]
-folder_name = ..//Contests//Edu//141
-prob_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+folder_name = ..//Contests//Div2//843
+prob_list = ['a1', 'a2', 'b', 'c', 'd', 'e', 'f']
