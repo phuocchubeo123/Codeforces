@@ -57,13 +57,36 @@ struct Trie{
         }
         trie[v].leaf = true;
     }
+
+    bool get(string const& s){
+        int v = 0;
+        for (char ch: s){
+            int c = ch - 'a';
+            if (trie[v].next[c] == -1) return false;
+            v = trie[v].next[c];
+        }
+        if (trie[v].leaf) return true;
+        return false;
+    }
 };
 
+// Persistent trie
+struct PersistentTrie{
+    vector<Vertex> trie;
+    
+    PersistentTrie(){ trie.emplace_back();}
+
+    
+}
 
 void solve(){
     Trie tr;
     tr.add_string("ab");
-    tr.add_string("ac");
+    tr.add_string("acd");
+
+    cout << tr.get("ab") << "\n";
+    cout << tr.get("ac") << "\n";
+    cout << tr.get("acd") << "\n";
 }
 
 int main(){
@@ -71,7 +94,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
