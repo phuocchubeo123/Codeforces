@@ -18,7 +18,7 @@ typedef complex<double> cd;
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
 
-const int maxn = 2e5 + 5;
+const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const int LOG = 26;
@@ -26,31 +26,34 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-vi cnt(maxn);
+bool is_sq(ll x){
+    ll y = sqrt(x);
+    return y * y == x;
+}
 
 void solve(){
     int n; cin >> n;
-    vi k(n);
-    vvi c(n);
-    forn(i, n){
-        cin >> k[i];
-        c[i].resize(k[i]);
-        forn(j, k[i]) cin >> c[i][j];
+    vector<ll> a(n+1); rep(i, 1, n) cin >> a[i];
+    int ans = 1;
+    rep(i, 1, n){
+        rep(j, i+1, n){
+            ll z = a[j] - a[i];
+            for (ll x = 1; x * x <= z; x++){
+                int ans2 = 0;
+                if (z % x != 0) continue;
+                ll y = z / x;
+                if ((x + y) & 1) continue;
+                ll u = (x + y) / 2, v = (y - x) / 2;
+                rep(l, 1, n){
+                    if (is_sq(u * u - a[j] + a[l])) ans2++;
+                }
+                // cout << i << " " << v << " " << j << " " << u << " " << ans2 << "\n";
+                // cout << u * u - v * v << " " << z << "\n";
+                if (u * u >= a[j]) ans = max(ans, ans2);
+            }
+        }
     }
-
-    forn(i, n) forn(j, k[i]) cnt[c[i][j]]++;
-    bool f = false;
-    int can = 0;
-    forn(i, n){
-        bool flag = true;
-        forn(j, k[i]) if (cnt[c[i][j]] == 1) flag = false;
-        if (!flag) can++;
-    }
-
-    if (can == n) cout << "NO\n";
-    else cout << "YES\n";
-
-    forn(i, n) forn(j, k[i]) cnt[c[i][j]] = 0;
+    cout << ans << "\n";
 }
 
 int main(){

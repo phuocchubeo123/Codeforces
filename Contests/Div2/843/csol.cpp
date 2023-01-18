@@ -27,7 +27,19 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    ll n, x; cin >> n >> x;
+    ll up = (1ll << 62), down = n;
+    forn(bit, 62){
+        int i = ((n >> bit) & 1), j = ((x >> bit) & 1);
+        if (i == 0 && j == 0) continue;
+        if (i == 0 && j == 1){ cout << -1 << "\n"; return;}
+        if (i == 1 && j == 0){ down = (((n >> (bit + 1)) + 1) << (bit + 1));}
+        if (i == 1 && j == 1){ up = min(up, (((n >> (bit + 1)) + 1) << (bit + 1)) - 1);}
+        // cout << up << " " << down << "\n";
+    }
 
+    if (up >= down) cout << down << "\n";
+    else cout << -1 << "\n";
 }
 
 int main(){

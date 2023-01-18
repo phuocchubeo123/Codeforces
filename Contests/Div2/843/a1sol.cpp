@@ -27,7 +27,11 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    string s;
+    cin >> s;
+    int sz = s.size();
+    rep(i, 1, sz-2) if (s[i] == 'a'){ cout << s.substr(0, i) << " " << s[i] << " " << s.substr(i+1, sz-i-1) << "\n"; return;}
+    cout << s[0] << " " << s.substr(1, sz-2) << " " << s[sz-1] << "\n";
 }
 
 int main(){

@@ -18,7 +18,7 @@ typedef complex<double> cd;
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
 
-const int maxn = 2e5 + 5;
+const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const int LOG = 26;
@@ -26,31 +26,21 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-vi cnt(maxn);
-
 void solve(){
     int n; cin >> n;
-    vi k(n);
-    vvi c(n);
+    vi a(n); forn(i, n) cin >> a[i];
+    sort(all(a));
+    // forn(i, n) cout << a[i] << " ";
+    // cout << "\n";
+    int ans = 0;
+    if (a[0] > 0) ans = 1;
     forn(i, n){
-        cin >> k[i];
-        c[i].resize(k[i]);
-        forn(j, k[i]) cin >> c[i][j];
+        if (a[i] > i) continue;
+        if (i < n-1 && a[i+1] <= i + 1) continue;
+        ans++;
     }
 
-    forn(i, n) forn(j, k[i]) cnt[c[i][j]]++;
-    bool f = false;
-    int can = 0;
-    forn(i, n){
-        bool flag = true;
-        forn(j, k[i]) if (cnt[c[i][j]] == 1) flag = false;
-        if (!flag) can++;
-    }
-
-    if (can == n) cout << "NO\n";
-    else cout << "YES\n";
-
-    forn(i, n) forn(j, k[i]) cnt[c[i][j]] = 0;
+    cout << ans << "\n";
 }
 
 int main(){
