@@ -167,6 +167,23 @@ struct LazySegTree{
     }
 };
 
+
+struct Node{
+    int L, R;
+    int l, r;
+    ll val;
+
+    Node(){ L = -1; R = -1; l = -1; r = -1; val = 0;}
+    Node(int _l, int _r){ L = -1; R = -1; l = _l; r = _r; val = 0;}
+};
+
+struct PersistentSegTree{
+    vector<Node> tree;
+    int sz;
+
+    
+}
+
 int main(){
     int n = 4;
     vector<int> a(4);
