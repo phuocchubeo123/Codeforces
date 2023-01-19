@@ -27,7 +27,13 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    string s; cin >> s;
+    ll ans = 0;
+    int sz = s.size();
+    for (char c: s){
+        ans = ans * 26 + (c - 'A' + 1);
+    }
+    cout << ans << "\n";
 }
 
 int main(){
@@ -35,7 +41,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

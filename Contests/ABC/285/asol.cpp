@@ -27,7 +27,10 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int a, b; 
+    cin >> a >> b;
+    if (a * 2 == b || a * 2 + 1 == b) cout << "Yes\n";
+    else cout << "No\n";
 }
 
 int main(){
@@ -35,7 +38,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

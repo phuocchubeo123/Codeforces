@@ -27,7 +27,19 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    vector<ll> a(n+1); rep(i, 1, n) cin >> a[i];
+    vector<ll> dp(n+1, 0);
+    rep(i, 1, n){
+        rep(j, 1, i) dp[i] += a[min(j, i+1-j)];
+        // cout << dp[i] << "\n";
+        rep(j, 1, i){
+            dp[i] = max(dp[i], dp[j-1] + dp[i-j]);
+        }
+        // cout << dp[i] << "\n";
+    }
 
+    cout << dp[n-1] << "\n";
 }
 
 int main(){
@@ -35,7 +47,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
