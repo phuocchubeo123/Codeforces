@@ -10,15 +10,24 @@ using namespace std;
 #define pb push_back
 #define vi vector<int>
 
+const int maxn = 1e5 + 5;
+const ll MOD = 1e9 + 7; // 998244353
+const ll INF = 1e9;
+const int LOG = 26;
+const char min_char = 'a';
+const double EPS = 1e-9;
+const double PI = 3.14159265358979323846;
+
 struct Node{
-    int mx;
-    Node(int a){mx = a;}
-    Node(){mx = 0;}
+    ll val;
+    Node(int a){val = 1ll * a;}
+    Node(ll a){val = a;}
+    Node(){val = 0;}
 };
 
-Node operator+(const Node& left, const Node& right){
+Node operator+(const Node& x, const Node& y){
     Node res;
-    res.mx = max(left.mx, right.mx);
+    res.val = x.val + y.val;
     return res;
 }
 
@@ -168,21 +177,82 @@ struct LazySegTree{
 };
 
 
-struct Node{
-    int L, R;
-    int l, r;
-    ll val;
-
-    Node(){ L = -1; R = -1; l = -1; r = -1; val = 0;}
-    Node(int _l, int _r){ L = -1; R = -1; l = _l; r = _r; val = 0;}
+// Persistent segtree
+template<typename T>
+struct node
+{
+    T val;
+    node<T>* left, *right;
+  
+    node() {}
+    node(node<T>* l, node<T>* r, T v)
+    {
+        left = l;
+        right = r;
+        val = v;
+    }
 };
-
+  
+template<typename T>
 struct PersistentSegTree{
-    vector<Node> tree;
+    node<T>* version[maxn];
     int sz;
 
-    
-}
+    PersistentSegTree(int n){
+        sz = n;
+        version[0] = new node<T>(NULL, NULL, T());
+        build(version[0], 1, sz);
+    }
+
+    void build(node<T>* cur,int l,int r)
+    {
+        if (l==r){ cur->val = T(); return;}
+        int mid = (l+r) / 2;
+        cur->left = new node<T>(NULL, NULL, T());
+        cur->right = new node<T>(NULL, NULL, T());
+        build(cur->left, l, mid);
+        build(cur->right, mid+1, r);
+        cur->val = cur->left->val + cur->right->val;
+    }
+
+    void update(int ver, int pos, T val){
+        version[ver] = new node<T>(NULL, NULL, T());
+        upgrade(version[ver-1], version[ver], 1, sz, pos, val);
+    }
+
+    void upgrade(node<T>* prev, node<T>* cur, int l, int r, int pos, T val){
+        if (pos > r or pos < l or l > r) return;
+        if (l == r){ cur->val = val; return;}
+        int mid = (l+r) / 2;
+        if (pos <= mid){
+            cur->right = prev->right;
+            cur->left = new node<T>(NULL, NULL, T());
+            upgrade(prev->left,cur->left, l, mid, pos, val);
+        }
+        else{
+            cur->left = prev->left;
+            cur->right = new node<T>(NULL, NULL, T());
+            upgrade(prev->right, cur->right, mid+1, r, pos, val);
+        }
+        cur->val = cur->left->val + cur->right->val;
+    }
+
+    T query(int ver, int st, int en){
+        node<T>* cur = version[ver];
+        return query(cur, 1, sz, st, en);
+    }
+
+    T query(node<T>* cur, int l, int r, int st, int en)
+    {
+        if (st > r or en < l or l > r) return T();
+        if (st <= l and r <= en) return cur->val;
+        int mid = (l+r) / 2;
+        T q1 = query(cur->left, l, mid, st, en);
+        T q2 = query(cur->right, mid+1, r, st, en);
+        return q1+q2;
+    }
+};
+
 
 int main(){
     int n = 4;
@@ -193,5 +263,10 @@ int main(){
     a[3] = 4;
 
     SegTree<int> sega(n);
+
+    PersistentSegTree<Node> seg(n);
+    cout << seg.query(0, 1, 2).val << "\n";
+    seg.update(1, 2, Node(2));
+    cout << seg.query(1, 1, 2).val << "\n";
     return 0;
 }
