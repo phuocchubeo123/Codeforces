@@ -25,7 +25,33 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n; 
+    ll h; cin >> h;
+    vector<ll> a(n); forn(i, n) cin >> a[i];
+    sort(all(a));
 
+    vi perm{2, 2, 3};
+    int ans = 0;
+    do{
+        int pt = 0;
+        ll x = h;
+        forn(i, n){
+            if (a[i] < x){ x += a[i] / 2; ans = max(ans, i+1); continue;}
+            bool flag = true;
+            while (x <= a[i]){
+                if (pt == 3){ ans = max(ans, i); flag = false; break;}
+                x *= 1ll * perm[pt];
+                pt++;
+            }
+            if (!flag) break;
+            x += a[i] / 2;
+            ans = max(ans, i+1);
+            // cout << x << " ";
+        }
+        // cout << x << "\n";
+    } while (next_permutation(all(perm)));
+
+    cout << ans << "\n";
 }
 
 int main(){
