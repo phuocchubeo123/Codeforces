@@ -27,7 +27,17 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n, s, r; cin >> n >> s >> r;
+    int mx = s - r;
+    int a = r / (n-1);
+    int b = r % (n-1);
+    forn(i, b){
+        cout << a+1 << " ";
+    }
+    forn(i, n-1-b){
+        cout << a << " ";
+    }
+    cout << mx << "\n";
 }
 
 int main(){

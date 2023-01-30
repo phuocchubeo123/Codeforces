@@ -26,8 +26,39 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+map<ll, int> encode;
+void makeUnique(vi &a){
+    sort(all(a));
+    auto it = unique(all(a));
+    a.resize(distance(a.begin(), it));
 
+    forn(i, a.size()){
+        encode[a[i]] = i;
+    }
+}
+
+void solve(){
+    int n; cin >> n;
+    vi a(n); forn(i, n) cin >> a[i];
+    sort(all(a));
+    vi b = a;
+    makeUnique(b);
+
+    map<int, int> cnt;
+    forn(i, n) cnt[a[i]]++;
+
+    int pt = 0;
+    int ans = 0;
+    while (pt < b.size()){
+        int x = b[pt];
+        if (cnt[x] == 0){ pt++; continue;}
+        while (cnt[x] > 0){
+            cnt[x]--;
+            x++;
+        }
+        ans++;
+    }
+    cout << ans << "\n";
 }
 
 int main(){

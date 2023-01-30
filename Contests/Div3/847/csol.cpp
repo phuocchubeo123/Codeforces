@@ -27,7 +27,35 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    vvi a(n, vi(n));
+    forn(i, n){
+        rep(j, 1, n-1) cin >> a[i][j];
+    }
 
+    // 1 1 1 0
+    // 2 2 1 0
+    // 2 2 3 0
+    // 3 3 3 0
+
+    // 1 1 1 1 0
+    // 2 2 2 1 0
+    // 3 3 2 2 0
+    // 4 3 3 3 0
+    // 4 4 4 4 0
+
+    vi rk(n+1);
+    forn(i, n){
+        rep(j, 1, n-1) rk[a[i][j]] += j;
+    }
+
+    vector<pii> nums;
+    rep(i, 1, n) nums.push_back({rk[i], i});
+    sort(all(nums));
+    forn(i, n){
+        cout << nums[i].second << " ";
+    }
+    cout << "\n";
 }
 
 int main(){

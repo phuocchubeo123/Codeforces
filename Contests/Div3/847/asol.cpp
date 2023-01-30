@@ -27,7 +27,16 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    string s = "314159265358979323846264338327950288419716939937510";
+    string n; cin >> n;
+    int ans = 0;
+    forn(i, n.size()){
+        if (n[i] == s[i]) ans++;
+        else{
+            cout << ans << "\n"; return;
+        }
+    }
+    cout << ans << "\n"; return;
 }
 
 int main(){

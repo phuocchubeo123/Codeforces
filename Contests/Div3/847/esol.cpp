@@ -27,7 +27,24 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    ll x; cin >> x;
+    ll y = (x << 1);
+    ll a = 0, b = 0;
+    forn(i, 30){
+        int bit1 = (x >> i) & 1, bit2 = (y >> i) ^ 1;
+        if (bit1 == 1){
+            a += (1 << i);
+            continue;
+        }
+        if (((x >> (i + 1)) & 1) != ((y >> (i+1)) & 1)){
+            a += (1 << i);
+            b += (1 << i);
+        }
+    }
 
+    if (a + b == y){ cout << a << " " << b << "\n";}
+    else cout << -1 << "\n";
+    // cout << a + b << " " << (a ^ b) << "\n";
 }
 
 int main(){
