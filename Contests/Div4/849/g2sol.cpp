@@ -27,42 +27,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    int k; cin >> k;
-    string a, b; cin >> a >> b;
-    set<char> s;
-    forn(i, n) s.insert(a[i]);
-    string q;
-    for (char c: s) q.push_back(c);
-    int m = q.length();
 
-    // cout << "m: " << m << "\n";
-
-    ll mx = 0;
-    vi can(26);
-    // cout << (1 << m) << "\n";
-    for (int mask = 0; mask < (1 << m); mask++){
-        forn(i, 26) can[i] = 0;
-        string Q;
-        for (int bit = 0; bit < m; bit++){
-            if ((mask >> bit) & 1){ can[q[bit]-'a'] = 1; Q.push_back(q[bit]);}
-        }
-        if (Q.length() > k) continue;
-        if (Q.length() < min(m, k)) continue;
-        string A = a;
-        forn(i, n) if (can[A[i]-'a']) A[i] = b[i];
-        int r = 0;
-        ll ans = 0;
-        forn(i, n){
-            if (A[i] == b[i]) r++;
-            else{ ans += 1ll * r * (r+1) / 2; r = 0;}
-        }
-        ans += 1ll * r * (r+1) / 2;
-        // cout << A << " " << ans << "\n";
-        mx = max(ans, mx);
-    }
-
-    cout << mx << "\n";
 }
 
 int main(){

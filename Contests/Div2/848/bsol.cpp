@@ -27,7 +27,12 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n, m, d; cin >> n >> m >> d;
+    vi p(n+1); rep(i, 1, n) cin >> p[i];
+    vi pos(n+1); rep(i, 1, n) pos[p[i]] = i;
+    vi a(m); forn(i, m) cin >> a[i];
 
+    
 }
 
 int main(){
