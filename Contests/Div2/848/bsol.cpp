@@ -32,7 +32,17 @@ void solve(){
     vi pos(n+1); rep(i, 1, n) pos[p[i]] = i;
     vi a(m); forn(i, m) cin >> a[i];
 
-    
+    int ans = n;
+    forn(i, m-1){
+        int p1 = pos[a[i]], p2 = pos[a[i+1]];
+        if (p2 < p1){ cout << 0 << "\n"; return;}
+        if (p2 > p1 + d){ cout << 0 << "\n"; return;}
+        int x1 = p2 - p1;
+        if (d >= n-1){ ans = min(ans, x1); continue;}
+        int x2 = p1 + d - p2 + 1;
+        ans = min(ans, min(x1, x2));
+    }
+    cout << ans << "\n";
 }
 
 int main(){
