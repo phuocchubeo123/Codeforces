@@ -27,7 +27,13 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    string s = "codeforces";
+    vi cnt(26, 0);
+    forn(i, s.size()) cnt[s[i] - 'a']++;
 
+    char c; cin >> c;
+    if (cnt[c-'a'] > 0) cout << "YES\n";
+    else cout << "NO\n";
 }
 
 int main(){

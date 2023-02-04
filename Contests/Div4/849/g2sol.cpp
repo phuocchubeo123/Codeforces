@@ -27,7 +27,41 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    ll c; cin >> c;
+    vector<ll> a(n+1); rep(i, 1, n) cin >> a[i];
+    vector<pair<ll, int>> b(n+1);
+    rep(i, 1, n) b[i] = {a[i], i};
+    rep(i, 1, n) b[i].first = a[i] + min(1ll * i, 1ll * (n+1-i));
+    sort(b.begin()+1, b.end());
+    
+    vector<ll> pre(n+1, 0);
+    rep(i, 1, n) pre[i] = pre[i-1] + b[i].first;
 
+    // rep(i, 1, n) cout << pre[i] << " ";
+    // cout << "\n";
+
+    int ans = 0;
+    rep(i, 1, n){
+        // cout << i << ":\n";
+        int l = 0, r = n;
+        while (l < r){
+            int m = (l + r + 1) / 2;
+            ll tot;
+            if (m >= i){
+                tot = pre[m] - b[i].first + a[b[i].second] + b[i].second;
+            }
+            else{
+                tot = pre[m] - b[m].first + a[b[i].second]+ b[i].second;
+            }
+            // cout << l << " " << r << " " << m << " " << tot << "\n";
+
+            if (tot <= c) l = m;
+            else r = m - 1;
+        }
+        ans = max(ans, l);
+    }
+    cout << ans << "\n"; return;
 }
 
 int main(){

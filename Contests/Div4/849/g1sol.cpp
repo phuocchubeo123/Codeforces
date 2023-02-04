@@ -27,7 +27,18 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    ll c; cin >> c;
+    vector<ll> a(n+1); rep(i, 1, n) cin >> a[i];
+    rep(i, 1, n) a[i] += 1ll * i;
+    sort(a.begin()+1, a.end());
 
+    ll tot = 0;
+    rep(i, 1, n){
+        tot += a[i];
+        if (tot > c){ cout << i-1 << "\n"; return;}
+    }
+    cout << n << "\n"; return;
 }
 
 int main(){

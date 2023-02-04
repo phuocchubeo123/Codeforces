@@ -27,7 +27,18 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    vector<ll> a(n); forn(i, n) cin >> a[i];
+    ll tot = 0;
+    forn(i, n) tot += abs(a[i]);
+    forn(i, n) if (a[i] == 0){ cout << tot << "\n"; return;}
 
+    ll mn = abs(a[0]);
+    forn(i, n) mn = min(mn, abs(a[i]));
+    int neg = 0;
+    forn(i, n) if (a[i] < 0) neg++;
+    if (neg & 1) cout << tot - 2 * mn << "\n";
+    else cout << tot << "\n";
 }
 
 int main(){

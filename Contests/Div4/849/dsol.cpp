@@ -27,7 +27,27 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    string s; cin >> s;
 
+    int fa = 0, fb = 0;
+    vi cnt1(26, 0), cnt2(26, 0);
+    forn(i, n){
+        cnt2[s[i] - 'a']++;
+        if (cnt2[s[i] - 'a'] == 1) fb++;
+    }
+
+    int ans = fa + fb;
+
+    forn(i, n){
+        cnt1[s[i] - 'a']++;
+        if (cnt1[s[i] - 'a'] == 1) fa++;
+        cnt2[s[i] - 'a']--;
+        if (cnt2[s[i] - 'a'] == 0) fb--;
+        ans = max(ans, fa + fb);
+    }
+
+    cout << ans << "\n";
 }
 
 int main(){

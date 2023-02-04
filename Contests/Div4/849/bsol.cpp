@@ -27,7 +27,18 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    string s; cin >> s;
+    int x = 0, y = 0;
+    forn(i, n){
+        if (s[i] == 'L') x--;
+        else if (s[i] == 'R') x++;
+        else if (s[i] == 'U') y++;
+        else y--;
 
+        if (x == 1 && y == 1){ cout << "YES\n"; return;}
+    }
+    cout << "NO\n";
 }
 
 int main(){

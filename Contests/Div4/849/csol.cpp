@@ -27,7 +27,14 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    string s; cin >> s;
+    int ans = n;
+    forn(i, (n+1) / 2){
+        if (s[i] != s[n-1-i]) ans -= 2;
+        else break;
+    }
+    cout << ans << "\n";
 }
 
 int main(){
