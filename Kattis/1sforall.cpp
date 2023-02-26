@@ -19,7 +19,7 @@ typedef complex<double> cd;
 #define mem(a,b) memset(a, (b), sizeof(a))
 
 const int maxn = 1e5 + 5;
-const ll MOD = 1e9 + 7; // 998244353
+const ll MOD = 998244353;
 const ll INF = 1e9;
 const int LOG = 26;
 const char min_char = 'a';
@@ -162,7 +162,7 @@ void ntt(poly<mint> & f, bool invert) {
             }
         }
     }
-if (invert) {
+    if (invert) {
         mint n_1 = inverse(mint(n));
         for (mint & x : f.a)
             x = x * n_1;
@@ -170,22 +170,20 @@ if (invert) {
 }
 poly<mint> operator* (const poly<mint>& a, const poly<mint>& b){
     poly<mint> fa = a, fb = b;
-    fa.a.resize(maxn);
-    fb.a.resize(maxn);
+    int n = 1;
+    while (n < fa.a.size() + fb.a.size()) n <<= 1;
+    fa.a.resize(n);
+    fb.a.resize(n);
 
     ntt(fa, false);
     ntt(fb, false);
-    for (int i = 0; i < maxn; i++)
+    for (int i = 0; i < n; i++)
         fa.a[i] *= fb.a[i];
     ntt(fa, true);
 
     poly<mint> result;
-    for (int i = 0; i < maxn; i++)
+    for (int i = 0; i < n; i++)
         result.a.push_back(fa.a[i]);
-    
-    for (int i = 0; i < maxn; i++){
-        if (result.a[i].val > 0) result.a[i].val = 1;
-    }
     result.removeZero();
     return result;
 }
@@ -198,42 +196,81 @@ void solve(){
     rep(i, 1, maxn-1) lg10[i] = lg10[i/10] + 1;
 
     vector<poly<mint>> res(30);
-    forn(i, maxn) res[1].a.push_back(mint(0));
-    res[1].a[1] = 1;
+    forn(i, 2) res[1].a.push_back(mint(0));
+    res[1].a[1].val = 1;
 
-    rep(i, 2, 29){
-        // init
-        forn(k, maxn) res[i].a.push_back(mint(0));
-
-        // add
+    rep(i, 2, 21){
+        // add 
         rep(j, 1, i/2){
             res[i] += res[j] * res[i-j];
         }
-        for (int k = 0; k < maxn; i++){
+        
+        for (int k = 0; k < res[i].a.size(); k++){
             if (res[i].a[k].val > 0) res[i].a[k].val = 1;
         }
+
+        while (res[i].a.size() > maxn) res[i].a.pop_back();
+
+        for (int k = 0; k < res[i].a.size(); k++){
+            if (res[i].a[k].val > 0) res[i].a[k].val = 1;
+        }
+        res[i].removeZero();
 
         // multiply
         rep(j, 1, i/2){
-            for (int k = 1; k < maxn; k++){
-                for (int l = 1; k * l < maxn; l++){
-                    if (res[j].a[k].val > 0 && res[i-j].a[l].val > 0) res[i].a[k * l].val += 1;
+            // cout << i << " " << j << "\n";
+            for (int k = 1; k < res[j].a.size(); k++){
+                for (int l = 1; l < res[i-j].a.size() && k * l < maxn; l++){
+                    // cout << i << " " << j << " " << k << " " << l << "\n";
+                    if (res[j].a[k].val > 0 && res[i-j].a[l].val > 0){
+                        if (res[i].a.size() < k * l + 1) res[i].a.resize(k*l + 1);
+                        res[i].a[k * l].val += 1;
+                    }
                 }
             }
         }
-        for (int k = 0; k < maxn; i++){
+        for (int k = 0; k < res[i].a.size(); k++){
             if (res[i].a[k].val > 0) res[i].a[k].val = 1;
         }
 
+        while (res[i].a.size() > maxn) res[i].a.pop_back();
+
         // concatenate
-        rep(j, 1, i/2){
-            for (int k = 1; k < maxn; k++){
-                for (int l = 1; lg10[k] + lg10[l] <= 5; l++){
-                    if (res[j].a[k].val > 0 && res[i-j].a[l].val > 0) res[i].a[k * pow(10, lg10[l]) + l].val += 1;
+        rep(j, 1, i-1){
+            for (int k = 1; k < res[j].a.size(); k++){
+                for (int l = 1; l < res[i-j].a.size() && lg10[k] + lg10[l] <= 5; l++){
+                    if (res[j].a[k].val > 0 && res[i-j].a[l].val > 0){
+                        if (res[i].a.size() < k * pow(10, lg10[l]) + l + 1) res[i].a.resize(k * pow(10, lg10[l]) + l + 1);
+                        res[i].a[k * pow(10, lg10[l]) + l].val += 1;
+                    }
                 }
             }
         }
+
+        for (int k = 0; k < res[i].a.size(); k++){
+            if (res[i].a[k].val > 0) res[i].a[k].val = 1;
+        }
+        while (res[i].a.size() > maxn) res[i].a.pop_back();
     }
+
+    int n; cin >> n;
+    vi cnt(maxn, 0);
+    int done = 0;
+    rep(j, 1, 29){
+        forn(i, res[j].a.size()) if (res[j].a[i].val > 0 && cnt[i] == 0){
+            done++;
+            cnt[i] = j;
+            // if (j < 6) cout << i << " ";
+        }
+        // cout << "\n";
+    }
+
+    // cout << "vi ans = {";
+    // forn(i, maxn) cout << cnt[i] << ", ";
+    // cout << "0};";
+
+    cout << cnt[n] << "\n";
+
 }
 
 int main(){
@@ -241,7 +278,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
