@@ -18,49 +18,33 @@ typedef complex<double> cd;
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
 
-const int maxn = 805;
-const ll MOD = 1e9 + 7; // 998244353
+const int maxn = 5e5 + 5;
+const ll MOD = 998244353;
 const ll INF = 1e9;
 const int LOG = 26;
 const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-vector<vector<pair<int, ll>>> adj(maxn);
-
+ll fact[maxn];
 void solve(){
-    int n, m;
-    ll p;
-    cin >> n >> m >> p;
-    vi w(n+1);
-    rep(i, 1, n) cin >> w[i];
-    forn(i, m){
-        int a, b;
-        ll s;
-        cin >> a >> b >> s;
-        adj[a].push_back({b, s});
-    }
-
-    priority_queue<pair<pair<ll, ll>, int>> pq;
-    pq.push({{0, -p}, 1});
-    vi visited(n+1, 0);
-    vi perf(n+1, 0);
-    vi money(n+1, -p);
-    while (!pq.empty()){
-        pair<pair<ll, ll>, int> curr = pq.top();
-        pq.pop();
-        int i = curr.second;
-        visited[i] = 1;
-        for (pair<int, ll> next: adj[i]){
-            int j = next.second;
-            if (visited[j] == 1) continue;
-            
+    int n; cin >> n;
+    vi a(n);
+    rep(i, 1, n-1) cin >> a[i];
+    ll tot = 0;
+    ll rem = 1;
+    rep(i, 1, n-1){
+        if (a[i] == 0){
+            tot = ((tot * i) % MOD + rem) % MOD;
+            rem = (rem * i) % MOD;
         }
+        else{
+            tot = (tot * i) % MOD;
+            rem = (rem * (i-1)) % MOD;
+        }
+        cout << tot << " ";
     }
-
-    ////////////////////////
-    // clear everything
-    rep(i, 1, n) adj[i].clear();
+    cout << "\n";
 }
 
 int main(){
@@ -69,6 +53,9 @@ int main(){
     auto start = high_resolution_clock::now();
     int T = 1;
     cin >> T;
+    fact[0] = 1;
+    fact[1] = 1;
+    fact[2] = 1;
     while(T--){
         solve();
     }

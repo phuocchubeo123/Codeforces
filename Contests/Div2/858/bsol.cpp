@@ -18,7 +18,7 @@ typedef complex<double> cd;
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
 
-const int maxn = 805;
+const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const int LOG = 26;
@@ -26,41 +26,33 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-vector<vector<pair<int, ll>>> adj(maxn);
-
 void solve(){
-    int n, m;
-    ll p;
-    cin >> n >> m >> p;
-    vi w(n+1);
-    rep(i, 1, n) cin >> w[i];
-    forn(i, m){
-        int a, b;
-        ll s;
-        cin >> a >> b >> s;
-        adj[a].push_back({b, s});
+    int n; cin >> n;
+    vi a(n);
+    forn(i, n) cin >> a[i];
+    int zero = 0, one = 0;
+    forn(i, n){
+        if (a[i] == 0) zero++;
+        if (a[i] == 1) one++;
+    }
+    
+    if (zero <= (n + 1) / 2){
+        cout << 0 << "\n";
+        return;
     }
 
-    priority_queue<pair<pair<ll, ll>, int>> pq;
-    pq.push({{0, -p}, 1});
-    vi visited(n+1, 0);
-    vi perf(n+1, 0);
-    vi money(n+1, -p);
-    while (!pq.empty()){
-        pair<pair<ll, ll>, int> curr = pq.top();
-        pq.pop();
-        int i = curr.second;
-        visited[i] = 1;
-        for (pair<int, ll> next: adj[i]){
-            int j = next.second;
-            if (visited[j] == 1) continue;
-            
-        }
+    if (zero == n){
+        cout << 1 << "\n";
+        return;
     }
 
-    ////////////////////////
-    // clear everything
-    rep(i, 1, n) adj[i].clear();
+    if (zero + one == n){
+        cout << 2 << "\n";
+        return;
+    }
+
+    cout << 1 << "\n";
+    return;
 }
 
 int main(){
