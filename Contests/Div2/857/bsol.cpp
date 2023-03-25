@@ -27,7 +27,24 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    vi b(n); forn(i, n) cin >> b[i];
+    int chk = 0, nchk = 0;
+    int ans = 0;
+    forn(i, n){
+        if (b[i] == 1){
+            nchk++;
+            if (chk == 0) ans = max(ans, nchk);
+            else ans = max(ans, chk / 2 + 1 + nchk);
+        }
+        else{
+            chk += nchk;
+            nchk = 0;
+            if (chk == 0) ans = max(ans, 0);
+            else ans = max(ans, chk / 2 + 1);
+        }
+    }
+    cout << ans << "\n";
 }
 
 int main(){

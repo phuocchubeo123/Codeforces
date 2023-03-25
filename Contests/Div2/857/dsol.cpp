@@ -27,7 +27,24 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int n; cin >> n;
+    vector<pair<int, int>> s1, s2;
+    forn(i, n){
+        int a, b;
+        cin >> a >> b;
+        s1.push_back({a, b});
+        s2.push_back({b, a});
+    }
+    sort(all(s1));
+    vi mxs1(n);
+    mxs1[n-1] = s1[n-1].second;
+    per(i, n-2, 0){
+        mxs1[i] = max(mxs1[i+1], s1[i].second);
+    }
+    int ans = INF;
+    forn(i, n-1){
+        ans = min(ans, abs(mxs1[i+1] - s1[i].first));
+    }
 }
 
 int main(){

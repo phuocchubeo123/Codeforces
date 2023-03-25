@@ -27,33 +27,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    vi b(n); forn(i, n) cin >> b[i];
-    vi cnt(105, 0);
-    forn(i, n){
-        cnt[abs(b[i])]++;
-    }
-    int two = 0, one = 0;
-    forn(i, 105){
-        if (cnt[i] == 2) two++;
-        if (cnt[i] == 1) one++;
-    }
 
-    vi mx(105), mn(105);
-    forn(i, n){
-        if (i < two + one) cout << i + 1 << " ";
-        else cout << two + one - (i - two - one) - 1 << " ";
-    }
-    cout << "\n";
-
-    forn(i, n){
-        if (i < 2 * two){
-            if (i & 1) cout << 0 << " ";
-            else cout << 1 << " ";
-        }
-        else cout << i - 2 * two + 1 << " ";
-    }
-    cout << "\n";
 }
 
 int main(){

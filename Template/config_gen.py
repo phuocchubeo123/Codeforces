@@ -1,3 +1,3 @@
 [CONTEST]
-folder_name = ..//Contests//Div2//857
-prob_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+folder_name = ..//Contests//ICPCTrain//HongKongRegional2023
+prob_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
