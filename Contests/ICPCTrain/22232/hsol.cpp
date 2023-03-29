@@ -26,43 +26,8 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void printAns(vi ans, int n, int m, bool transpose){
-    if (transpose){
-        forn(i, m){
-            forn(j, n){
-                cout << (ans[j] >> i) & 1);
-            }
-            cout << "\n";
-        }
-    }
-    else{
-        forn(i, n){
-            forn(j, m){
-                cout << ((ans[i] >> j) & 1);
-            }
-            cout << "\n";
-        }
-    }
-}
-
 void solve(){
-    int n, m; cin >> n >> m;
-    bool transpose = false;
-    if (n > m){
-        transpose = true;
-        int tmp = n;
-        n = m;
-        m = tmp;
-    }
 
-    if (n <= 10){
-        
-    }
-
-    else{
-
-    }
-    // transpose
 }
 
 int main(){
