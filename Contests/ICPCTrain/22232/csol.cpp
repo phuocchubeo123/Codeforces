@@ -27,6 +27,20 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int N, K;
+    double l, v1, v2;
+    cin >> N >> l >> v1 >> v2 >> K;
+    N = (N+K-1) / K;
+    double n = N;
+
+    if (n == 1){
+        cout << fixed << setprecision(10) << l / v2 << "\n";
+        return;
+    }
+
+    double x = l / (1 + (n-1) * (v1 / v2 + ((v2 - v1) * v1) / ((v2+v1) * v2)));
+    cout << fixed << setprecision(10);
+    cout << x / v2 + (l - x) / v1 << "\n";
 
 }
 
@@ -35,7 +49,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

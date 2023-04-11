@@ -27,45 +27,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    int m; cin >> m;
-    vi d(n+1); 
-    rep(i, 1, n) cin >> d[i];
-    vi a(m+1); rep(i, 1, m) cin >> a[i];
 
-    int l = 1, r = n+1;
-    while (l < r){
-        int mid = (l + r) / 2;
-
-        vi vis(m+1, 0);
-        stack<int> s;
-        int done = 0;
-        per(i, mid, 1){
-            if (d[i] == 0){
-                if (s.empty()) continue;
-                int x = s.top(); s.pop();
-                if ((x-1) > 0) s.push(x-1);
-            }
-            else{
-                if (vis[d[i]] == 1){
-                    if (s.empty()) continue;
-                    int x = s.top(); s.pop();
-                    if ((x-1) > 0) s.push(x-1);
-                }
-                else{
-                    vis[d[i]] = 1;
-                    s.push(a[d[i]]);
-                    done++;
-                }
-            }
-        }
-
-        if (done == m && s.empty()) r = mid;
-        else l = mid + 1;
-    }
-
-    if (l == n+1) cout << -1 << "\n";
-    else cout << l << "\n";
 }
 
 int main(){
@@ -73,7 +35,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while(T--){
         solve();
     }
