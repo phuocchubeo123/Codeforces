@@ -9,6 +9,7 @@
         "*.tcc": "cpp",
         "list": "cpp",
         "string_view": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "chrono": "cpp"
     }
 }
