@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "files.associations": {
         "array": "cpp",
@@ -14,4 +15,20 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp"
     }
+=======
+{
+    "files.associations": {
+        "array": "cpp",
+        "iostream": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "typeinfo": "cpp",
+        "*.tcc": "cpp",
+        "list": "cpp",
+        "string_view": "cpp",
+        "random": "cpp",
+        "chrono": "cpp"
+    }
+>>>>>>> 1ca1a06dcaa453346a9b1c53df3a2ce9541e2772
 }
