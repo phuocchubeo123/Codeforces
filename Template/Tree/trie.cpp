@@ -77,7 +77,7 @@ struct PersistentTrie{
     PersistentTrie(){ trie.emplace_back();}
 
     
-}
+};
 
 void solve(){
     Trie tr;

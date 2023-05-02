@@ -1,0 +1,3 @@
+2
+-H -H -H -Cl
+-F -F -Br -Cl
