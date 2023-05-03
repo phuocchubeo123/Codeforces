@@ -27,7 +27,28 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n, k;
+    cin >> n >> k;
+    vi d(10, 0);
+    forn(i, k){
+        int t;
+        cin >> t;
+        d[t] = 1;
+    }
 
+    rep(i, n, 100 * n){
+        int x = i;
+        bool flag = true;
+        while (x > 0){
+            int t = x % 10;
+            if (d[t] == 1) flag = false;
+            x /= 10;
+        }
+        if (flag){
+            cout << i << "\n";
+            return;
+        }
+    }
 }
 
 int main(){
@@ -35,7 +56,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
