@@ -27,7 +27,19 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    string s; cin >> s;
+    vector<vector<ll>> dp(5001, vector<ll>(5001, 0));
+    dp[0][0] = 1;
+    rep(i, 1, 5000){
+        dp[i][0] = (2 * dp[i-1][1] + dp[i-1][0]) % MOD;
+        rep(j, 1, i-1){
+            dp[i][j] = (dp[i-1][j-1] + 2 * dp[i-1][j+1]) % MOD;
+        }
+        dp[i][i] = 1;
+    }
 
+    cout << dp[n][s.size()] << "\n";
 }
 
 int main(){
@@ -35,7 +47,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

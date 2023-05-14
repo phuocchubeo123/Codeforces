@@ -26,8 +26,101 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+ll gcd(ll a, ll b, ll& x, ll& y) {
+    x = 1, y = 0;
+    ll x1 = 0, y1 = 1, a1 = a, b1 = b;
+    while (b1) {
+        ll q = a1 / b1;
+        tie(x, x1) = make_tuple(x1, x - q * x1);
+        tie(y, y1) = make_tuple(y1, y - q * y1);
+        tie(a1, b1) = make_tuple(b1, a1 - q * b1);
+    }
+    return a1;
+}
 
+ll inverse(ll a, ll b){
+    ll x, y;
+    ll g = gcd(a, b, x, y);
+    if (g != 1) return -1;
+    else{ x = (x % b + b) % b; return x;}
+}
+
+struct mint{
+    ll val;
+    void normalize(){
+        if (val < 0) val = MOD - (-val) % MOD;
+        if (val >= MOD) val %= MOD;
+    }
+    mint(){ val = 0;}
+    mint(ll x){ val = 1ll * x; normalize();}
+    bool operator==(const mint& other){ return val == other.val;}
+    mint operator+=(const mint& other){ (val += other.val) %= MOD; return *this;}
+    mint operator+=(const ll& x){ return *this += mint(x);}
+    mint operator-=(const mint& other){ ((val -= other.val) += MOD) %= MOD; return *this;}
+    mint operator-=(const ll& x){ return *this -= mint(x);}
+    mint operator*=(const mint& other){ val *= other.val; normalize(); return *this;}
+    mint operator*=(const ll& x){ val *= x; normalize(); return *this;}
+    mint operator/=(const mint& other){ val *= inverse(other.val, MOD); normalize(); return *this;}
+    mint operator/=(const ll& x){ val *= inverse(x, MOD); normalize(); return *this;}
+
+    friend ostream& operator<<(ostream& os, const mint& x);
+};
+
+ostream& operator<<(ostream& cout, const mint& x){ cout << x.val; return cout;}
+mint operator+(const mint& x, const mint& y){ return mint(x) += y;}
+mint operator+(const mint& x, const ll& y){ return mint(x) += y;}
+mint operator+(const ll& x, const mint& y){ return mint(x) += y;}
+mint operator-(const mint& x, const mint& y){ return mint(x) -= y;}
+mint operator-(const mint& x, const ll& y){ return mint(x) -= y;}
+mint operator-(const ll& x, const mint& y){ return mint(x) -= y;}
+mint operator*(const mint& x, const mint& y){ return mint(x) *= y;}
+mint operator*(const mint& x, const ll& y){ return mint(x) *= y;}
+mint operator*(const ll& x, const mint& y){ return mint(x) *= y;}
+mint operator/(const mint& x, const mint& y){ return mint(x) /= y;}
+mint operator/(const mint& x, const ll& y){ return mint(x) /= y;}
+mint operator/(const ll& x, const mint& y){ return mint(x) /= y;}
+mint inverse(const mint& x){ return mint(inverse(x.val, MOD));}
+mint pow(const mint& x, const int& y){
+    if (y == 0) return mint(1);
+    mint tmp = pow(x, (y >> 1));
+    return (y & 1) ? tmp * tmp *x : tmp * tmp;
+}
+
+mint inv_mod[maxn];
+void calInverse(){
+    for (int i = 1; i < maxn; i++) inv_mod[i] = inverse(mint(i));
+}
+
+void solve(){
+    int n, c; cin >> n >> c;
+    vector<int> a(n), b(n);
+    forn(i, n) cin >> a[i];
+    forn(i, n) cin >> b[i];
+    vector<vector<mint>> x(n, vector<mint>(c + 1, mint(0)));
+
+    forn(i, n){
+        forn(j, c + 1){
+            rep(k, a[i], b[i]){
+                x[i][j] += pow(mint(k), j);
+            }
+        }
+    }
+
+    vector<vector<mint>> dp(n, vector<mint>(c+1, mint(0)));
+    forn(i, n){
+        if (i == 0){
+            forn(j, c+1) dp[i][j] = x[i][j];
+            continue;
+        }
+
+        forn(j, c+1){
+            forn(k, j+1){
+                dp[i][j] += dp[i-1][k] * x[i][j-k];
+            }
+        }
+    }
+
+    cout << dp[n-1][c] << "\n";
 }
 
 int main(){
@@ -35,7 +128,8 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
+    calInverse();
     while(T--){
         solve();
     }
