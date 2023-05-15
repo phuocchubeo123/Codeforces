@@ -27,7 +27,26 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    int a; cin >> a;
+    vi x(n+1); rep(i, 1, n) cin >> x[i];
+    vector<vector<vector<ll>>> dp(n+1, vector<vector<ll>>(n+1, vector<ll>(2501, 0)));
+    dp[0][0][0] = 1;
+    rep(i, 1, n){
+        dp[i][0][0] = 1;
+        rep(j, 1, n){
+            forn(k, 2501){
+                dp[i][j][k] += dp[i-1][j][k];
+                if (k + x[i] <= 2500) dp[i][j][k+x[i]] += dp[i-1][j-1][k];
+            }
+        }
+    }
 
+    ll ans = 0;
+    rep(i, 1, n){
+        ans += dp[n][i][i * a];
+    }
+    cout << ans << "\n";
 }
 
 int main(){
@@ -35,7 +54,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

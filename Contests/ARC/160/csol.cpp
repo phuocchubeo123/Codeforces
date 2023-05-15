@@ -27,45 +27,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    vi a(n), b(n);
-    forn(i, n) cin >> a[i];
-    forn(i, n) cin >> b[i];
-    sort(all(a));
-    sort(all(b));
-    int pt = 0;
-    vi c(n);
-    forn(i, n){
-        while (a[pt] <= b[i]){
-            pt++;
-            if (pt == n) break;
-        }
 
-        c[i] = n - pt;
-        if (pt == n){
-            rep(j, i+1, n-1) c[j] = 0;
-            break;
-        }
-    }
-
-    // forn(i, n) cout << a[i] << " ";
-    // cout << "\n";
-    // forn(i, n) cout << b[i] << " ";
-    // cout << "\n";
-    // forn(i, n) cout << c[i] << " ";
-    // cout << "\n";
-
-    ll ans = 1;
-    per(i, n-1, 0){
-        ll mul = c[i] - (n-i-1);
-        if (mul <= 0){
-            cout << 0 << "\n";
-            return;
-        }
-        (ans *= mul) %= MOD;
-    }
-
-    cout << ans << "\n";
 }
 
 int main(){
