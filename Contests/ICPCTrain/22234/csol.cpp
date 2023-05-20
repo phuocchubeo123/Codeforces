@@ -26,29 +26,8 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-bool chk(string s){
-    forn(i, s.size() - 2){
-        if (s[i] == 'b' && s[i+1] == 'i' && s[i+2] == 'e') return true;
-    }
-    return false;
-}
-
 void solve(){
-    int n; cin >> n;
-    map<string, int> st;
-    forn(i, n){
-        int m; cin >> m;
-        int cnt = 0;
-        forn(j, m){
-            string s; cin >> s;
-            if (!chk(s)) continue;
-            if (st[s] == 1) continue;
-            cout << s << "\n";
-            st[s] = 1;
-            cnt++;
-        }
-        if (cnt == 0) cout << "Time to play Genshin Impact, Teacher Rice!\n";
-    }
+
 }
 
 int main(){
@@ -56,7 +35,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while(T--){
         solve();
     }

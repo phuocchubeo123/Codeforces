@@ -18,7 +18,7 @@ typedef complex<double> cd;
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
 
-const int maxn = 1e5 + 5;
+const int maxn = 1e6 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const int LOG = 26;
@@ -26,34 +26,42 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-bool chk(string s){
-    forn(i, s.size() - 2){
-        if (s[i] == 'b' && s[i+1] == 'i' && s[i+2] == 'e') return true;
-    }
-    return false;
+int rand(int a, int b){
+    return a + rand() % (b - a + 1);
 }
 
 void solve(){
-    int n; cin >> n;
-    map<string, int> st;
+    int n = rand(1, 10), q = rand(80, 100);
+    cout << n << " " << q << "\n";
     forn(i, n){
-        int m; cin >> m;
-        int cnt = 0;
+        int m = rand(1, 10);
+        string s;
         forn(j, m){
-            string s; cin >> s;
-            if (!chk(s)) continue;
-            if (st[s] == 1) continue;
-            cout << s << "\n";
-            st[s] = 1;
-            cnt++;
+            s.push_back('a' + rand(0, 25));
         }
-        if (cnt == 0) cout << "Time to play Genshin Impact, Teacher Rice!\n";
+        cout << s << "\n";
+    }
+
+    forn(i, q){
+        vi alr(26, 0);
+        string s;
+        forn(j, 26){
+            while (true){
+                int x = rand(0, 25);
+                if (alr[x] == 1) continue;
+                s.push_back('a'+x);
+                alr[x] = 1;
+                break;
+            } 
+        }
+        cout << s << "\n";
     }
 }
 
-int main(){
+int main(int argc, char* argv[]){
     ios::sync_with_stdio(false);
     cin.tie(0);
+    srand(atoi(argv[1]));
     auto start = high_resolution_clock::now();
     int T = 1;
     // cin >> T;

@@ -18,7 +18,7 @@ typedef complex<double> cd;
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
 
-const int maxn = 1e6 + 5;
+const int maxn = 1e5 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const int LOG = 26;
@@ -26,69 +26,35 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-/////////////////////////////////////////
-// Start of implementation
-const int K = 27; // alphabet size
+vi rk(26);
 
-int nxt[maxn][K];
-ll alr[maxn][K];
-ll aft[K][K];
-
-// we store the trie as an array of vertices
-struct Trie{
-    int cnt;
-    
-    Trie(){ 
-        cnt = 0;
-        forn(i, maxn) forn(j, K){
-            nxt[i][j] = -1;
-            alr[i][j] = 0;
-        }
-        forn(i, K) forn(j, K) aft[i][j] = 0;
+bool gt(string u, string v){
+    forn(i, min(u.size(), v.size())){
+        if (rk[u[i]-'a'] > rk[v[i]-'a']) return true; 
+        if (rk[u[i]-'a'] < rk[v[i]-'a']) return false;  
     }
-
-    void add_string(string const& s){
-        int v = 0;
-        for (char ch: s){
-            int c = ch - '`';
-            if (nxt[v][c] == -1){
-                cnt++;
-                nxt[v][c] = cnt;
-            }
-            forn(i, K){
-                aft[c][i] += alr[v][i];
-            }
-
-            alr[v][c]++;
-            v = nxt[v][c];
-        }
-    }
-};
+    if (u.size() > v.size()) return true;
+    return false;
+}
 
 void solve(){
     int n; cin >> n;
     int q; cin >> q;
-    Trie tr;
 
+    vector<string> ss;
     forn(i, n){
         string s; 
         cin >> s;
-        s.push_back('`');
-        tr.add_string(s);
+        ss.push_back(s);
     }
 
     forn(i, q){
         string s; cin >> s;
-        reverse(all(s));
-        s.push_back('`');
-        reverse(all(s));
-        // cout << s << "\n";
+        forn(i, 26) rk[s[i]-'a'] = i;
         ll ans = 0;
-        forn(j, K){
-            int x = s[j] - '`';
-            rep(k, j+1, K-1){
-                int y = s[k] - '`';
-                ans += aft[x][y];
+        forn(j, n){
+            rep(k, j+1, n-1){
+                if (gt(ss[j], ss[k])) ans++;
             }
         }
         cout << ans << "\n";
