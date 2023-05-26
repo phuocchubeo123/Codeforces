@@ -26,8 +26,77 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+vvi adj(maxn);
+vi deg(maxn, 0);
+vi sz(maxn, 1);
+vi vis(maxn, 0);
 
+void solve(){
+    int n; cin >> n;
+    forn(i, n-1){
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+        deg[u]++;
+        deg[v]++;
+    }
+
+    if (n % 2 == 1){
+        cout << -1 << "\n";
+        return;
+    }
+
+    set<pair<int, int>> nodes;
+    rep(i, 1, n){
+        nodes.insert({deg[i], i});
+    }
+
+    // for (pii p: nodes){
+    //     cout << p.first << " " << p.second << "; ";
+    // }
+    // cout << "\n";
+    // rep(i, 1, n) cout << sz[i] << " ";
+    // cout << "\n";
+
+    int ans = 0;
+    while (!nodes.empty()){
+        pii p = *nodes.begin();
+        nodes.erase({p.first, p.second});
+        int dg = p.first, nd = p.second;
+        vis[nd] = 1;
+        if (sz[nd] % 2 == 0){
+            for (int x: adj[nd]){
+                if (vis[x] == 0){
+                    nodes.erase({deg[x], x});
+                    deg[x]--;
+                    nodes.insert({deg[x], x});
+                    ans++;
+                }
+            }
+        }
+        else{
+            for (int x: adj[nd]){
+                if (vis[x] == 0){
+                    nodes.erase({deg[x], x});
+                    deg[x]--;
+                    nodes.insert({deg[x], x});
+                    sz[x] += sz[nd];
+                }
+            }
+        }
+
+        // for (pii p: nodes){
+        //     cout << p.first << " " << p.second << "; ";
+        // }
+        // cout << "\n";
+        // rep(i, 1, n) cout << sz[i] << " ";
+        // cout << "\n";
+        // cout << "ans: " << ans << "\n";
+    }
+
+    cout << ans << "\n";
+    return;
 }
 
 int main(){
@@ -35,7 +104,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

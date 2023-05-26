@@ -26,62 +26,36 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-ll a[maxn], b[maxn];
-
-pair<ll, ll> sv(ll n){
-    if (n == 0){
-        return {0, 0};
-    }
-    ll lo = 1, hi = maxn;
-    while (lo < hi){
-        ll mi = (lo + hi + 1) / 2;
-        if (mi * mi * mi > n){
-            hi = mi-1;
-        }
-        else{
-            lo = mi;
-        }
-    }
-
-    // cout << n << " " << lo << "\n";
-
-    if (lo == 1){
-        return {n, n};
-    }
-
-    if (lo * lo * lo == n){
-        return sv(n-1);
-    }
-
-    ll ans = a[lo-1];
-    pair<ll, ll> ans2 = sv(n - lo * lo * lo);
-    if (ans2.first + 1 >= ans){
-        return {ans2.first + 1, ans2.second + lo * lo * lo};
-    }
-    else{
-        return sv(lo * lo * lo - 1);
-    }
-}
-
 void solve(){
-    a[1] = 7; b[1] = 7;
-    for (ll i = 2; i < maxn; i++){
-        a[i] = a[i-1] - 1;
-        for (ll x = 0; x < (i + 1) * (i + 1) * (i + 1); x += i * i * i){
-            ll y = (i + 1) * (i + 1) * (i + 1) - x;
-            if (y >= b[i-1]){
-                a[i] += 1;
-                b[i] = x + b[i-1];
+    ll n; cin >> n;
+    ll ans = 0, ans2;
+    rep(i, 1, n){
+        ll x = i;
+        ll as = 0;
+        while (x > 0){
+            ll lo = 1, hi = maxn;
+            while (lo < hi){
+                ll mi = (lo + hi + 1) / 2;
+                // cout << lo << " " << hi << " " << mi << "\n";
+                if (mi * mi * mi > x){
+                    hi = mi-1;
+                }
+                else{
+                    lo = mi;
+                }
             }
+            // cout << x << " " << lo << "\n";
+            as++;
+            x -= lo * lo * lo;
+        }
+        // cout << "ans: " << as << "\n";
+        if (as >= ans){
+            ans = as;
+            ans2 = i;
         }
     }
 
-    // rep(i, 1, 10) cout << a[i] << " " << b[i] << "\n";
-
-    ll n; cin >> n;
-    pair<ll, ll> ans = sv(n);
-    cout << ans.first << " " << ans.second << "\n";
-    return;
+    cout << ans << " " << ans2 << "\n";
 }
 
 int main(){

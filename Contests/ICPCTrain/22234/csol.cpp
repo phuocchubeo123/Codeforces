@@ -27,7 +27,30 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    if (n == 1){
+        cout << 1 << "\n";
+        return;
+    }
+    int m = 2 * n;
+    int a, b;
+    rep(i, 1, n){
+        int j = (n + i - 1) / i;
+        // cout << i << " " << j << "\n";
+        if (i + j < m){
+            a = i; b = j;
+            m = i+j;
+        }
 
+    }
+
+    // cout << a << " " << b << "\n";
+
+    vvi ans;
+    per(i, b-1, 0){
+        rep(j, i * a, min((i+1) * a - 1, n-1)) cout << j + 1 << " ";
+    }
+    cout << "\n";
 }
 
 int main(){
@@ -35,7 +58,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

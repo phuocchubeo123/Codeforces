@@ -18,7 +18,7 @@ typedef complex<double> cd;
 #define foreach(a) for(auto it = a.begin(); it != a.end(); it++)
 #define mem(a,b) memset(a, (b), sizeof(a))
 
-const int maxn = 1e5 + 5;
+const int maxn = 1e6 + 5;
 const ll MOD = 1e9 + 7; // 998244353
 const ll INF = 1e9;
 const int LOG = 26;
@@ -26,20 +26,21 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
-    int n; cin >> n;
-    ll k; cin >> k;
-    ll a[n+1];
-    forn(i, n+1) cin >> a[i];
-    
+int rand(int a, int b){
+    return a + rand() % (b - a + 1);
 }
 
-int main(){
+void solve(){
+}
+
+int main(int argc, char* argv[]){
     ios::sync_with_stdio(false);
     cin.tie(0);
+    int n = atoi(argv[1]);
+    cout << n;
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

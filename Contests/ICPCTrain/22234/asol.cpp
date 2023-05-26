@@ -27,7 +27,35 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    vector<ll> a(2); forn(i, 2) cin >> a[i];
+    ll m; cin >> m;
+    ll ans = 0;
+    sort(all(a));
+    if (a[1] >= m){
+        cout << 0 << "\n";
+        return;
+    }
+    if (a[1] <= 0){
+        cout << -1 << "\n";
+        return;
+    }
+    if (a[0] < 0){
+        ans += abs(a[0]) / a[1];
+        a[0] += ans * a[1];
+    }
+    while (true){
+        sort(all(a));
+        if (a[1] >= m){
+            cout << ans << "\n";
+            return;
+        }
+        if (a[1] <= 0){
+            cout << -1 << "\n";
+            return;
+        }
+        a[0] = a[0] + a[1];
+        ans++;
+    }
 }
 
 int main(){
@@ -35,7 +63,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
