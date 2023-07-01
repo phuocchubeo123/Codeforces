@@ -45,7 +45,7 @@ struct SegTree{
         update(1, 1, sz, pos, val);
     }
 
-    void update(int node, int st, int en, int pos, int val){
+    void update(int node, int st, int en, int pos, ll val){
         if ((st > pos) || (en < pos)) return;
         if ((st == pos) && (en == pos)){
             // seg[node].update(val) ;
@@ -81,6 +81,21 @@ struct SegTree{
         else return mid - st + 1 + find(2 * node + 1, mid+1, en, val - seg[2 * node]);
     }
 };
+
+/* Lazy Segment Tree*/
+
+struct Node{
+    ll val;
+    Node(int a){val = 1ll * a;}
+    Node(ll a){val = a;}
+    Node(){val = 0;}
+};
+
+Node operator+(const Node& x, const Node& y){
+    Node res;
+    res.val = x.val + y.val;
+    return res;
+}
 
 template <typename T>
 struct LazySegTree{

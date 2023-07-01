@@ -26,29 +26,69 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-struct dsu{
-    vi p;
-
-    dsu(){}
-    dsu(int n){p.resize(n); forn(i, n) p[i] = i;}
-
-    int get(int u){
-        return (u == p[u]) ? u : (p[u] = get(p[u]));
-    }
-    bool unite(int u, int v){
-        u = get(u); v = get(v);
-        if (u != v){ p[u] = v; return true;}
-        return false;
-    }
-};
+/*
+ * Directed graph 
+ */
 
 int n;
-vector<vector<int>> adj(maxn);
-vector<bool> visited(maxn);
-vector<int> parent(maxn);
+vector<vector<int>> adj;
+vector<char> color;
+vector<int> parent;
 int cycle_start, cycle_end;
-vector<map<int, int>> hsh_adj(maxn);
-vi edges;
+
+bool dfs(int v) {
+    color[v] = 1;
+    for (int u : adj[v]) {
+        if (color[u] == 0) {
+            parent[u] = v;
+            if (dfs(u))
+                return true;
+        } else if (color[u] == 1) {
+            cycle_end = v;
+            cycle_start = u;
+            return true;
+        }
+    }
+    color[v] = 2;
+    return false;
+}
+
+void find_cycle() {
+    color.assign(n, 0);
+    parent.assign(n, -1);
+    cycle_start = -1;
+
+    for (int v = 0; v < n; v++) {
+        if (color[v] == 0 && dfs(v))
+            break;
+    }
+
+    if (cycle_start == -1) {
+        cout << "Acyclic" << endl;
+    } else {
+        vector<int> cycle;
+        cycle.push_back(cycle_start);
+        for (int v = cycle_end; v != cycle_start; v = parent[v])
+            cycle.push_back(v);
+        cycle.push_back(cycle_start);
+        reverse(cycle.begin(), cycle.end());
+
+        cout << "Cycle found: ";
+        for (int v : cycle)
+            cout << v << " ";
+        cout << endl;
+    }
+}
+
+/*
+ * Undirected graph 
+ */
+
+int n;
+vector<vector<int>> adj;
+vector<bool> visited;
+vector<int> parent;
+int cycle_start, cycle_end;
 
 bool dfs(int v, int par) { // passing vertex and its parent vertex
     visited[v] = true;
@@ -85,51 +125,15 @@ void find_cycle() {
             cycle.push_back(v);
         cycle.push_back(cycle_start);
 
-        forn(i, cycle.size()-1){
-            edges.push_back(hsh_adj[cycle[i]][cycle[i+1]]);
-        }
+        cout << "Cycle found: ";
+        for (int v : cycle)
+            cout << v << " ";
+        cout << endl;
     }
 }
 
 void solve(){
-    int m;
-    cin >> n >> m;
-    vi u(m), v(m);
-    dsu d(n);
-    forn(i, m){
-        cin >> u[i] >> v[i];
-        u[i]--; v[i]--;
-    }
 
-    bool flag = false;
-    forn(i, m){
-        // d.unite(u[i], v[i]);
-        cout.flush();
-        adj[u[i]].push_back(v[i]);
-        adj[v[i]].push_back(u[i]);
-        hsh_adj[u[i]][v[i]] = i+1;
-        hsh_adj[v[i]][u[i]] = i+1;
-        // cout << i+1 << " " << u[i] + 1 << " " << v[i] + 1 << "\n";
-        if (d.unite(u[i], v[i]) == false){
-            find_cycle();
-            flag = true;
-            break;
-        }
-    }
-
-    if (!flag){
-        cout << -1 << "\n";
-    }
-    else{
-        sort(all(edges));
-        forn(i, edges.size()){
-            cout << edges[i] << ((i == edges.size()-1) ? "" : " ");
-        }
-        cout << "\n";
-    }
-
-    forn(i, n) adj[i].clear();
-    edges.clear();
 }
 
 int main(){

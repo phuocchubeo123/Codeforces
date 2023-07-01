@@ -27,7 +27,84 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int N; cin >> N;
+    vector<string> s(N);
+    forn(i, N) cin >> s[i];
 
+    vvi rk(N);
+    int C = 0;
+    forn(i, N){
+        forn(j, s[i].size()){
+            rk[i].push_back(C);
+            C++;
+        }
+    }
+
+    int n = 0;
+    forn(i, N) n += s[i].size();
+
+    vector<pair<int, int>> unrk(n);
+    forn(i, N){
+        forn(j, s[i].size()){
+            unrk[rk[i][j]] = {i, j};
+        }
+    }
+
+
+    const int alphabet = 256;
+
+    vector<int> c(n), cnt(max(n, alphabet), 0);
+    vector<int> p(n);
+
+    forn(i, N){
+        forn(j, s[i].size()) cnt[s[i][j] - 'a']++;
+    }
+    for (int i = 1; i < alphabet; i++)
+        cnt[i] += cnt[i-1];
+    for (int i = 0; i < N; i++){
+        forn(j, s[i].size()){
+            p[--cnt[s[i][j] - 'a']] = rk[i][j];
+        }
+    }
+
+    c[p[0]] = 0;
+
+    int classes = 1;
+    for (int i = 1; i < n; i++) {
+        if (s[p[i]] != s[p[i-1]])
+            classes++;
+        c[p[i]] = classes - 1;
+    }
+
+    vector<int> pn(n), cn(n);
+    for (int h = 0; (1 << h) < n; ++h) {
+        for (int i = 0; i < n; i++) {
+            pn[i] = p[i] - (1 << h);
+            if (pn[i] < 0)
+                pn[i] += n;
+        }
+        fill(cnt.begin(), cnt.begin() + classes, 0);
+        for (int i = 0; i < n; i++)
+            cnt[c[pn[i]]]++;
+        for (int i = 1; i < classes; i++)
+            cnt[i] += cnt[i-1];
+        for (int i = n-1; i >= 0; i--)
+            p[--cnt[c[pn[i]]]] = pn[i];
+        cn[p[0]] = 0;
+        classes = 1;
+        for (int i = 1; i < n; i++) {
+            pair<int, int> cur = {c[p[i]], c[(p[i] + (1 << h)) % n]};
+            pair<int, int> prev = {c[p[i-1]], c[(p[i-1] + (1 << h)) % n]};
+            if (cur != prev)
+                ++classes;
+            cn[p[i]] = classes - 1;
+        }
+        c.swap(cn);
+    }
+
+    forn(i, n){
+        
+    }
 }
 
 int main(){
@@ -35,7 +112,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
