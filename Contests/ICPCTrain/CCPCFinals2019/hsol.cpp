@@ -27,34 +27,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    map<string, int> champ;
-    forn(i, n){
-        forn(j, 5){
-            string s; cin >> s;
-            champ[s] = 1;
-        }
-    }
 
-    int m; cin >> m;
-    vi main_p(6), fill_p(6);
-    forn(i, m){
-        string s; cin >> s;
-        int pos; cin >> pos;
-        if (champ[s] == 1){
-            main_p[pos]++;
-        }
-        else fill_p[pos]++;
-    }
-
-    int ans = 0;
-    rep(pos, 1, 5) ans += main_p[pos];
-
-    rep(pos, 1, 5){
-        ans = min(ans, main_p[pos] + fill_p[pos]);
-    }
-
-    cout << ans << "\n";
 }
 
 int main(){
@@ -62,7 +35,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while(T--){
         solve();
     }

@@ -26,8 +26,61 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+ll gcd(ll a, ll b){
+    if (a == 0) return b;
+    if (b == 0) return a;
+    if (a > b) return gcd(b, a);
+    if (b % a == 0) return a;
+    return gcd(b % a, a);
+}
 
+void solve(){
+    ll x; cin >> x;
+    int n; cin >> n;
+    ll m = 1;
+    while (m < x) m *= 2;
+
+    // cout << "m: " << m << "\n";
+
+    vector<ll> l(n), r(n);
+    forn(i, n) cin >> l[i] >> r[i];
+
+    if (x == 1){
+        forn(i, n){
+            cout << r[i] - l[i] + 1 << "\n";
+        }
+        return;
+    }
+
+    vi can(m, 0);
+    for (ll i = 0; i < m; i++){
+        if (gcd((i * x) ^ x, x) == 1) can[i] = 1;
+    }
+
+    vi pref(m, 0), suf(m, 0);
+    pref[0] = can[0];
+    for (ll i = 1; i < m; i++){
+        pref[i] = pref[i-1] + can[i];
+    }
+
+    suf[m-1] = can[m-1];
+    for (ll i = m-2; i >= 0; i--){
+        suf[i] = suf[i+1] + can[i];
+    }
+
+    forn(i, n){
+        ll L = l[i] / m;
+        ll R = r[i] / m + 1;
+        ll ans = (R - L) * pref[m-1];
+        // cout << l[i] % m << " " << r[i] % m << "\n";
+        if (l[i] % m > 0){
+            ans -= pref[l[i] % m - 1];
+        }
+        if (r[i] % m < m-1){
+            ans -= suf[r[i] % m + 1];
+        }
+        cout << ans << "\n";
+    }
 }
 
 int main(){
@@ -35,7 +88,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }
