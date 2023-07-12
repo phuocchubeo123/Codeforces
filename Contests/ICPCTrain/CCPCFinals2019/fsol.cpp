@@ -26,8 +26,47 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
+int tcase = 0;
 void solve(){
+    int n; cin >> n;
+    vector<pair<int, int>> tourist(n);
+    forn(i, n){
+        cin >> tourist[i].second >> tourist[i].first;
+    }
+    sort(all(tourist));
+    reverse(all(tourist));
 
+    // cout << n << "\n";
+    // forn(i, n) cout << tourist[i].first << " " << tourist[i].second << "\n";
+    // cout << "\n";
+
+    int ans = 0;
+    for (int i = 0; i < tourist.size(); i += 2){
+        if (i + 1 < tourist.size()){
+            int t1 = tourist[i].first, w1 = tourist[i].second;
+            int t2 = tourist[i+1].first, w2 = tourist[i+1].second;
+            if (w1 == 1 && w2 == 1){
+                ans += t1 + 2;
+                continue;
+            }
+            if (w1 == 1 && w2 == 2){
+                ans += t1 + t2 + 1;
+                continue;
+            }
+            if (w1 == 2){
+                ans += 2 * t1 + 1;
+                continue;
+            }
+        }
+
+        else{
+            int t = tourist[i].first, w = tourist[i].second;
+            if (w == 1) ans += t + 2;
+            else ans += 2 * t + 1;
+        }
+    }
+
+    cout << ans << "\n";
 }
 
 int main(){
@@ -37,6 +76,8 @@ int main(){
     int T = 1;
     cin >> T;
     while(T--){
+        tcase++;
+        cout << "Case #" << tcase << ": ";
         solve();
     }
     auto stop = high_resolution_clock::now();

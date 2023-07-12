@@ -27,14 +27,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    for (int i = 1; i <= n; i++){
-        for (int j = 1; j <= i; j++){
-            cout << j << " " << i << " ";
-            cout << i << " " << j << " " << 1 << " ";
-            cout << i << " " << j << " " << 2 << "\n";
-        }
-    }
+
 }
 
 int main(){
@@ -43,11 +36,7 @@ int main(){
     auto start = high_resolution_clock::now();
     int T = 1;
     cin >> T;
-    int tcase = 0;
     while(T--){
-        tcase++;
-        cout << "Case #" << tcase << ":\n";
-        cout << "YES\n";
         solve();
     }
     auto stop = high_resolution_clock::now();
