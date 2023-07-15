@@ -101,7 +101,7 @@ template <typename T>
 struct LazySegTree{
     int sz;
     vector<T> seg;
-    vector<T> lazy;
+    vector<ll> lazy;
   
     LazySegTree(int s){
         sz = s;
