@@ -27,7 +27,68 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;    
+    int k; cin >> k;
+    vi a(n+1); rep(i, 1, n) cin >> a[i];
 
+    vector<vector<bool>> occur(n+1, vector<bool>(k+1, 0));
+    occur[1][0] = 1;
+    rep(i, 2, n){
+        rep(j, 0, k){
+            occur[i][j] = occur[i-1][j] | ((j >= a[i-1]) ? occur[i-1][j-a[i-1]] : 0);
+        }
+    }
+
+
+    vector<vector<bool>> occur2(n+1, vector<bool>(k+1, 0));
+    occur2[n][0] = 1;
+    per(i, n-1, 1){
+        rep(j, 0, k){
+            occur2[i][j] = occur2[i+1][j] | ((j >= a[i+1]) ? occur2[i+1][j-a[i+1]] : 0);
+        }
+    }
+
+
+    vvi window(n+1, vi(k+1, 0));
+    rep(i, 1, n){
+        rep(j, 1, k){
+            window[i][j] = window[i][j-1] + occur2[i][j-1] - ((j >= a[i] + 1) ? occur2[i][j-a[i]-1] : 0);
+        }
+    }
+
+    // rep(i, 1, n){
+    //     rep(j, 0, k) cout << window[i][j] << " ";
+    //     cout << "\n";
+    // }
+
+    int ans = 0;
+    rep(i, 1, n){
+        bool flag = false;
+
+        ll tot = 0;
+        rep(j, 1, n) if (j != i) tot += 1ll * a[j];
+        // cout << "tot: " << tot << "\n";
+        if (tot < k - a[i]){
+            ans++;
+            continue;
+        }
+        if (tot < k){
+            continue;
+        }
+
+        // cout << i << ":\n";
+        rep(j, 0, k){
+            if ((occur[i][j] > 0) && (window[i][k-j] > 0)){
+                // cout << j << " ";
+                flag = true;
+            }
+        }
+        // cout << '\n';
+
+        if (!flag) ans++;
+    }
+
+    cout << ans << "\n";
 }
 
 int main(){
@@ -35,7 +96,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

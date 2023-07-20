@@ -27,7 +27,63 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    vi a(n), b(n);
+    forn(i, n){
+        cin >> a[i];
+    }
+    forn(i, n){
+        cin >> b[i];
+    }
 
+    if (n % 2 == 0){
+        cout << -1 << "\n";
+        return;
+    } 
+
+    int pivot;
+    vi can;
+    forn(i, n){
+        if (a[i] == 0 || b[i] == 0) pivot = i;
+        else can.push_back(i);
+    }
+
+    int z;
+    int st = 0;
+    vi steps;
+    if (a[pivot] == 0){
+        z = b[pivot];
+        steps.push_back(b[pivot]);
+        st = 1;
+    }
+    else{
+        z = a[pivot];
+    }
+
+    forn(i, n/2){
+        int c1 = can[i*2];
+        int c2 = can[i*2+1];
+
+        int x1 = a[c1], x2 = a[c2], y1 = b[c1], y2 = b[c2];
+
+        steps.push_back(x1);
+        steps.push_back(y1);
+        steps.push_back(x2);
+        steps.push_back(x1);
+        steps.push_back(z);
+        steps.push_back(x2);
+        steps.push_back(x1);
+        steps.push_back(y2);
+        steps.push_back(x2);
+        steps.push_back(z);
+    }
+
+    if (st == 0) steps.push_back(z);
+
+    cout << steps.size() << "\n";
+    for (int x: steps) cout << x << " ";
+    cout << "\n";
+    return;
 }
 
 int main(){
@@ -35,7 +91,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

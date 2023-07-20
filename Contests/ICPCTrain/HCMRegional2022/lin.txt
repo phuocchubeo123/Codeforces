@@ -1,0 +1,15 @@
+7
+aabbccdd
+2
+aaa
+2
+aaaabbbbccdd
+3
+aaabbbbccdd
+3
+bbbccccddee
+3
+aa
+2
+aaaabbbb
+3
