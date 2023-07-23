@@ -27,7 +27,30 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
+    int n; cin >> n;
+    ll a, b;
+    cin >> a >> b;
+    vector<ll> h(n);
+    forn(i,n) cin >> h[i];
 
+    ll l = 0, r = 1e9;
+    while (l < r){
+        ll m = (l + r) / 2;
+        ll need = 0;
+        forn(i, n){
+            if (h[i] <= b * m) continue;
+            need += (h[i] - b * m + a - b - 1) / (a - b);
+        }
+
+        if (need > m){
+            l = m + 1;
+        }
+        else{
+            r = m;
+        }
+    }
+
+    cout << l << "\n";
 }
 
 int main(){
@@ -35,7 +58,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

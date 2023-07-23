@@ -48,7 +48,7 @@ struct SegTree{
     void update(int node, int st, int en, int pos, ll val){
         if ((st > pos) || (en < pos)) return;
         if ((st == pos) && (en == pos)){
-            // seg[node].update(val) ;
+            seg[node].val += val;
             return;
         }
         int mid = (st + en) / 2;
@@ -188,6 +188,137 @@ struct LazySegTree{
         int mid = (st + en) / 2;
         if (seg[2 * node] >= val) return find(2 * node, st, mid, val);
         else return mid - st + 1 + find(2 * node + 1, mid+1, en, val - seg[2 * node]);
+    }
+};
+
+// Lazy seg tree arithmetic progression (but backward, be careful)
+// Tested against ARC 077 E
+struct Node{
+    ll val;
+    Node(int a){val = 1ll * a;}
+    Node(ll a){val = a;}
+    Node(){val = 0;}
+};
+
+Node operator+(const Node& x, const Node& y){
+    Node res;
+    res.val = x.val + y.val;
+    return res;
+}
+
+template <typename T>
+struct LazySegTreeArith{
+    int sz;
+    vector<T> seg;
+    vector<ll> lazy;
+    vector<ll> lazy2;
+  
+    LazySegTreeArith(int s){
+        sz = s;
+        seg.resize(4 * s);
+        lazy.resize(4 * s);
+        lazy2.resize(4 * s);
+    }
+
+    void dump_lazy(int node, int st, int en){
+        int mid = (st + en) / 2;
+
+        if (lazy[node]){
+            seg[node].val += lazy[node] * (en - st + 1);
+            if (st != en){lazy[2*node] += lazy[node]; lazy[2*node+1] += lazy[node];}
+            lazy[node] = 0;
+        }
+
+        if (lazy2[node]){
+            seg[node].val += (lazy2[node] * (en - st + 1) * (en - st + 2)) / 2;
+            if (st != en){
+                lazy[2*node] += (lazy2[node] * (en - mid));
+                lazy2[2*node] += lazy2[node];
+                lazy2[2*node+1] += lazy2[node];
+            }
+            lazy2[node] = 0;
+        }
+
+    }
+
+    void update(int pos, int val){
+        update(1, 1, sz, pos, val);
+    }
+
+    void update(int node, int st, int en, int pos, ll val){
+        dump_lazy(node, st, en);
+        int mid = (st + en) / 2;
+
+        if ((st > pos) || (en < pos)) return;
+        if ((st == pos) && (en == pos)){
+            seg[node].val += val;
+            return;
+        }
+
+        update(2*node, st, mid, pos, val);
+        update(2*node+1, mid+1, en, pos, val);
+        seg[node] = seg[2*node] + seg[2*node+1];
+    }
+
+    void rangeUpdate(int l, int r, int val){
+        rangeUpdate(1, 1, sz, l, r, val);
+    }
+
+    void rangeUpdate(int node, int st, int en, int l, int r, ll val){
+        dump_lazy(node, st, en);
+        if ((st > r) || (en < l)) return;
+        if ((st >= l) && (en <= r)){
+            seg[node].val += val * (en - st + 1);
+            if (st != en){
+                lazy[2*node] += val;
+                lazy[2*node+1] += val;
+            }
+            return;
+        }
+        int mid = (st + en) / 2;
+        rangeUpdate(2*node, st, mid, l, r, val);
+        rangeUpdate(2*node+1, mid+1, en, l, r, val);
+        seg[node] = seg[2*node] + seg[2*node+1];
+    }
+
+    void arithUpdate(int l, int r, ll val){
+        arithUpdate(1, 1, sz, l, r, val + (r - sz));
+    }
+
+    void arithUpdate(int node, int st, int en, int l, int r, ll val){
+        dump_lazy(node, st, en);
+        int mid = (st + en) / 2;
+        if ((st > r) || (en < l)) return;
+        if ((st >= l) && (en <= r)){
+            seg[node].val += (val) * (en - st + 1) + (en - st + 1) * (en - st + 2) / 2;
+            if (st != en){
+                lazy[2*node] += val + (en - mid);
+                lazy[2*node+1] += val;
+                lazy2[2*node]++;
+                lazy2[2*node+1]++;
+            }
+            return;
+        }
+        arithUpdate(2*node, st, mid, l, r, val + (en - mid));
+        arithUpdate(2*node+1, mid+1, en, l, r, val);
+        seg[node] = seg[2*node] + seg[2*node+1];
+    }
+
+    T query(int l, int r){
+        return query(1, 1, sz, l, r);
+    }
+
+    T query(int node, int st, int en, int l, int r){
+        dump_lazy(node, st, en);
+        if ((st > r) || (en < l)) return T();
+        if ((l <= st) && (en <= r)){
+            // cout << "st: " << st << " " << en << "\n";
+            return seg[node];
+        }
+        int mid = (st + en) / 2;
+        T q1 = query(2*node, st, mid, l, r);
+        T q2 = query(2*node+1, mid+1, en, l, r);
+        return (q1+q2);
     }
 };
 
