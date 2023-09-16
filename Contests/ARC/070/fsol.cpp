@@ -26,8 +26,68 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+bool query(int x, int y){
+    cout << "? " << x << " " << y << "\n";
+    cout.flush();
+    char c;
+    cin >> c;
+    if (c == 'Y') return true;
+    else return false;
+}
 
+void solve(){
+    int a, b;
+    cin >> a >> b;
+    int n = a + b;
+    if (a <= b){
+        cout << "Impossible\n";
+        cout.flush();
+        return;
+    }
+
+    stack<int> st;
+
+    for (int i = 0; i < n; i++){
+        if (st.empty()){
+            // cout << "empty! " << i << "\n";
+            // cout.flush();
+            st.push(i);
+            continue;
+        }
+
+        int lst = st.top(); 
+        bool b = query(i, lst);
+        if (!b){
+            st.pop();
+        }
+        else{
+            st.push(i);
+        }
+    }
+
+    while (st.size() > 1) st.pop();
+
+    int honest = st.top();
+    // cout << "! ";
+    vector<int> ans;
+    for (int i = 0; i < n; i++){
+        if (i == honest){
+            ans.push_back(1);
+            continue;
+        }
+        
+        if (query(honest, i)){
+            ans.push_back(1);
+        }
+        else{
+            ans.push_back(0);
+        }
+    }
+
+    cout << "! ";
+    for (int i = 0; i < n; i++) cout << ans[i];
+    cout << "\n";
+    cout.flush();
 }
 
 int main(){
@@ -35,7 +95,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

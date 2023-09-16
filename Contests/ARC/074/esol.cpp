@@ -26,8 +26,112 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+ll dp[305][305];
+int dp2[305][305][3];
+ll dp0[305][305];
 
+void solve(){
+    int n, m; cin >> n >> m;
+    vector<vector<pair<int, int>>> qr(305);
+    forn(i, m){
+        int l, r, x;
+        cin >> l >> r >> x;
+        qr[r].push_back({r-l+1, x});
+    }
+
+    forn(j, 305){
+        forn(k, 305){
+            dp[j][k] = 0;
+        }
+    }
+
+    dp[0][0] = 1;
+
+    rep(i, 1, n){
+        forn(j, 305){
+            forn(k, 305){
+                dp2[j][k][0] = 0;
+                dp2[j][k][1] = 0;
+                dp2[j][k][2] = 0;
+            }
+        }
+        forn(j, 304){
+            forn(k, 304){
+                for (pii p: qr[i]){
+                    int range = p.first, x = p.second;
+                    if (x == 1){
+                        if (range == 1){
+                            dp2[j][k][0]++;
+                            dp2[j][k][1]++;
+                            dp2[j][k][2]++;
+                        }
+                        else if (j >= range - 1){
+                            dp2[j][k][0]++;
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+
+                    else if (x == 2){
+                        if (range < 2) continue;
+                        if (j >= range - 1){
+                            dp2[j][k][1]++;
+                            dp2[j][k][2]++;
+                        }
+                        else{
+                            if (k >= range - 1){
+                                dp2[j][k][0]++;
+                                dp2[j][k][1]++;
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+                    }
+
+                    else{
+                        if (range < 3) continue;
+                        if (j >= range - 1) continue;
+                        if (k >= range - 1){
+                            dp2[j][k][2]++;
+                        }
+                        else{
+                            dp2[j][k][0]++;
+                            dp2[j][k][1]++;
+                            dp2[j][k][2]++;
+                        }
+                    }
+                }
+            }
+        }
+
+        int amt = qr[i].size();
+        forn(j, 304){
+            forn(k, 304) dp0[j][k] = 0;
+        }
+        forn(j, 304){
+            forn(k, 304){
+                if (dp2[j][k][0] == amt) (dp0[j+1][k+1] += dp[j][k]) %= MOD;
+                if (dp2[j][k][1] == amt) (dp0[1][k+1] += dp[j][k]) %= MOD;
+                if (dp2[j][k][2] == amt) (dp0[1][j+1] += dp[j][k]) %= MOD;
+            }
+        }
+        forn(j, 304){
+            forn(k, 304){
+                dp[j][k] = dp0[j][k];
+            }
+        }
+    }
+
+    ll ans = 0;
+    forn(j, 304){
+        forn(k, 304){
+            (ans += dp[j][k]) %= MOD;
+        }
+    }
+
+    cout << ans << "\n";
 }
 
 int main(){
@@ -35,7 +139,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

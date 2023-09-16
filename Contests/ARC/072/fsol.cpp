@@ -26,8 +26,59 @@ const char min_char = 'a';
 const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
-void solve(){
+bool compare(ll x, ll y, ll z, ll t){
+    if (y / x > t / z) return false;
+    if (y / x < t / z) return true;
+    ll u = y % x, v = t % z;
+    if (u * z <= v * x) return true;
+    else return false;
+}
 
+void solve(){
+    int n; cin >> n;
+    ll l; cin >> l;
+    deque<pair<ll, ll>> q;
+    vector<ll> ans;
+    ll totx = 0, toty = 0;
+    for (int i = 0; i < n; i++){
+        ll t, v;
+        cin >> t >> v;
+        if (i == 0){
+            ans.push_back(t * v);
+            q.push_front({v, t*v});
+            totx += v; toty += t*v;
+            continue;
+        }
+        else{
+            q.push_front({v, t*v});
+            totx += v;
+            toty += t*v;
+
+            // find cut V
+            while (true){
+                pair<ll, ll> cur = q.back();
+                ll x1 = cur.first, y1 = cur.second;
+                if (totx - x1 < l){
+                    ans.push_back(y1);
+                }
+            }
+            
+            ll x = v, y = t*v;
+
+            while (true){
+                pair<ll, ll> cur = q.front();
+                ll x1 = cur.first, y1 = cur.second;
+                bool b = compare(x, y, x1, y1);
+                if (b){
+                    q.push_front({x, y});
+                    break;
+                }
+                else{
+
+                }
+            }
+        }
+    }
 }
 
 int main(){
@@ -35,8 +86,8 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
-    while(T--){
+    // cin >> T;
+    while(T--){ 
         solve();
     }
     auto stop = high_resolution_clock::now();
