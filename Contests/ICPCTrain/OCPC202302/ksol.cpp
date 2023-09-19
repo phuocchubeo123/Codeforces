@@ -27,51 +27,7 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    vector<ll> x(n), y(n);
-    vector<int> l(n);
-    for (int i = 0; i < n; i++){
-        cin >> x[i] >> y[i];
-        char c; cin >> c;
-        l[i] = c - 'a';
-    }
 
-
-    vector<int> cnt(26, 0);
-    for (int i = 0; i < n; i++){
-        cnt[l[i]]++;
-    }
-
-    bool one_line = true;
-    for (int i = 0; i < n; i++){
-        for (int j = i+1; j < n; j++){
-            for (int k = j+1; k < n; k++){
-                if ((x[j] - x[i]) * (y[k] - y[i]) == (x[k] - x[i]) * (y[j] - y[i])) continue;
-                one_line = false;
-            }
-        }
-    }
-
-    if (one_line){
-        for (int i = 0; i < 26; i++){
-            if (cnt[i] >= 2){
-                cout << 2 << "\n";
-                return;
-            }
-        }
-        cout << 1 << "\n";
-        return;
-    }
-
-    for (int i = 0; i < 26; i++){
-        if (cnt[i] >= 2){
-            cout << "Infinity\n";
-            return;
-        }
-    }
-
-    cout << 1 << "\n";
-    return;
 }
 
 int main(){
@@ -79,7 +35,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while(T--){
         solve();
     }

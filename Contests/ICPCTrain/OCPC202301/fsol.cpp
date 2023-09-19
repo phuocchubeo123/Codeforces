@@ -27,7 +27,16 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-
+    int cnt = 0;
+    for (int i = 1; i <= 100; i++){
+        if (i % 5 == 0 && i % 2 != 0 && i % 3 != 0 && i % 7 != 0){
+            cout << i << "\n";
+            cnt++;
+        }
+        // cout << i << "\n";
+        // cnt++;
+    }
+    cout << cnt << "\n";
 }
 
 int main(){
@@ -35,7 +44,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while(T--){
         solve();
     }

@@ -27,51 +27,53 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    int n; cin >> n;
-    vector<ll> x(n), y(n);
-    vector<int> l(n);
+    int n, m; cin >> n >> m;
+    vector<vector<bool>> grid(n, vector<bool>(m));
     for (int i = 0; i < n; i++){
-        cin >> x[i] >> y[i];
-        char c; cin >> c;
-        l[i] = c - 'a';
-    }
-
-
-    vector<int> cnt(26, 0);
-    for (int i = 0; i < n; i++){
-        cnt[l[i]]++;
-    }
-
-    bool one_line = true;
-    for (int i = 0; i < n; i++){
-        for (int j = i+1; j < n; j++){
-            for (int k = j+1; k < n; k++){
-                if ((x[j] - x[i]) * (y[k] - y[i]) == (x[k] - x[i]) * (y[j] - y[i])) continue;
-                one_line = false;
-            }
+        for (int j = 0; j < m; j++){
+            char c; cin >> c;
+            grid[i][j] = (c - '0');
         }
     }
 
-    if (one_line){
-        for (int i = 0; i < 26; i++){
-            if (cnt[i] >= 2){
-                cout << 2 << "\n";
-                return;
-            }
-        }
-        cout << 1 << "\n";
-        return;
-    }
+    ll ans = 0;
 
-    for (int i = 0; i < 26; i++){
-        if (cnt[i] >= 2){
-            cout << "Infinity\n";
-            return;
+    vector<vector<bool>> vertical(n, vector<bool>(m));
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m-1; j++){
+            if (grid[i][j] && grid[i][j+1]) vertical[i][j] = 1;
         }
     }
 
-    cout << 1 << "\n";
-    return;
+    // for (int i = 0; i < n; i++){
+    //     for (int j = 0; j < m-1; j++){
+    //         cout << vertical[i][j];
+    //     }
+    //     cout << "\n";
+    // }
+    // cout << "\n";
+
+    for (int j = 0; j < m-1; j++){
+        if (vertical[0][j]) ans++;
+        for (int i = 1; i < n; i++){
+            if (vertical[i][j] && (vertical[i-1][j] ^ 1)) ans++;
+        }
+    }
+
+    for (int i = 0; i < n-1; i++){
+        for (int j = 0; j < m; j++){
+            if (grid[i][j] && grid[i+1][j]) ans++;  
+        }
+    }
+
+    // cout << ans << "\n";
+
+    if (ans & 1){
+        cout << "Mirko\n";
+    }
+    else{
+        cout << "Slavko\n";
+    }
 }
 
 int main(){
@@ -79,7 +81,7 @@ int main(){
     cin.tie(0);
     auto start = high_resolution_clock::now();
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while(T--){
         solve();
     }
