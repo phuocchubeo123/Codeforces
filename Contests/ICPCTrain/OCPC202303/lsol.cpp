@@ -27,14 +27,20 @@ const double EPS = 1e-9;
 const double PI = 3.14159265358979323846;
 
 void solve(){
-    ll n, q; cin >> n >> q;
-    ll a, b; cin >> a >> b;
-    vector<ll> x(n);
-    for (int i = 0; i < n; i++){
-        cin >> x[i];
+    int n, m; cin >> n >> m;
+    string s; cin >> s;
+    int l = 0, r = 0;
+    for (int i = 1; i < m-1; i++){
+        if (s[i] == 'R') l++;
+    }
+    for (int i = m; i < n-1; i++){
+        if (s[i] == 'L') r++;
     }
 
-    
+    if (s[m-1] == 'R') l++;
+    else r++;
+
+    cout << min(l, r) << "\n";
 }
 
 int main(){
