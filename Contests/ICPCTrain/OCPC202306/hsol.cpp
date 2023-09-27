@@ -4,29 +4,24 @@
 
 using namespace std;
 
-map<pair<int, int>, vector<int>> p, q;
-
-bool st(pair<int, int> u, pair<int, int> v){
-    if (u.second % u.first < v.second % v.first) return true;
-    if (u.second % u.first > v.second % v.first) return false;
-    if (u.second <= v.second) return true;
-    return false;
-}
+map<pair<ll, ll>, vector<ll>> p, q;
 
 void solve(){
     int n, Q; cin >> n >> Q;
-    vector<int> a(n), b(n), u(Q), v(Q);
+    vector<ll> a(n), b(n), u(Q), v(Q);
     for (int i = 0; i < n; i++) cin >> a[i] >> b[i];
     for (int i = 0; i < Q; i++) cin >> u[i] >> v[i];
 
-    int cnt1 = 0, cnt2 = 0;
+    p.clear(); q.clear();
 
     for (int i = 0; i < n; i++){
         ll x = a[i], y = b[i];
         while (true){
+            // cout << x << " " << y << "\n";
+            // cout.flush();
             if (x <= y){
                 if (p.find({x, y % x}) == p.end()) {
-                    p[{x, y % x}] = vector<int>();
+                    p[{x, y % x}] = vector<ll>();
                 }
                 p[{x, y%x}].push_back(y);
                 if (y % x == 0) break;
@@ -34,153 +29,102 @@ void solve(){
             }
 
             else{
-                if (q.find({x%y, x}) == q.end()) {
-                    q[{x%y, x}] = vector<int>();
+                if (q.find({y, x%y}) == q.end()) {
+                    q[{y, x%y}] = vector<ll>();
                 }
-                q[{x%y, y}].push_back(x);
+                q[{y, x%y}].push_back(x);
                 if (x % y == 0) break;
                 x = x%y;
             }
         }
     }
 
-    if (n != 3 || Q != 4){
-        for (int i = 0; i < Q; i++) cout << 1 << "\n";
-        return;
+    // return;
+
+    // cout << "\n";
+
+    for (auto xx: p){
+        sort(p[xx.first].begin(), p[xx.first].end());
     }
 
+    for (auto xx: q){
+        sort(q[xx.first].begin(), q[xx.first].end());
+    }
+
+    // for (auto xx: p){
+    //     cout << xx.first.first << " " << xx.first.second << ":\n";
+    //     for (int x: xx.second) cout << x << " ";
+    //     cout << "\n";
+    // }
+    // cout << "\n";
+
+    // for (auto xx: q){
+    //     cout << xx.first.first << " " << xx.first.second << ":\n";
+    //     for (int x: xx.second) cout << x << " ";
+    //     cout << "\n";
+    // }
+    // cout << "\n";
+
+    // if (n != 3 || Q != 4){
+    //     for (int i = 0; i < Q; i++) cout << 1 << "\n";
+    //     return;
+    // }
+
     for (int i = 0; i < Q; i++){
-        if (u[i] <= v[i]){
+        if (u[i] < v[i]){
             if (p.find({u[i], v[i] % u[i]}) == p.end()){
                 cout << 0 << "\n";
                 continue;
             }
+            
+            auto it = p.find({u[i], v[i] % u[i]});
+            int sz = (*it).second.size();
+            if ((*it).second.back() < v[i]){
+                cout << 0 << "\n";
+                continue;
+            }
+
+            auto x = lower_bound((*it).second.begin(), (*it).second.end(), v[i]);
+            // cout << "lower bound: " << *x << "\n";
+            cout << sz - (x - (*it).second.begin()) << "\n";
+            continue;
         }
-        if (u[i] > v[i]){
+        else if (u[i] > v[i]){
+            // cout << "second case:\n";
             ll tmp = u[i];
             u[i] = v[i];
             v[i] = tmp;
-            if (q[cnt2-1].first < u[i]){
+            if (q.find({u[i], v[i] % u[i]}) == q.end()){
+                cout << 0 << "\n";
+                continue;
+            }
+            
+            auto it = q.find({u[i], v[i] % u[i]});
+            int sz = (*it).second.size();
+            if ((*it).second.back() < v[i]){
                 cout << 0 << "\n";
                 continue;
             }
 
-            int lo = 0, hi = r.size() - 2;
-
-            while (lo < hi){
-                int m = (lo + hi + 1) / 2;
-                if (q[r[m]].first > u[i]) hi = m-1;
-                else lo = m;
-            }
-
-            // cout << "lo: " << lo << "\n";
-
-            if (q[r[lo]].first != u[i]){
-                cout << 0 << "\n";
-                continue;
-            }
-
-            int loc1 = lo;
-
-            lo = 0; hi = r2[loc1].size() - 2;
-            if (q[r[loc1+1] - 1].second % q[r[loc1+1] - 1].first < v[i] % u[i]){
-                cout << 0 << "\n";
-                continue;
-            }
-
-            while (lo < hi){
-                int m = (lo + hi + 1) / 2;
-                if (q[r2[loc1][m]].second % q[r2[loc1][m]].first > v[i] % u[i]) hi = m-1;
-                else lo = m;
-            }
-
-            // cout << "loc2: " << lo << "\n";
-
-            if (q[r2[loc1][lo]].second % q[r2[loc1][lo]].first != v[i] % u[i]){
-                cout << 0 << "\n";
-                continue;
-            }
-
-            int loc2 = r2[loc1][lo];
-            int loc3 = r2[loc1][lo+1];
-            lo = loc2; hi = loc3-1;
-
-            if (q[loc3-1].second < v[i]){
-                cout << 0 << "\n";
-                continue;
-            }
-
-            while (lo < hi){
-                int m = (lo + hi) / 2;
-                if (q[m].second < v[i]) lo = m+1;
-                else hi = m;
-            }
-
-            cout << loc3 - hi << "\n";
+            auto x = lower_bound((*it).second.begin(), (*it).second.end(), v[i]);
+            // cout << "lower bound: " << *x << "\n";
+            cout << sz - (x - (*it).second.begin()) << "\n";
             continue;
         }
 
-        if (p[cnt1-1].first < u[i]){
-            cout << 0 << "\n";
+        else{
+            auto it = p.find({u[i], 0});
+            auto it2 = q.find({u[i], 0});
+            int ans = 0;
+            // cout << "equal:\n";
+            // for (ll x: (*it).second) cout << x << " ";
+            // cout << "\n";
+            if (it != p.end()) ans += (*it).second.size();
+            if (it2 != q.end()) ans += (*it2).second.size();
+            cout << ans << "\n";
             continue;
         }
-
-        int lo = 0, hi = l.size() - 2;
-
-        while (lo < hi){
-            int m = (lo + hi + 1) / 2;
-            if (p[l[m]].first > u[i]) hi = m-1;
-            else lo = m;
-        }
-
-        // cout << "lo: " << lo << "\n";
-
-        if (p[l[lo]].first != u[i]){
-            cout << 0 << "\n";
-            continue;
-        }
-
-        int loc1 = lo;
-
-        lo = 0; hi = l2[loc1].size() - 2;
-        if (p[l[loc1+1] - 1].second % p[l[loc1+1] - 1].first < v[i] % u[i]){
-            cout << 0 << "\n";
-            continue;
-        }
-
-        while (lo < hi){
-            int m = (lo + hi + 1) / 2;
-            if (p[l2[loc1][m]].second % p[l2[loc1][m]].first > v[i] % u[i]) hi = m-1;
-            else lo = m;
-        }
-
-        // cout << "loc2: " << lo << "\n";
-
-        if (p[l2[loc1][lo]].second % p[l2[loc1][lo]].first != v[i] % u[i]){
-            cout << 0 << "\n";
-            continue;
-        }
-
-        int loc2 = l2[loc1][lo];
-        int loc3 = l2[loc1][lo+1];
-        lo = loc2; hi = loc3-1;
-
-        if (p[loc3-1].second < v[i]){
-            cout << 0 << "\n";
-            continue;
-        }
-
-        while (lo < hi){
-            int m = (lo + hi) / 2;
-            if (p[m].second < v[i]) lo = m+1;
-            else hi = m;
-        }
-
-        cout << loc3 - hi << "\n";
-        continue;
     }
-
-    // cout << "\n";
 }
 
 int main(){
